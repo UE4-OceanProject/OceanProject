@@ -7,9 +7,9 @@
 
 UBuoyancyMovementComponent::UBuoyancyMovementComponent(const class FObjectInitializer& PCIP)
 	: Super(PCIP) {
-	Buoyancy = 1.0f;
+	//Buoyancy = 1.0f;
 	DirectionalDamping = FVector(0.2f, 2, 5);
-	TestPointVolumeRadius = 10;
+	//TestPointVolumeRadius = 10;
 	//IsGeneratingWake = true;
 	//WakeSize = 25.0f;
 	}
@@ -32,13 +32,11 @@ void UBuoyancyMovementComponent::InitializeComponent() {
 	_baseAngularDamping = UpdatedPrimitive->GetAngularDamping();
 
 	// TODO: Switch from using -GetGravityZ() to using actual buoyant force calculation
-	_specificGravity = 0.99955;
+	//_specificGravity = 0.99955;
 
-	float r = TestPointVolumeRadius;
-
-	float v = (r * (4 * PI * r * r)) / 3;
-
-	_buoyantForce = _specificGravity * (v * 0.5);
+	//float r = TestPointVolumeRadius;
+	//float v = (r * (4 * PI * r * r)) / 3;
+	//_buoyantForce = _specificGravity * (v * 0.5);
 	}
 
 void UBuoyancyMovementComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) {
@@ -61,13 +59,13 @@ void UBuoyancyMovementComponent::TickComponent(float DeltaTime, enum ELevelTick 
 	_pointsInWater = false;
 	int numberOfPointsInWater = 0;
 	for (int pointIndex = 0; pointIndex < testPointCount; pointIndex++) {
-		FVector testPoint = TestPoints[pointIndex];
+		FBuoyancyTestPoint testPoint = TestPoints[pointIndex];
 
-		FVector worldTestPoint = transform.TransformPosition(testPoint);
+		FVector worldTestPoint = transform.TransformPosition(testPoint.Location);
 
 		FVector waveHeight = OceanManager->GetWaveHeightValue(worldTestPoint, GetWorld()->GetTimeSeconds());
 
-		float delta = fabs(worldTestPoint.Z - waveHeight.Z) / TestPointVolumeRadius;
+		float delta = fabs(worldTestPoint.Z - waveHeight.Z) / testPoint.VolumeRadius;
 
 		float force = 0;
 		if (worldTestPoint.Z > waveHeight.Z) {
@@ -79,9 +77,7 @@ void UBuoyancyMovementComponent::TickComponent(float DeltaTime, enum ELevelTick 
 			_pointsInWater = true;
 			numberOfPointsInWater++;
 
-			force = Buoyancy * -GetGravityZ();
-
-			//UpdatedComponent->AddImpulseAtLocation(FVector(0, 0, _buoyantForce), worldTestPoint);
+			force = testPoint.Buoyancy * -GetGravityZ();
 			}
 
 		if (delta >= 1) {

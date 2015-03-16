@@ -7,6 +7,21 @@
 #include "OceanManager.h"
 #include "BuoyancyMovementComponent.generated.h"
 
+
+/* Defines an individual test point for bouyancy calculation. */
+USTRUCT(BlueprintType)
+struct FBuoyancyTestPoint {
+	GENERATED_USTRUCT_BODY();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		FVector Location;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		float Buoyancy;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		float VolumeRadius;
+	};
+
+
 /*
 * A custom MovementComponent that enables Buoyancy when used with an ocean surface.
 */
@@ -18,17 +33,11 @@ class UBuoyancyMovementComponent : public UMovementComponent {
 	UPROPERTY(BlueprintReadOnly)
 	AOceanManager* OceanManager;
 
-	/* Buoyancy force multiplier */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy")
-		float Buoyancy;
 
 	/* Points used to test the water level */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy")
-		TArray<FVector> TestPoints;
+		TArray<FBuoyancyTestPoint> TestPoints;
 
-	/* Radius of the volume represented by the points */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy")
-		float TestPointVolumeRadius;
 
 	/* Directional Damping */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy")
@@ -52,6 +61,15 @@ class UBuoyancyMovementComponent : public UMovementComponent {
 	/* TODO - Wake Size */
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ocean")
 	//float WakeSize;
+
+
+	/* Radius of the volume represented by the points */
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy")
+		//float TestPointVolumeRadius;
+	
+	/* Buoyancy force multiplier */
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy")
+	//	float Buoyancy;
 
 private:
 	bool _pointsInWater;

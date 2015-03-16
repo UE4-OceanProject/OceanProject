@@ -90,12 +90,13 @@ class AOceanManager : public AActor {
 	FWaveSetParameters WaveSet1;
 
 	// Individual wave settings for wave set 2
-	UPROPERTY() //BlueprintReadWrite, EditAnywhere) - REMOVING ACCESS to reduce complexity
-	FWaveSetParameters WaveSet2;
+	//UPROPERTY() //BlueprintReadWrite, EditAnywhere) - REMOVING ACCESS to reduce complexity
+	//FWaveSetParameters WaveSet2;
 
-
+public:
 	FVector GetWaveHeightValue(FVector location, float time);
 
+private:
 	FVector CalculateGerstnerWaveSet(FWaveParameter global, FWaveSetParameters ws, FVector2D direction, FVector position, float time);
 
 	FVector CalculateGertnerWave(float rotation, float waveLength, float amplitude, float steepness, FVector2D direction, FVector position, float time);
