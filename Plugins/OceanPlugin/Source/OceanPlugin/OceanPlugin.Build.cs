@@ -5,9 +5,9 @@ namespace UnrealBuildTool.Rules
 
         public OceanPlugin(TargetInfo Target) {
 
-            PublicIncludePaths.AddRange(new string[] { });
+            PublicIncludePaths.AddRange(new string[] { "OceanPlugin/Classes/Fish" });
 
-            PrivateIncludePaths.AddRange(new string[] { "OceanPlugin/Private" });
+            PrivateIncludePaths.AddRange(new string[] { "OceanPlugin/Private", "OceanPlugin/Private/Fish" });
 
             PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
