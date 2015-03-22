@@ -94,7 +94,11 @@ class AOceanManager : public AActor {
 	//FWaveSetParameters WaveSet2;
 
 public:
-	FVector GetWaveHeightValue(FVector location, float time);
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float NetWorkTimeOffset;
+
+	UFUNCTION(BlueprintCallable, Category = "Ocean Manager")
+	FVector GetWaveHeightValue(FVector location);
 
 private:
 	FVector CalculateGerstnerWaveSet(FWaveParameter global, FWaveSetParameters ws, FVector2D direction, FVector position, float time);

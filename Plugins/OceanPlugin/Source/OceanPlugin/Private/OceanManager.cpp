@@ -15,8 +15,10 @@ AOceanManager::AOceanManager(const class FObjectInitializer& PCIP)
 	PrimaryActorTick.bCanEverTick = true;
 	}
 
-FVector AOceanManager::GetWaveHeightValue(FVector location, float time) {
+FVector AOceanManager::GetWaveHeightValue(FVector location) {
 	//FVector sum = FVector(0, 0, 0);
+
+	float time = GetWorld()->GetTimeSeconds() + NetWorkTimeOffset;
 
 	// Calculate the Gerstner Wave Sets
 	return CalculateGerstnerWaveSet(GlobalWaveSettings, WaveSet1, FVector2D(WaveDirection.X, WaveDirection.Y), location, time * WaveSpeed);
