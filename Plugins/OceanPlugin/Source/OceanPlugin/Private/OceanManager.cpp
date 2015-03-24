@@ -6,22 +6,26 @@
 
 AOceanManager::AOceanManager(const class FObjectInitializer& PCIP)
 	: Super(PCIP) {
-	MeshCenter = FVector(0, 0, 0);
 	WaveDirection = FVector(0, 1, 0);
 	WaveSpeed = 1.0f;
 	GlobalWaveSettings = FWaveParameter();
 	WaveSet1 = FWaveSetParameters();
 	//WaveSet2 = FWaveSetParameters();
 	PrimaryActorTick.bCanEverTick = true;
+	EnableGerstnerWaves = true;
 	}
 
 FVector AOceanManager::GetWaveHeightValue(FVector location) {
 	//FVector sum = FVector(0, 0, 0);
 
+	// Flat ocean buoyancy optimization
+	if (!EnableGerstnerWaves)
+		return FVector(location.X, location.Y, RootComponent->GetComponentLocation().Z);
+
 	float time = GetWorld()->GetTimeSeconds() + NetWorkTimeOffset;
 
 	// Calculate the Gerstner Wave Sets
-	return CalculateGerstnerWaveSet(GlobalWaveSettings, WaveSet1, FVector2D(WaveDirection.X, WaveDirection.Y), location, time * WaveSpeed);
+	return CalculateGerstnerWaveSet(GlobalWaveSettings, WaveSet1, FVector2D(WaveDirection.X, WaveDirection.Y), location, time * WaveSpeed) + FVector(0,0,RootComponent->GetComponentLocation().Z);
 	//sum +=
 	// Removing this to reduce complexity, not needed
 	//sum += CalculateGerstnerWaveSet(GlobalWaveSettings, WaveSet2, FVector2D(WaveDirection.X, WaveDirection.Y), location, time * WaveSpeed);
@@ -70,6 +74,6 @@ FVector AOceanManager::CalculateGertnerWave(float rotation, float waveLength, fl
 	float QA = steepness * amplitude;
 
 	// Leaving this as a FVector to possibly extend it's usefulness to the BuoyancyMovementComponent (dir.X/.Y)
-	return FVector(QA * dir.X * c, QA * dir.Y * c, MeshCenter.Z + amplitude * s);
+	return FVector(QA * dir.X * c, QA * dir.Y * c, amplitude * s);
 	}
 

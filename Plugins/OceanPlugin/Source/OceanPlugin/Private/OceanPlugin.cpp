@@ -1,20 +1,14 @@
 // OceanPlugin version
 
 #include "OceanPluginPrivatePCH.h"
+#include "OceanPlugin.h"
 
-class FOceanPlugin : public IOceanPlugin {
+void OceanPluginImpl::StartupModule()
+{
+}
 
-	/** IModuleInterface implementation */
-	virtual void StartupModule() override {
+void OceanPluginImpl::ShutdownModule()
+{
+}
 
-		}
-
-	virtual void ShutdownModule() override {
-
-		}
-	};
-
-
-IMPLEMENT_MODULE(FOceanPlugin, OceanPlugin)
-
-//DEFINE_LOG_CATEGORY(LogOcean);
+IMPLEMENT_MODULE(FDefaultGameModuleImpl, MathPlugin)

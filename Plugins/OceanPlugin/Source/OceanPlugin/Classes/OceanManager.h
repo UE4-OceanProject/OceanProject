@@ -69,10 +69,6 @@ UCLASS(BlueprintType, Blueprintable)
 class AOceanManager : public AActor {
 	GENERATED_UCLASS_BODY()
 
-	// The world location of the ocean mesh
-	UPROPERTY(BlueprintReadWrite)
-	FVector MeshCenter;
-
 	// The Direction the waves travel
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector WaveDirection;
@@ -94,6 +90,9 @@ class AOceanManager : public AActor {
 	//FWaveSetParameters WaveSet2;
 
 public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool EnableGerstnerWaves;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float NetWorkTimeOffset;
 
