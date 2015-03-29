@@ -93,7 +93,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool EnableGerstnerWaves;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite)
 	float NetWorkTimeOffset;
 
 	UFUNCTION(BlueprintCallable, Category = "Ocean Manager")

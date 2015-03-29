@@ -3,7 +3,7 @@
     "FriendlyName" : "DC Ocean Plugin",
     "Version" : 1,
     "VersionName": "1.0",
-    "EngineVersion" : "4.6.0",
+    "EngineVersion" : "4.7.3",
     "Description" : "Provides the code base classes for the ocean system.",
     "Category" : "Ocean.OceanPlugin",
     "CreatedBy" : "DotCam",

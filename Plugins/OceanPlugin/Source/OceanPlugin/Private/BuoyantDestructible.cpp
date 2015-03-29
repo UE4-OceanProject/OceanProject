@@ -9,11 +9,20 @@ ABuoyantDestructible::ABuoyantDestructible(const class FObjectInitializer& Objec
 {
 	PrimaryActorTick.bCanEverTick = true; //Duh!
 
+	//Defaults
+	ChunkDensity = 600.0f;
+	FluidDensity = 1025.0f;
 	TestPointRadius = 10.0f;
-	Buoyancy = 1.0f;
+	FluidLinearDamping = 1.0f;
+	FluidAngularDamping = 1.0f;
+
+	VelocityDamper = FVector(0.1, 0.1, 0.1);
+	MaxUnderwaterVelocity = 1000.f;
 
 	ChunkSleepThreshold = 50.0f;
 	ChunkStabilizationThreshold = 10.0f;
+
+	WaveForceMultiplier = 2.0f;
 }
 
 void ABuoyantDestructible::PostLoad()
@@ -43,6 +52,11 @@ void ABuoyantDestructible::Tick(float DeltaTime)
 
 	float Gravity = DestructibleComponent->GetPhysicsVolume()->GetGravityZ();
 
+	TestPointRadius = abs(TestPointRadius);
+
+	//Signed based on gravity, just in case we need an upside down world
+	_SignedRadius = FMath::Sign(Gravity) * TestPointRadius;
+
 	#if WITH_PHYSX
 	for(FDestructibleChunkInfo& Each : DestructibleComponent->ChunkInfos)
 	{
@@ -56,41 +70,60 @@ void ABuoyantDestructible::Tick(float DeltaTime)
 
 			FVector Location = P2UVector(PxLoc);
 
-			if (DrawDebugSpheres)
-				DrawDebugSphere(GetWorld(), Location, TestPointRadius, 8, FColor::Blue);
+			float waveHeight = OceanManager->GetWaveHeightValue(Location).Z;
+			bool isUnderwater = false;
 
-			FVector waveHeight = OceanManager->GetWaveHeightValue(Location);
-
-			float delta = fabs(Location.Z - waveHeight.Z) / TestPointRadius;
-			float force = 0;
-			if (Location.Z < waveHeight.Z)
+			//If test point radius is touching water add buoyancy force
+			if (waveHeight > (Location.Z + _SignedRadius))
 			{
-				force = Buoyancy / 100 * -Gravity;
+				isUnderwater = true;
 
-				if (delta >= 1)
+				float DepthMultiplier = (waveHeight - (Location.Z + _SignedRadius)) / (TestPointRadius * 2);
+				DepthMultiplier = FMath::Clamp(DepthMultiplier, 0.f, 1.f);
+
+				/**
+				* --------
+				* Buoyancy force formula: (Volume(Mass / Density) * Fluid Density * -Gravity) * Depth Multiplier
+				* --------
+				*/
+				float BuoyancyForceZ = Chunk->getMass() / ChunkDensity * FluidDensity * -Gravity * DepthMultiplier;
+				
+				//Velocity damping
+				FVector DampingForce = -P2UVector(Chunk->getLinearVelocity()) * VelocityDamper * Chunk->getMass() * DepthMultiplier;
+
+				//Wave push force
+				if (EnableWaveForces)
 				{
-					force = force;
-				}
-				else
-				{
-					force = (force * delta * delta * delta);
+					float waveVelocity = FMath::Clamp(P2UVector(Chunk->getLinearVelocity()).Z, -20.f, 150.f) * (1 - DepthMultiplier);
+					DampingForce += OceanManager->WaveDirection * Chunk->getMass() * waveVelocity * WaveForceMultiplier;
 				}
 
-				Chunk->addForce(PxVec3(0, 0, force) * Chunk->getMass(), PxForceMode::eIMPULSE, true);
+				//Add force for this chunk
+				Chunk->addForce(PxVec3(DampingForce.X, DampingForce.Y, DampingForce.Z + BuoyancyForceZ), PxForceMode::eFORCE, true);
 			}
 
+			if (DrawDebugPoints)
+			{
+				FColor DebugColor = FLinearColor(0.8, 0.7, 0.2, 0.8).ToRGBE();
+				if (isUnderwater) { DebugColor = FLinearColor(0, 0.2, 0.7, 0.8).ToRGBE(); } //Blue color underwater, yellow out of watter
+				DrawDebugSphere(GetWorld(), Location, TestPointRadius, 8, DebugColor);
+			}
+
+			//Advanced
 			Chunk->setSleepThreshold(ChunkSleepThreshold);
 			Chunk->setStabilizationThreshold(ChunkStabilizationThreshold);
 
-			Chunk->setLinearDamping(_baseLinearDamping);
-			Chunk->setAngularDamping(_baseAngularDamping);
+			//Update damping based on isUnderwater
+			Chunk->setLinearDamping(_baseLinearDamping + FluidLinearDamping * isUnderwater);
+			Chunk->setAngularDamping(_baseAngularDamping + FluidAngularDamping * isUnderwater);
 
-			//Apply Directional Damping
-			//PxVec3 rotatedDamping = Trans.q.rotate(PxVec3(DirectionalDamping.X, DirectionalDamping.Y, DirectionalDamping.Z)).abs();
-			PxVec3 rotatedDamping = Trans.rotate(PxVec3(DirectionalDamping.X, DirectionalDamping.Y, DirectionalDamping.Z)).abs();
-			FVector conv = P2UVector(Chunk->getLinearVelocity()) * P2UVector(rotatedDamping);
-
-			Chunk->addForce(-PxVec3(conv.X, conv.Y, conv.Z), PxForceMode::eIMPULSE, true);
+			//Clamp the chunk's velocity to MaxUnderwaterVelocity if chunk is underwater
+			if (ClampMaxVelocity && isUnderwater
+				&& Chunk->getLinearVelocity().magnitude() > MaxUnderwaterVelocity)
+			{
+				FVector	Velocity = P2UVector(Chunk->getLinearVelocity()).GetSafeNormal() * MaxUnderwaterVelocity;
+				Chunk->setLinearVelocity(PxVec3(Velocity.X, Velocity.Y, Velocity.Z));
+			}
 		}
 	}
 	#endif // WITH_PHYSX 

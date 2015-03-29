@@ -13,10 +13,10 @@ class UBuoyancyComponent : public UMovementComponent
 	GENERATED_UCLASS_BODY()
 
 	/* OceanManager used by the component, if unassign component will auto-detect */
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, AdvancedDisplay, BlueprintReadWrite, Category = "Buoyancy Settings")
 	AOceanManager* OceanManager;
 	
-	/* Density of fluid */
+	/* Density of mesh */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")
 	float MeshDensity;
 
@@ -32,7 +32,7 @@ class UBuoyancyComponent : public UMovementComponent
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")
 	float FluidAngularDamping;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")
+	UPROPERTY(EditAnywhere, AdvancedDisplay, BlueprintReadWrite, Category = "Buoyancy Settings")
 	FVector VelocityDamper;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")
@@ -49,8 +49,34 @@ class UBuoyancyComponent : public UMovementComponent
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")
 	TArray<FVector> TestPoints;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")
+	/* Per-point mesh density override, can be used for half-sinking objects etc. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, AdvancedDisplay, Category = "Buoyancy Settings")
+	TArray<float> PointDensityOverride;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, AdvancedDisplay, Category = "Buoyancy Settings")
 	bool DrawDebugPoints;
+
+	/**
+	* Stay upright physics constraint (inspired by UDK's StayUprightSpring)
+	* -STILL WIP-
+	*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, AdvancedDisplay, Category = "Buoyancy Settings")
+	bool EnableStayUprightConstraint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, AdvancedDisplay, Category = "Buoyancy Settings")
+	float StayUprightStiffness;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, AdvancedDisplay, Category = "Buoyancy Settings")
+	float StayUprightDamping;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, AdvancedDisplay, Category = "Buoyancy Settings")
+	FRotator StayUprightDesiredRotation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, AdvancedDisplay, Category = "Buoyancy Settings")
+	bool EnableWaveForces;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, AdvancedDisplay, Category = "Buoyancy Settings")
+	float WaveForceMultiplier;
 
 	//Begin UActorComponent Interface
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
@@ -60,6 +86,10 @@ class UBuoyancyComponent : public UMovementComponent
 private:
 
 	static FVector GetVelocityAtPoint(UPrimitiveComponent* Target, FVector Point, FName BoneName = NAME_None);
+
+	void ApplyUprightConstraint();
+	UPhysicsConstraintComponent* ConstraintComp;
+	bool _hasTicked;
 
 	float _SignedRadius;
 	float _baseAngularDamping;

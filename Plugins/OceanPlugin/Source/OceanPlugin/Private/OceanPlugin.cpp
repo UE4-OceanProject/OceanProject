@@ -11,4 +11,4 @@ void OceanPluginImpl::ShutdownModule()
 {
 }
 
-IMPLEMENT_MODULE(FDefaultGameModuleImpl, MathPlugin)
+IMPLEMENT_MODULE(FDefaultGameModuleImpl, OceanPlugin)
