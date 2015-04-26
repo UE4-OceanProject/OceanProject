@@ -42,13 +42,16 @@ void UBuoyancyComponent::InitializeComponent()
 	//Signed based on gravity, just in case we need an upside down world
 	_SignedRadius = FMath::Sign(GetGravityZ()) * TestPointRadius;
 
-	_baseLinearDamping = UpdatedPrimitive->GetLinearDamping();
-	_baseAngularDamping = UpdatedPrimitive->GetAngularDamping();
+	if (UpdatedPrimitive->IsValidLowLevel())
+	{
+		_baseLinearDamping = UpdatedPrimitive->GetLinearDamping();
+		_baseAngularDamping = UpdatedPrimitive->GetAngularDamping();
+	}
 }
 
 void UBuoyancyComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
-	if (!OceanManager) return;
+	if (!OceanManager || !UpdatedComponent || !UpdatedPrimitive) return;
 
 	if (!UpdatedComponent->IsSimulatingPhysics())
 	{
