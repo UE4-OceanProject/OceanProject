@@ -1,10 +1,10 @@
 #include "OceanPluginPrivatePCH.h"
 #include "BuoyantDestructible.h"
- 
+
 // PhysX 			
 #include "PhysXIncludes.h" 
 #include "PhysicsPublic.h"
- 
+
 ABuoyantDestructible::ABuoyantDestructible(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true; //Duh!
@@ -57,13 +57,16 @@ void ABuoyantDestructible::Tick(float DeltaTime)
 	//Signed based on gravity, just in case we need an upside down world
 	_SignedRadius = FMath::Sign(Gravity) * TestPointRadius;
 
-	#if WITH_PHYSX
-	for(FDestructibleChunkInfo& Each : DestructibleComponent->ChunkInfos)
+#if WITH_PHYSX
+	uint32 ChunkCount = DestructibleComponent->ApexDestructibleActor->getNumVisibleChunks();
+	const uint16* ChunkIndices = DestructibleComponent->ApexDestructibleActor->getVisibleChunks();
+	for (uint32 c = 0; c < ChunkCount; c++)
 	{
-		physx::PxRigidDynamic* Chunk = Each.Actor;
- 
+		PxRigidDynamic* Chunk = DestructibleComponent->ApexDestructibleActor->getChunkPhysXActor(ChunkIndices[c]);
+		check(Chunk);
+
 		if (Chunk)
-		{    
+		{
 			PxTransform Trans = Chunk->getGlobalPose();
 			PxTransform MassTrans = Chunk->getCMassLocalPose();
 			PxVec3 PxLoc = Trans.p + Trans.rotate(MassTrans.p);
@@ -87,7 +90,7 @@ void ABuoyantDestructible::Tick(float DeltaTime)
 				* --------
 				*/
 				float BuoyancyForceZ = Chunk->getMass() / ChunkDensity * FluidDensity * -Gravity * DepthMultiplier;
-				
+
 				//Velocity damping
 				FVector DampingForce = -P2UVector(Chunk->getLinearVelocity()) * VelocityDamper * Chunk->getMass() * DepthMultiplier;
 
@@ -126,5 +129,5 @@ void ABuoyantDestructible::Tick(float DeltaTime)
 			}
 		}
 	}
-	#endif // WITH_PHYSX 
+#endif // WITH_PHYSX 
 }

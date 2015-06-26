@@ -24,11 +24,8 @@ public:
 
 	//--Custom debugging console commands--
 
-	UFUNCTION(exec, BlueprintImplementableEvent, meta = (FriendlyName = "Console Command ~ nogerstrnershader"))
-	virtual void noGerstnerShader();
-
-	UFUNCTION(exec)
-	virtual void noGerstner();
+	//UFUNCTION(exec, BlueprintImplementableEvent, meta = (DisplayName = "Console Command ~ enableoceanssr"))
+	//virtual void EnableOceanSSR();
 
 	UFUNCTION(exec)
 	virtual void DrawBuoyancyPoints();

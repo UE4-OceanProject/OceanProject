@@ -5,7 +5,8 @@
 
 
 AOceanManager::AOceanManager(const class FObjectInitializer& PCIP)
-	: Super(PCIP) {
+	: Super(PCIP)
+{
 	WaveDirection = FVector(0, 1, 0);
 	WaveSpeed = 1.0f;
 	GlobalWaveSettings = FWaveParameter();
@@ -13,9 +14,10 @@ AOceanManager::AOceanManager(const class FObjectInitializer& PCIP)
 	//WaveSet2 = FWaveSetParameters();
 	PrimaryActorTick.bCanEverTick = true;
 	EnableGerstnerWaves = true;
-	}
+}
 
-FVector AOceanManager::GetWaveHeightValue(FVector location) {
+FVector AOceanManager::GetWaveHeightValue(FVector location)
+{
 	//FVector sum = FVector(0, 0, 0);
 
 	// Flat ocean buoyancy optimization
@@ -31,10 +33,10 @@ FVector AOceanManager::GetWaveHeightValue(FVector location) {
 	//sum += CalculateGerstnerWaveSet(GlobalWaveSettings, WaveSet2, FVector2D(WaveDirection.X, WaveDirection.Y), location, time * WaveSpeed);
 
 	//return sum;
+}
 
-	}
-
-FVector AOceanManager::CalculateGerstnerWaveSet(FWaveParameter global, FWaveSetParameters ws, FVector2D direction, FVector position, float time) {
+FVector AOceanManager::CalculateGerstnerWaveSet(FWaveParameter global, FWaveSetParameters ws, FVector2D direction, FVector position, float time)
+{
 	FVector sum = FVector(0, 0, 0);
 
 	// Calculate the Gerstner Waves
@@ -56,11 +58,11 @@ FVector AOceanManager::CalculateGerstnerWaveSet(FWaveParameter global, FWaveSetP
 		global.Amplitude * ws.Wave08.Amplitude, global.Steepness * ws.Wave08.Steepness, direction, position, time);
 
 	return sum / 8;
-	}
+}
 
 
-FVector AOceanManager::CalculateGertnerWave(float rotation, float waveLength, float amplitude, float steepness, FVector2D direction, FVector position, float time) {
-
+FVector AOceanManager::CalculateGertnerWave(float rotation, float waveLength, float amplitude, float steepness, FVector2D direction, FVector position, float time)
+{
 	float frequency = (2 * PI) / waveLength;
 
 	FVector dir = FVector(direction.X, direction.Y, 0);
@@ -75,5 +77,5 @@ FVector AOceanManager::CalculateGertnerWave(float rotation, float waveLength, fl
 
 	// Leaving this as a FVector to possibly extend it's usefulness to the BuoyancyMovementComponent (dir.X/.Y)
 	return FVector(QA * dir.X * c, QA * dir.Y * c, amplitude * s);
-	}
+}
 

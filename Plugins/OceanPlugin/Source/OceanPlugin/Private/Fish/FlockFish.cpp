@@ -107,7 +107,7 @@ FVector AFlockFish::AvoidObstacle()
 
 	FHitResult OutHitResult;
 	FCollisionQueryParams Line(FName("Collision param"), true);
-	bool const bHadBlockingHit = GetWorld()->LineTraceSingle(OutHitResult, actorLocation, forwardVector, COLLISION_TRACE, Line);
+	bool const bHadBlockingHit = GetWorld()->LineTraceSingleByChannel(OutHitResult, actorLocation, forwardVector, COLLISION_TRACE, Line);
 	FVector returnVector = FVector(0, 0, 0);
 	float distanceToBound = distanceToBound = (this->GetActorLocation() - OutHitResult.ImpactPoint).Size();
 	if (bHadBlockingHit)

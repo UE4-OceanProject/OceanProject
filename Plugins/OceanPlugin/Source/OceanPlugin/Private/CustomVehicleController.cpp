@@ -32,15 +32,6 @@ void ACustomVehicleController::DrawBuoyancyPoints()
 	}
 }
 
-void ACustomVehicleController::noGerstner()
-{
-	for (TActorIterator<AOceanManager> ActorItr(GetWorld()); ActorItr; ++ActorItr)
-	{
-		ActorItr->EnableGerstnerWaves = !ActorItr->EnableGerstnerWaves;
-		break;
-	}
-}
-
 void ACustomVehicleController::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
