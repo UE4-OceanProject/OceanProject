@@ -46,7 +46,7 @@ void UBuoyancyForceComponent::InitializeComponent()
 		}
 	}
 
-	TestPointRadius = abs(TestPointRadius);
+	TestPointRadius = FMath::Abs(TestPointRadius);
 
 	UPrimitiveComponent* BasePrimComp = Cast<UPrimitiveComponent>(AttachParent);
 	if (BasePrimComp)
@@ -102,7 +102,7 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 				float waveHeight = OceanManager->GetWaveHeightValue(worldBoneLoc).Z;
 
 				float BoneDensity = MeshDensity;
-				float BoneTestRadius = abs(TestPointRadius);
+				float BoneTestRadius = FMath::Abs(TestPointRadius);
 				float SignedBoneRadius = FMath::Sign(Gravity) * TestPointRadius; //Direction of radius (test radius is actually a Z offset, should probably rename it!). Just in case we need an upside down world.
 
 				//Get density & radius from the override array, if available.
@@ -113,7 +113,7 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 					if (Override.BoneName.IsEqual(BoneNames[Itr]))
 					{
 						BoneDensity = Override.Density;
-						BoneTestRadius = abs(Override.TestRadius);
+						BoneTestRadius = FMath::Abs(Override.TestRadius);
 						SignedBoneRadius = FMath::Sign(Gravity) * BoneTestRadius;
 					}
 				}

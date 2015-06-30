@@ -37,7 +37,7 @@ void UBuoyancyComponent::InitializeComponent()
 
 	ApplyUprightConstraint();
 
-	TestPointRadius = abs(TestPointRadius);
+	TestPointRadius = FMath::Abs(TestPointRadius);
 
 	//Signed based on gravity, just in case we need an upside down world
 	_SignedRadius = FMath::Sign(GetGravityZ()) * TestPointRadius;
