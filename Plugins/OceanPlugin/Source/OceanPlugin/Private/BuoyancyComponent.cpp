@@ -197,7 +197,7 @@ void UBuoyancyComponent::ApplyUprightConstraint()
 		ConstraintInstance.TwistLimitStiffness = StayUprightStiffness;
 		ConstraintInstance.TwistLimitDamping = StayUprightDamping;
 
-		ConstraintInstance.AngularRotationOffset = -UpdatedPrimitive->GetComponentRotation() + StayUprightDesiredRotation;
+		ConstraintInstance.AngularRotationOffset = UpdatedPrimitive->GetComponentRotation().GetInverse() + StayUprightDesiredRotation;
 
 		//UPhysicsConstraintComponent* ConstraintComp = NewObject<UPhysicsConstraintComponent>(UpdatedPrimitive);
 		if (ConstraintComp)

@@ -3,21 +3,11 @@ An Ocean Simulation project for Unreal Engine 4.
 
 ---------------------
 
-**4.8 Branch - This is the most up to date branch compatible with UE 4.8.x**
+**4.9 Branch - This is the most up to date branch compatible with UE 4.9**
 
 ![img_project](http://www.mediafire.com/convkey/ea7f/9ifotl4151ob4d2zg.jpg?size_id=5)
 
-_New 4.8 features:_
-
--Screen Space Reflections (SSR)  
--Distance Blended Normals  
--Infinite Ocean System  
--Configurable Sets of Panning Normals (Small, Medium, Far)  
--Heightmap-based Seafoam & Foam Wave Caps  
--Cubmap-based Reflections  
--Exposed many parameters to BP_Ocean  
--Underwater Distortion Effect  
--Underwater Caustics  
+New features coming soon..
 
 ---------------------
 

@@ -3,10 +3,10 @@
 * 
 * Created by: TK-Master
 * Project name: OceanProject
-* Unreal Engine version: 4.8.3
+* Unreal Engine version: 4.9
 * Created on: 2015/04/26
 *
-* Last Edited on: 2015/06/29
+* Last Edited on: 2015/08/30
 * Last Edited by: TK-Master
 * 
 * -------------------------------------------------
@@ -23,7 +23,7 @@
 #include "CustomVehicleController.h"
 
 #include "BuoyancyForceComponent.h"
-#include "BuoyantDestructible.h"
+#include "BuoyantDestructibleComponent.h"
 
 ACustomVehicleController::ACustomVehicleController(const FObjectInitializer& ObjectInitializer) 
 	: Super(ObjectInitializer)
@@ -46,10 +46,15 @@ void ACustomVehicleController::DrawBuoyancyPoints()
 		Itr->DrawDebugPoints = !Itr->DrawDebugPoints;
 	}
 
-	for (TActorIterator<ABuoyantDestructible> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	for (TObjectIterator<UBuoyantDestructibleComponent> Itr; Itr; ++Itr)
 	{
-		ActorItr->DrawDebugPoints = !ActorItr->DrawDebugPoints;
+		Itr->DrawDebugPoints = !Itr->DrawDebugPoints;
 	}
+
+// 	for (TActorIterator<ABuoyantDestructible> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+// 	{
+// 		ActorItr->DrawDebugPoints = !ActorItr->DrawDebugPoints;
+// 	}
 }
 
 void ACustomVehicleController::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

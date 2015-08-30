@@ -44,9 +44,6 @@ public:
 
 	//--Custom debugging console commands--
 
-	//UFUNCTION(exec, BlueprintImplementableEvent, meta = (DisplayName = "Console Command ~ enableoceanssr"))
-	//virtual void EnableOceanSSR();
-
 	UFUNCTION(exec)
 	virtual void DrawBuoyancyPoints();
 

@@ -312,7 +312,7 @@ void UBuoyancyForceComponent::ApplyUprightConstraint(UPrimitiveComponent* BasePr
 		ConstraintInstance.TwistLimitStiffness = StayUprightStiffness;
 		ConstraintInstance.TwistLimitDamping = StayUprightDamping;
 
-		ConstraintInstance.AngularRotationOffset = -BasePrimComp->GetComponentRotation() + StayUprightDesiredRotation;
+		ConstraintInstance.AngularRotationOffset = BasePrimComp->GetComponentRotation().GetInverse() + StayUprightDesiredRotation;
 
 		//UPhysicsConstraintComponent* ConstraintComp = NewObject<UPhysicsConstraintComponent>(BasePrimComp);
 		if (ConstraintComp)
