@@ -3,10 +3,10 @@
 *
 * Created by: DotCam
 * Project name: OceanProject
-* Unreal Engine version: 4.8.3
+* Unreal Engine version: 4.9
 * Created on: 2015/07/29
 *
-* Last Edited on: 2015/08/24
+* Last Edited on: 2015/09/03
 * Last Edited by: DotCam
 *
 * -------------------------------------------------
@@ -27,53 +27,53 @@
 #include "TimeDate.generated.h"
 
 
-USTRUCT(BlueprintType)
-struct FLocation
-	{
-	GENERATED_USTRUCT_BODY()
-
-	/**
-	* @Name: FLocation
-	* @Description: Constructs a new FLocation instance.
-	*/
-	FLocation() { FLocation(0.0f, 0.0f); }
-
-	/**
-	* @Name: FLocation
-	* @Description: Constructs a new FLocation instance.
-	*
-	* @param: float - Latitude value (-90 to +90)
-	* @param: float - Longitude value (-180 to +180)
-	*/
-	FLocation(float latitude, float longitude) { Latitude = latitude; Longitude = longitude > 180.0f ? longitude - 360.0f : longitude; }
-
-	// The latitude coordinate for the local location (valid value range -90 to +90 degrees).
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Location")
-	float Latitude;
-
-	// The longitude coordinate for the local location (valid value range -180 to +180 degrees).
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Location")
-	float Longitude;
-
-	// Direction for calculating the Longitude value (East [false] = 0 to 180, West [true] = 180 to 360)
-	//UPROPERTY(BlueprintReadOnly, Category = "Location")
-	//bool IsLongitudeWest = Longitude < 0;
-
-	// Direction for calculating the Latitude value (North [false] = 0 to +90, South [true] = 0 to -90)
-	//UPROPERTY(BlueprintReadOnly, Category = "Location")
-	//bool IsLatitudeSouth = Latitude < 0;
-
-	bool operator==(const FLocation& other) const
-		{
-		return (Latitude == other.Latitude) && (Longitude == other.Longitude);
-		}
-
-	bool operator!=(const FLocation& other) const
-		{
-		return (Latitude != other.Latitude) || (Longitude != other.Longitude);
-		}
-
-	};
+// USTRUCT(BlueprintType)
+// struct FLocation
+// 	{
+// 	GENERATED_USTRUCT_BODY()
+// 
+// 	/**
+// 	* @Name: FLocation
+// 	* @Description: Constructs a new FLocation instance.
+// 	*/
+// 	FLocation() { FLocation(0.0f, 0.0f); }
+// 
+// 	/**
+// 	* @Name: FLocation
+// 	* @Description: Constructs a new FLocation instance.
+// 	*
+// 	* @param: float - Latitude value (-90 to +90)
+// 	* @param: float - Longitude value (-180 to +180)
+// 	*/
+// 	FLocation(float latitude, float longitude) { Latitude = latitude; Longitude = longitude > 180.0f ? longitude - 360.0f : longitude; }
+// 
+// 	// The latitude coordinate for the local location (valid value range -90 to +90 degrees).
+// 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Location")
+// 	float Latitude;
+// 
+// 	// The longitude coordinate for the local location (valid value range -180 to +180 degrees).
+// 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Location")
+// 	float Longitude;
+// 
+// 	// Direction for calculating the Longitude value (East [false] = 0 to 180, West [true] = 180 to 360)
+// 	//UPROPERTY(BlueprintReadOnly, Category = "Location")
+// 	//bool IsLongitudeWest = Longitude < 0;
+// 
+// 	// Direction for calculating the Latitude value (North [false] = 0 to +90, South [true] = 0 to -90)
+// 	//UPROPERTY(BlueprintReadOnly, Category = "Location")
+// 	//bool IsLatitudeSouth = Latitude < 0;
+// 
+// 	bool operator==(const FLocation& other) const
+// 		{
+// 		return (Latitude == other.Latitude) && (Longitude == other.Longitude);
+// 		}
+// 
+// 	bool operator!=(const FLocation& other) const
+// 		{
+// 		return (Latitude != other.Latitude) || (Longitude != other.Longitude);
+// 		}
+// 
+// 	};
 
 
 
@@ -122,46 +122,46 @@ struct FTimeDate
 
 	// The following functions are only used in code.
 
-
-	bool IsEqual(const FTimeDate& other) const
-		{
-		return (Year == other.Year) && (Month == other.Month) && (Day == other.Day) &&
-			(Hour == other.Hour) && (Minute == other.Minute) && (Second == other.Second);
-		}
-
-	bool operator==(const FTimeDate& other) const
-		{
-		return IsEqual(other);
-		}
-
-	bool operator!=(const FTimeDate& other) const
-		{
-		return !IsEqual(other);
-		}
-
-	bool operator>(const FTimeDate& other) const
-		{
-		return (Year > other.Year) || (Month > other.Month) || (Day > other.Day) ||
-			(Hour > other.Hour) || (Minute > other.Minute) || (Second > other.Second);
-		}
-
-	bool operator>=(const FTimeDate& other) const
-		{
-		return IsEqual(other) || (Year > other.Year) || (Month > other.Month) || (Day > other.Day) ||
-			(Hour > other.Hour) || (Minute > other.Minute) || (Second > other.Second);
-		}
-
-	bool operator<(const FTimeDate& other) const
-		{
-		return (Year < other.Year) || (Month < other.Month) || (Day < other.Day) ||
-			(Hour < other.Hour) || (Minute < other.Minute) || (Second < other.Second);
-		}
-
-	bool operator<=(const FTimeDate& other) const
-		{
-		return IsEqual(other) || (Year < other.Year) || (Month < other.Month) || (Day < other.Day) ||
-			(Hour < other.Hour) || (Minute < other.Minute) || (Second < other.Second);
-		}
+// 
+// 	bool IsEqual(const FTimeDate& other) const
+// 		{
+// 		return (Year == other.Year) && (Month == other.Month) && (Day == other.Day) &&
+// 			(Hour == other.Hour) && (Minute == other.Minute) && (Second == other.Second);
+// 		}
+// 
+// 	bool operator==(const FTimeDate& other) const
+// 		{
+// 		return IsEqual(other);
+// 		}
+// 
+// 	bool operator!=(const FTimeDate& other) const
+// 		{
+// 		return !IsEqual(other);
+// 		}
+// 
+// 	bool operator>(const FTimeDate& other) const
+// 		{
+// 		return (Year > other.Year) || (Month > other.Month) || (Day > other.Day) ||
+// 			(Hour > other.Hour) || (Minute > other.Minute) || (Second > other.Second);
+// 		}
+// 
+// 	bool operator>=(const FTimeDate& other) const
+// 		{
+// 		return IsEqual(other) || (Year > other.Year) || (Month > other.Month) || (Day > other.Day) ||
+// 			(Hour > other.Hour) || (Minute > other.Minute) || (Second > other.Second);
+// 		}
+// 
+// 	bool operator<(const FTimeDate& other) const
+// 		{
+// 		return (Year < other.Year) || (Month < other.Month) || (Day < other.Day) ||
+// 			(Hour < other.Hour) || (Minute < other.Minute) || (Second < other.Second);
+// 		}
+// 
+// 	bool operator<=(const FTimeDate& other) const
+// 		{
+// 		return IsEqual(other) || (Year < other.Year) || (Month < other.Month) || (Day < other.Day) ||
+// 			(Hour < other.Hour) || (Minute < other.Minute) || (Second < other.Second);
+// 		}
 	};
 
 

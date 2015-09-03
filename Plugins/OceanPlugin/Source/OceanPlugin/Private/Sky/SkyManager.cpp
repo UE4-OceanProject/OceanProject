@@ -4,10 +4,10 @@
 * 
 * Created by: DotCam
 * Project name: OceanProject
-* Unreal Engine version: 4.8.3
+* Unreal Engine version: 4.9
 * Created on: 2015/07/29
 *
-* Last Edited on: 2015/08/09
+* Last Edited on: 2015/09/03
 * Last Edited by: DotCam
 * 
 * -------------------------------------------------
@@ -24,15 +24,15 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Sky/SkyManager.h"
 
-
-
-ASkyManager::ASkyManager(const class FObjectInitializer& PCIP) : Super(PCIP) 
-	{
-	PrimaryActorTick.bCanEverTick = true;
-
-
-	//LocalLocation = FLocation(0, 0);
-	}
+// 
+// 
+// ASkyManager::ASkyManager(const class FObjectInitializer& PCIP) : Super(PCIP) 
+// 	{
+// 	PrimaryActorTick.bCanEverTick = true;
+// 
+// 
+// 	//LocalLocation = FLocation(0, 0);
+// 	}
 
 
 
