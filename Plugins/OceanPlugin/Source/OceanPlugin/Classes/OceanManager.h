@@ -3,11 +3,11 @@
 * 
 * Created by: DotCam
 * Project name: OceanProject
-* Unreal Engine version: 4.8.3
+* Unreal Engine version: 4.9
 * Created on: 2015/03/20
 *
-* Last Edited on: 2015/08/09
-* Last Edited by: DotCam
+* Last Edited on: 2015/21/09
+* Last Edited by: quantumv
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -49,7 +49,7 @@ struct FWaveParameter {
 
 struct FWaveCache
 {
-		bool GetDir(float rotation, const FVector2D& inDirection, FVector& outDir) const;
+		bool GetDir(float rotation, const FVector2D& inDirection, FVector* outDir);
 		void SetDir(float rotation, const FVector2D& inDirection, const FVector& inDir);
 
 	private:
@@ -130,11 +130,23 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Ocean Manager")
 	FVector GetWaveHeightValue(FVector location);
 
+	// Returns the wave height at a determined location.
+	// Same as GetWaveHeightValue, but only returns the vertical component.
+	float GetWaveHeight(const FVector& location);
+
 private:
 
 	TArray<FWaveCache> WaveParameterCache;
 	
-	FVector CalculateGerstnerWaveSet(FWaveParameter global, FWaveSetParameters ws, FVector2D direction, FVector position, float time);
+	// Based on the parameters of the wave sets, the time and the position, computes the wave height.
+	// Same as CalculateGerstnerWaveSetVector, but only returns the vertical component.
+	float CalculateGerstnerWaveSetHeight(const FWaveParameter& global, const FWaveSetParameters& ws, const FVector2D& direction, const FVector& position, float time);
 
-	FVector CalculateGerstnerWave(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache);
+	// Based on the wave parameters, time and position, computes the wave height.
+	// Same as CalculateGerstnerWaveVector, but only returns the vertical component.
+	float CalculateGerstnerWaveHeight(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache);
+
+
+	FVector CalculateGerstnerWaveSetVector(const FWaveParameter& global, const FWaveSetParameters& ws, const FVector2D& direction, const FVector& position, float time);
+	FVector CalculateGerstnerWaveVector(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache);
 };
