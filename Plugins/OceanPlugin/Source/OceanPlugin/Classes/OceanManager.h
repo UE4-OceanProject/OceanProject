@@ -136,5 +136,5 @@ private:
 	
 	FVector CalculateGerstnerWaveSet(FWaveParameter global, FWaveSetParameters ws, FVector2D direction, FVector position, float time);
 
-	FVector CalculateGertnerWave(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache);
+	FVector CalculateGerstnerWave(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache);
 };

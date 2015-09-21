@@ -58,30 +58,27 @@ FVector AOceanManager::CalculateGerstnerWaveSet(FWaveParameter global, FWaveSetP
 	FVector sum = FVector(0, 0, 0);
 
 	// Calculate the Gerstner Waves
-
-
-	sum += CalculateGertnerWave(global.Rotation + ws.Wave01.Rotation, global.Length * ws.Wave01.Length,
+	sum += CalculateGertsnerWave(global.Rotation + ws.Wave01.Rotation, global.Length * ws.Wave01.Length,
 		global.Amplitude * ws.Wave01.Amplitude, global.Steepness * ws.Wave01.Steepness, direction, position, time, WaveParameterCache[0]);
-	sum += CalculateGertnerWave(global.Rotation + ws.Wave02.Rotation, global.Length * ws.Wave02.Length,
+	sum += CalculateGertsnerWave(global.Rotation + ws.Wave02.Rotation, global.Length * ws.Wave02.Length,
 		global.Amplitude * ws.Wave02.Amplitude, global.Steepness * ws.Wave02.Steepness, direction, position, time, WaveParameterCache[1]);
-	sum += CalculateGertnerWave(global.Rotation + ws.Wave03.Rotation, global.Length * ws.Wave03.Length,
+	sum += CalculateGerstnerWave(global.Rotation + ws.Wave03.Rotation, global.Length * ws.Wave03.Length,
 		global.Amplitude * ws.Wave03.Amplitude, global.Steepness * ws.Wave03.Steepness, direction, position, time, WaveParameterCache[2]);
-	sum += CalculateGertnerWave(global.Rotation + ws.Wave04.Rotation, global.Length * ws.Wave04.Length,
+	sum += CalculateGerstnerWave(global.Rotation + ws.Wave04.Rotation, global.Length * ws.Wave04.Length,
 		global.Amplitude * ws.Wave04.Amplitude, global.Steepness * ws.Wave04.Steepness, direction, position, time, WaveParameterCache[3]);
-	sum += CalculateGertnerWave(global.Rotation + ws.Wave05.Rotation, global.Length * ws.Wave05.Length,
+	sum += CalculateGerstnerWave(global.Rotation + ws.Wave05.Rotation, global.Length * ws.Wave05.Length,
 		global.Amplitude * ws.Wave05.Amplitude, global.Steepness * ws.Wave05.Steepness, direction, position, time, WaveParameterCache[4]);
-	sum += CalculateGertnerWave(global.Rotation + ws.Wave06.Rotation, global.Length * ws.Wave06.Length,
+	sum += CalculateGerstnerWave(global.Rotation + ws.Wave06.Rotation, global.Length * ws.Wave06.Length,
 		global.Amplitude * ws.Wave06.Amplitude, global.Steepness * ws.Wave06.Steepness, direction, position, time, WaveParameterCache[5]);
-	sum += CalculateGertnerWave(global.Rotation + ws.Wave07.Rotation, global.Length * ws.Wave07.Length,
+	sum += CalculateGerstnerWave(global.Rotation + ws.Wave07.Rotation, global.Length * ws.Wave07.Length,
 		global.Amplitude * ws.Wave07.Amplitude, global.Steepness * ws.Wave07.Steepness, direction, position, time, WaveParameterCache[6]);
-	sum += CalculateGertnerWave(global.Rotation + ws.Wave08.Rotation, global.Length * ws.Wave08.Length,
+	sum += CalculateGerstnerWave(global.Rotation + ws.Wave08.Rotation, global.Length * ws.Wave08.Length,
 		global.Amplitude * ws.Wave08.Amplitude, global.Steepness * ws.Wave08.Steepness, direction, position, time, WaveParameterCache[7]);
 
 	return sum / 8;
 }
 
-
-FVector AOceanManager::CalculateGertnerWave(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache)
+FVector AOceanManager::CalculateGerstnerWave(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache)
 {
 	float frequency = (2 * PI) / waveLength;
 
