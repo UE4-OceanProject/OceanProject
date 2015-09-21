@@ -43,7 +43,20 @@ struct FWaveParameter {
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		float Steepness;
+
 	};
+
+
+struct FWaveCache
+{
+		bool GetDir(float rotation, const FVector2D& inDirection, FVector& outDir) const;
+		void SetDir(float rotation, const FVector2D& inDirection, const FVector& inDir);
+
+	private:
+		float LastRotation = 0.f;
+		FVector2D LastDirection;
+		FVector MemoizedDir;
+};
 
 /*
 * Contains the parameters necessary for a set of Gerstner waves.
@@ -118,7 +131,10 @@ public:
 	FVector GetWaveHeightValue(FVector location);
 
 private:
+
+	TArray<FWaveCache> WaveParameterCache;
+	
 	FVector CalculateGerstnerWaveSet(FWaveParameter global, FWaveSetParameters ws, FVector2D direction, FVector position, float time);
 
-	FVector CalculateGertnerWave(float rotation, float waveLength, float amplitude, float steepness, FVector2D direction, FVector position, float time);
-	};
+	FVector CalculateGertnerWave(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache);
+};
