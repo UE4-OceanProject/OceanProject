@@ -103,21 +103,21 @@ class OCEANPLUGIN_API AOceanManager : public AActor
 {
 	GENERATED_UCLASS_BODY()
 
-	// The Direction the waves travel
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FVector WaveDirection;
+		// The Direction the waves travel
+		UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		FVector WaveDirection;
 
 	// The speed of the waves
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float WaveSpeed;
+		float WaveSpeed;
 
 	// The globally applied wave settings
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FWaveParameter GlobalWaveSettings;
+		FWaveParameter GlobalWaveSettings;
 
 	// Individual wave settings for wave set 1
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FWaveSetParameters WaveSet1;
+		FWaveSetParameters WaveSet1;
 
 	// Individual wave settings for wave set 2
 	//UPROPERTY() //BlueprintReadWrite, EditAnywhere) - REMOVING ACCESS to reduce complexity
@@ -125,18 +125,19 @@ class OCEANPLUGIN_API AOceanManager : public AActor
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	bool EnableGerstnerWaves;
+		bool EnableGerstnerWaves;
 
 	UPROPERTY(BlueprintReadWrite)
-	float NetWorkTimeOffset;
+		float NetWorkTimeOffset;
 
 	UFUNCTION(BlueprintCallable, Category = "Ocean Manager")
-	FVector GetWaveHeightValue(FVector location);
+		FVector GetWaveHeightValue(FVector location);
 
 private:
 
 	TArray<FWaveCache> WaveParameterCache;
-	
+
 	FVector CalculateGerstnerWaveSet(FWaveParameter global, FWaveSetParameters ws, FVector2D direction, FVector position, float time);
 
 	FVector CalculateGerstnerWave(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache);
+};
