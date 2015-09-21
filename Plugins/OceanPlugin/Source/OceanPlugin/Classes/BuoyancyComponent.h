@@ -28,7 +28,7 @@
  * 
  */
 UCLASS(ClassGroup = Movement, meta = (BlueprintSpawnableComponent), HideCategories = (PlanarMovement, "Components|Movement|Planar", Velocity))
-class UBuoyancyComponent : public UMovementComponent
+class OCEANPLUGIN_API UBuoyancyComponent : public UMovementComponent
 {
 	GENERATED_UCLASS_BODY()
 

@@ -26,7 +26,7 @@
 
 //Custom bone density/radius override struct.
 USTRUCT(BlueprintType)
-struct FStructBoneOverride
+struct OCEANPLUGIN_API FStructBoneOverride
 {
 	GENERATED_USTRUCT_BODY();
 

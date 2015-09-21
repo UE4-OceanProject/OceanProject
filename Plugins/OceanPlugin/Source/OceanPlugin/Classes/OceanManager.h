@@ -29,7 +29,8 @@
 * Contains the parameters necessary for a single Gerstner wave.
 */
 USTRUCT(BlueprintType)
-struct FWaveParameter {
+struct OCEANPLUGIN_API FWaveParameter
+{
 	GENERATED_USTRUCT_BODY();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -49,7 +50,8 @@ struct FWaveParameter {
 * Contains the parameters necessary for a set of Gerstner waves.
 */
 USTRUCT(BlueprintType)
-struct FWaveSetParameters {
+struct OCEANPLUGIN_API FWaveSetParameters
+{
 	GENERATED_USTRUCT_BODY();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -84,7 +86,8 @@ struct FWaveSetParameters {
 * TODO: Investigate whether a single implementation could be used to increase performance.
 */
 UCLASS(BlueprintType, Blueprintable)
-class AOceanManager : public AActor {
+class OCEANPLUGIN_API AOceanManager : public AActor
+{
 	GENERATED_UCLASS_BODY()
 
 	// The Direction the waves travel
