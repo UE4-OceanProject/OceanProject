@@ -25,7 +25,7 @@
 #include "BuoyantDestructible.generated.h"
 
 UCLASS()
-class ABuoyantDestructible : public AActor
+class OCEANPLUGIN_API ABuoyantDestructible : public AActor
 {
 	GENERATED_UCLASS_BODY()
  

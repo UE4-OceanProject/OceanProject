@@ -25,7 +25,7 @@
 #include "BuoyantDestructibleComponent.generated.h"
 
 UCLASS(ClassGroup = Physics, hidecategories = (Object, Mesh, "Components|SkinnedMesh", Mirroring, Activation, "Components|Activation"), config = Engine, editinlinenew, meta = (BlueprintSpawnableComponent))
-class UBuoyantDestructibleComponent : public UDestructibleComponent
+class OCEANPLUGIN_API UBuoyantDestructibleComponent : public UDestructibleComponent
 {
 	GENERATED_UCLASS_BODY()
  
