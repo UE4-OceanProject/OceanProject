@@ -152,7 +152,7 @@ FVector AOceanManager::CalculateGerstnerWaveVector(float rotation, float waveLen
 
 	float c;
 	float s;
-	FMath::SinCos(&c, &s, wavePhase);
+	FMath::SinCos(&s, &c, wavePhase);
 
 	float QA = steepness * amplitude;
 
