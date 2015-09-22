@@ -1,6 +1,5 @@
-
 /*=================================================
-* FileName: BuoyantMeshVertex.cpp
+* FileName: BuoyantMeshVertex.h
 *
 * Created by: quantumv
 * Project name: OceanProject
@@ -19,22 +18,18 @@
 * See "OceanProject\License.md" for full licensing details.
 * =================================================*/
 
+#pragma once
+
 #include "OceanPluginPrivatePCH.h"
-#include "BuoyantMeshVertex.h"
 
-
-bool FBuoyantMeshVertex::IsUnderwater() const
+// Associates a position with a height above water.
+struct FBuoyantMeshVertex
 {
-	return Height < 0.f;
-}
+	// Height Above Water
+	const float Height;
+	const FVector Position;
 
-FBuoyantMeshVertex::FBuoyantMeshVertex(FVector Position, float HeightAboveWater) : Position{ Position }, Height{HeightAboveWater}
-{
+	bool IsUnderwater() const;
 
-}
-
-FBuoyantMeshVertex::FBuoyantMeshVertex()
-{
-
-}
-
+	FBuoyantMeshVertex(const FVector& Position, float HeightAboveWater);
+};

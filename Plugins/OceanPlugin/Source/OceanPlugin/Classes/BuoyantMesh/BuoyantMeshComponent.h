@@ -1,6 +1,6 @@
 /*=================================================
-* FileName: BuoyantMeshCompoment.h
-* 
+* FileName: BuoyantMeshComponent.h
+*
 * Created by: quantumv
 * Project name: OceanProject
 * Unreal Engine version: 4.9
@@ -8,7 +8,7 @@
 *
 * Last Edited on: 2015/09/21
 * Last Edited by: quantumv
-* 
+*
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
 * Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
@@ -21,12 +21,14 @@
 #pragma once
 
 #include "OceanPluginPrivatePCH.h"
-#include "BuoyantMeshTriangle.h"
+#include "BuoyantMesh/BuoyantMeshVertex.h"
+#include "BuoyantMesh/BuoyantMeshTriangle.h"
+#include "BuoyantMesh/BuoyantMeshSubtriangle.h"
 #include "Components/StaticMeshComponent.h"
 #include "PhysXIncludes.h"
 #include "PhysXPublic.h"
 #include "OceanManager.h"
-#include "BuoyantMeshCompoment.generated.h"
+#include "BuoyantMeshComponent.generated.h"
 
 // For the UE4 Profiler
 DECLARE_STATS_GROUP(TEXT("BuoyantMeshComponent"), STATGROUP_BuoyantMeshComponent, STATCAT_Advanced);
@@ -52,13 +54,13 @@ multiple times.
 */
 
 UCLASS(ClassGroup = Physics, config = Engine, editinlinenew, meta = (BlueprintSpawnableComponent))
-class UBuoyantMeshCompoment : public UStaticMeshComponent
+class UBuoyantMeshComponent : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 
    public:
 	// Sets default values for this component's properties
-	UBuoyantMeshCompoment();
+	UBuoyantMeshComponent();
 
 	/**
 	* The component we move and update.
@@ -102,13 +104,6 @@ class UBuoyantMeshCompoment : public UStaticMeshComponent
 	UPROPERTY(EditAnywhere, AdvancedDisplay, BlueprintReadWrite, Category = "Buoyancy Settings")
 	AOceanManager* OceanManager;
 
-	struct FTriangle
-	{
-		FVector A;
-		FVector B;
-		FVector C;
-	};
-
 #pragma region UActorComponent Interface
 
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType,
@@ -118,32 +113,32 @@ class UBuoyantMeshCompoment : public UStaticMeshComponent
 
 #pragma endregion
 
+	struct FForce
+	{
+		FVector Vector;
+		FVector Point;
+	};
+
    private:
 	bool bNeedsInitialization = true;
 	void Initialize();
-	TArray<FTriangle> Triangles;
 
+	static void GetTriangleVertexIndices(const TArray<FVector>& WorldVertexPositions,
+										 const void* const VertexIndices, const PxU32 TriangleIndex,
+										 const bool b16BitIndices, int32* OutIndex1,
+										 int32* OutIndex2, int32* OutIndex3);
+
+	void GetSubtriangleForces(TArray<FForce>& InOutForces, const float GravityMagnitude,
+							  const FVector& TriangleNormal,
+							  const FBuoyantMeshSubtriangle& Subtriangle) const;
+	void GetTriangleMeshForces(TArray<FForce>& InOutForces, UWorld& InWorld,
+							   const PxTriangleMesh& TriangleMesh) const;
+	void GetStaticMeshForces(TArray<FForce>& InOutForces, UWorld& InWorld,
+							 const UBodySetup& BodySetup) const;
+
+	void ApplyHydrostaticForce(UWorld& World, const FForce& Force);
 	// Gets the height above the water at a determined position.
 	// The wave height is given by the AOceanManager if available, otherwise it
 	// is 0.
 	float GetHeightAboveWater(const FVector& Position) const;
-
-	void ApplyHydrostaticForces(
-		const TArray<FBuoyantMeshTriangle::FForceApplicationParameters>& ForceParams);
-
-	// Retrieves the triangles in the static mesh.
-	// The method is described here:
-	// https://wiki.unrealengine.com/Accessing_mesh_triangles_and_vertex_positions_in_build
-	TArray<FTriangle> GetTriangles(const UBodySetup& BodySetup) const;
-
-	// Retrieves the triangles in a PhysX mesh.
-	TArray<FTriangle> GetTriangles(const PxTriangleMesh& TriangleMesh) const;
-
-	// Transforms the points in a triangle.
-	// Returns a transformed copy of the triangle.
-	FTriangle TransformTriangle(const FTransform& Transform, const FTriangle& Triangle) const;
-
-	// Gets the buoyancy forces affecting a triangle.
-	TArray<FBuoyantMeshTriangle::FForceApplicationParameters> GetHydrostaticForces(
-		const FTriangle& Triangle) const;
 };

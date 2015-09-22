@@ -1,6 +1,7 @@
+
 /*=================================================
-* FileName: BuoyantMeshVertex.h
-* 
+* FileName: BuoyantMeshVertex.cpp
+*
 * Created by: quantumv
 * Project name: OceanProject
 * Unreal Engine version: 4.9
@@ -8,7 +9,7 @@
 *
 * Last Edited on: 2015/09/21
 * Last Edited by: quantumv
-* 
+*
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
 * Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
@@ -18,19 +19,15 @@
 * See "OceanProject\License.md" for full licensing details.
 * =================================================*/
 
-#pragma once
-
 #include "OceanPluginPrivatePCH.h"
+#include "BuoyantMesh/BuoyantMeshVertex.h"
 
-// Associates a position with a height above water.
-struct FBuoyantMeshVertex
+bool FBuoyantMeshVertex::IsUnderwater() const
 {
-	// Height Above Water
-	float Height = 0.f;
-	FVector Position;
+	return Height < 0.f;
+}
 
-	bool IsUnderwater() const;
-
-	FBuoyantMeshVertex();
-	FBuoyantMeshVertex(FVector Position, float HeightAboveWater);
-};
+FBuoyantMeshVertex::FBuoyantMeshVertex(const FVector& Position, float HeightAboveWater)
+	: Position{Position}, Height{HeightAboveWater}
+{
+}
