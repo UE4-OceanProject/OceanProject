@@ -33,29 +33,29 @@ struct FWaveParameter {
 	GENERATED_USTRUCT_BODY();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		float Rotation;
+	float Rotation;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		float Length;
+	float Length;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		float Amplitude;
+	float Amplitude;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		float Steepness;
+	float Steepness;
 
-	};
+};
 
-
+// Cache for the "dir" variable in CalculateGerstnerWaveHeight
 struct FWaveCache
 {
-		bool GetDir(float rotation, const FVector2D& inDirection, FVector* outDir);
-		void SetDir(float rotation, const FVector2D& inDirection, const FVector& inDir);
+	bool GetDir(float rotation, const FVector2D& inDirection, FVector* outDir);
+	void SetDir(float rotation, const FVector2D& inDirection, const FVector& inDir);
 
-	private:
-		float LastRotation = 0.f;
-		FVector2D LastDirection;
-		FVector MemoizedDir;
+private:
+	float LastRotation = 0.f;
+	FVector2D LastDirection;
+	FVector MemoizedDir;
 };
 
 /*
@@ -66,29 +66,29 @@ struct FWaveSetParameters {
 	GENERATED_USTRUCT_BODY();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		FWaveParameter Wave01;
+	FWaveParameter Wave01;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		FWaveParameter Wave02;
+	FWaveParameter Wave02;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		FWaveParameter Wave03;
+	FWaveParameter Wave03;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		FWaveParameter Wave04;
+	FWaveParameter Wave04;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		FWaveParameter Wave05;
+	FWaveParameter Wave05;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		FWaveParameter Wave06;
+	FWaveParameter Wave06;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		FWaveParameter Wave07;
+	FWaveParameter Wave07;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		FWaveParameter Wave08;
-	};
+	FWaveParameter Wave08;
+};
 
 
 
@@ -128,25 +128,30 @@ public:
 	float NetWorkTimeOffset;
 
 	UFUNCTION(BlueprintCallable, Category = "Ocean Manager")
-	FVector GetWaveHeightValue(FVector location);
+	FVector GetWaveHeightValue(const FVector& location, const UWorld* World = nullptr) const;
+
 
 	// Returns the wave height at a determined location.
 	// Same as GetWaveHeightValue, but only returns the vertical component.
-	float GetWaveHeight(const FVector& location);
+	float GetWaveHeight(const FVector& location, const UWorld* World = nullptr) const;
 
 private:
 
-	TArray<FWaveCache> WaveParameterCache;
+	mutable TArray<FWaveCache> WaveParameterCache;
 	
 	// Based on the parameters of the wave sets, the time and the position, computes the wave height.
 	// Same as CalculateGerstnerWaveSetVector, but only returns the vertical component.
-	float CalculateGerstnerWaveSetHeight(const FWaveParameter& global, const FWaveSetParameters& ws, const FVector2D& direction, const FVector& position, float time);
+	float CalculateGerstnerWaveSetHeight(const FWaveParameter& global, const FWaveSetParameters& ws, const FVector2D& direction, const FVector& position, float time) const;
 
 	// Based on the wave parameters, time and position, computes the wave height.
 	// Same as CalculateGerstnerWaveVector, but only returns the vertical component.
-	float CalculateGerstnerWaveHeight(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache);
+	float CalculateGerstnerWaveHeight(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache) const;
 
 
-	FVector CalculateGerstnerWaveSetVector(const FWaveParameter& global, const FWaveSetParameters& ws, const FVector2D& direction, const FVector& position, float time);
-	FVector CalculateGerstnerWaveVector(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache);
+	FVector CalculateGerstnerWaveSetVector(const FWaveParameter& global, const FWaveSetParameters& ws, const FVector2D& direction, const FVector& position, float time) const;
+	FVector CalculateGerstnerWaveVector(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache) const;
+
+
+	// Gets the time from the argument if it's not null, otherwise use GetWorld()
+	float GetTimeSeconds(const UWorld* World) const;
 };

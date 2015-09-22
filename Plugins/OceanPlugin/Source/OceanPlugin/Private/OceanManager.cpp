@@ -36,19 +36,26 @@ AOceanManager::AOceanManager(const class FObjectInitializer& PCIP)
 	WaveParameterCache.AddDefaulted(8);
 }
 
-float AOceanManager::GetWaveHeight(const FVector& location)
+float AOceanManager::GetTimeSeconds(const UWorld* World) const
+{
+	if (World == nullptr) World = GetWorld();
+	return World->GetTimeSeconds() + NetWorkTimeOffset;
+}
+
+float AOceanManager::GetWaveHeight(const FVector& location, const UWorld* World) const
 {
 	// Flat ocean buoyancy optimization
 	if (!EnableGerstnerWaves)
 		return RootComponent->GetComponentLocation().Z;
 
-	float time = GetWorld()->GetTimeSeconds() + NetWorkTimeOffset;
+	// GetWorld() can have a significant impact on the performace of this function, so let's give the caller the option to supply a cached result.
+	const float time = GetTimeSeconds(World);
 
 	// Calculate the Gerstner Wave Sets
 	return CalculateGerstnerWaveSetHeight(GlobalWaveSettings, WaveSet1, FVector2D(WaveDirection.X, WaveDirection.Y), location, time * WaveSpeed) + RootComponent->GetComponentLocation().Z;
 }
 
-FVector AOceanManager::GetWaveHeightValue(FVector location)
+FVector AOceanManager::GetWaveHeightValue(const FVector& location, const UWorld* World) const
 {
 	//FVector sum = FVector(0, 0, 0);
 
@@ -56,7 +63,7 @@ FVector AOceanManager::GetWaveHeightValue(FVector location)
 	if (!EnableGerstnerWaves)
 		return FVector(location.X, location.Y, RootComponent->GetComponentLocation().Z);
 
-	float time = GetWorld()->GetTimeSeconds() + NetWorkTimeOffset;
+	const float time = GetTimeSeconds(World);
 
 	// Calculate the Gerstner Wave Sets
 	return CalculateGerstnerWaveSetVector(GlobalWaveSettings, WaveSet1, FVector2D(WaveDirection.X, WaveDirection.Y), location, time * WaveSpeed) + FVector(0,0,RootComponent->GetComponentLocation().Z);
@@ -67,7 +74,7 @@ FVector AOceanManager::GetWaveHeightValue(FVector location)
 	//return sum;
 }
 
-float AOceanManager::CalculateGerstnerWaveSetHeight(const FWaveParameter& global, const FWaveSetParameters& ws, const FVector2D& direction, const FVector& position, float time)
+float AOceanManager::CalculateGerstnerWaveSetHeight(const FWaveParameter& global, const FWaveSetParameters& ws, const FVector2D& direction, const FVector& position, float time) const
 {
 	float sum = 0.f;
 
@@ -92,7 +99,7 @@ float AOceanManager::CalculateGerstnerWaveSetHeight(const FWaveParameter& global
 	return sum / 8.f;
 }
 
-FVector AOceanManager::CalculateGerstnerWaveSetVector(const FWaveParameter& global, const FWaveSetParameters& ws, const FVector2D& direction, const FVector& position, float time)
+FVector AOceanManager::CalculateGerstnerWaveSetVector(const FWaveParameter& global, const FWaveSetParameters& ws, const FVector2D& direction, const FVector& position, float time) const
 {
 	FVector sum = FVector(0, 0, 0);
 
@@ -117,7 +124,7 @@ FVector AOceanManager::CalculateGerstnerWaveSetVector(const FWaveParameter& glob
 	return sum / 8;
 }
 
-float AOceanManager::CalculateGerstnerWaveHeight(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache)
+float AOceanManager::CalculateGerstnerWaveHeight(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache) const
 {
 	float frequency = (2 * PI) / waveLength;
 
@@ -136,7 +143,7 @@ float AOceanManager::CalculateGerstnerWaveHeight(float rotation, float waveLengt
 	return amplitude * s;
 }
 
-FVector AOceanManager::CalculateGerstnerWaveVector(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache)
+FVector AOceanManager::CalculateGerstnerWaveVector(float rotation, float waveLength, float amplitude, float steepness, const FVector2D& direction, const FVector& position, float time, FWaveCache& InWaveCache) const
 {
 	float frequency = (2 * PI) / waveLength;
 
@@ -164,7 +171,7 @@ bool FWaveCache::GetDir(float rotation, const FVector2D& inDirection, FVector* o
 {
 	if (rotation == LastRotation && inDirection == LastDirection)
 	{
-		outDir = &MemoizedDir;
+		*outDir = MemoizedDir;
 		return true;
 	}
 	return false;
