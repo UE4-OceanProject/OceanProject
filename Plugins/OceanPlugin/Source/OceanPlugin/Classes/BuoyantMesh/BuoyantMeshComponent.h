@@ -44,12 +44,9 @@ The algorithm used is described in "Water interaction model for boats in video
 games" by Jacques Kerner.
 http://gamasutra.com/view/news/237528/Water_interaction_model_for_boats_in_video_games.php
 
-The component can request the wave height up to 8 times per triangle per tick, so meshes should be
-kept fairly simple.
-If performance is required, a water heightmap can be implemented as described in the article.
-Alternatively, the water heights could be cached so shared vertices won't cause the height to be
-computed
-multiple times.
+It does not implement the water heightmap or the rotation-free triangle centers in the appendix.
+
+Use simplified hull-shaped meshes to keep performance acceptable.
 
 */
 
@@ -79,18 +76,30 @@ class UBuoyantMeshComponent : public UStaticMeshComponent
 	UPROPERTY(BlueprintReadOnly, DuplicateTransient, Category = MovementComponent)
 	UPrimitiveComponent* UpdatedPrimitive;
 
-	// Draws arrows representing the buoyancy forces pushing on the mesh.
+	// Draw arrows representing the buoyancy forces pushing on the mesh?
 	// The length is proportional to the force magnitude.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
 	bool bDrawForceArrows;
 
-	// Draws the waterline on the mesh.
+	// Draw the waterline on the mesh?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
-	bool bDrawDebugWaterline;
+	bool bDrawWaterline;
+
+	// Draw the mesh vertices?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
+	bool bDrawVertices;
+
+	// Draw the original mesh triangles?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
+	bool bDrawTriangles;
+
+	// Draw the submerged triangles?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
+	bool bDrawSubtriangles;
 
 	// Force arrow size multiplier.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
-	float ForceArrowSize = 1.e-7f;
+	float ForceArrowSize = 1.f;
 
 	// Only use the vertical component of the buoyancy forces.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")
@@ -116,6 +125,7 @@ class UBuoyantMeshComponent : public UStaticMeshComponent
 	struct FForce
 	{
 		FVector Vector;
+		// Application point of the force
 		FVector Point;
 	};
 
@@ -123,22 +133,28 @@ class UBuoyantMeshComponent : public UStaticMeshComponent
 	bool bNeedsInitialization = true;
 	void Initialize();
 
+	// Triangles are stored as indices to vertices in the vertex array. 
+	// This function gets those indices from the triangles array.
 	static void GetTriangleVertexIndices(const TArray<FVector>& WorldVertexPositions,
 										 const void* const VertexIndices, const PxU32 TriangleIndex,
 										 const bool b16BitIndices, int32* OutIndex1,
 										 int32* OutIndex2, int32* OutIndex3);
-
-	void GetSubtriangleForces(TArray<FForce>& InOutForces, const float GravityMagnitude,
+	// Adds the hydrostatic force pressing on a submerged triangle to an array of forces.
+	void GetSubtriangleForces(const UWorld& World, TArray<FForce>& InOutForces, const float GravityMagnitude,
 							  const FVector& TriangleNormal,
 							  const FBuoyantMeshSubtriangle& Subtriangle) const;
+	// Adds the hydrostatic forces pressing on PhysX triangle mesh to an array of forces.
 	void GetTriangleMeshForces(TArray<FForce>& InOutForces, UWorld& InWorld,
 							   const PxTriangleMesh& TriangleMesh) const;
+
+	// Adds the hydrostatic forces pressing on a static mesh to an array of forces.
 	void GetStaticMeshForces(TArray<FForce>& InOutForces, UWorld& InWorld,
 							 const UBodySetup& BodySetup) const;
 
+	// Applies the buoyancy forces to UpdatedPrimitive.
 	void ApplyHydrostaticForce(UWorld& World, const FForce& Force);
 	// Gets the height above the water at a determined position.
 	// The wave height is given by the AOceanManager if available, otherwise it
 	// is 0.
-	float GetHeightAboveWater(const FVector& Position) const;
+	float GetHeightAboveWater(const UWorld& World, const FVector& Position) const;
 };

@@ -20,7 +20,6 @@
 
 #include "OceanPluginPrivatePCH.h"
 #include "BuoyantMesh/BuoyantMeshTriangle.h"
-#include "OceanManager.h"
 
 FBuoyantMeshTriangle FBuoyantMeshTriangle::FromClockwiseVertices(const FBuoyantMeshVertex& A,
 																 const FBuoyantMeshVertex& B,
@@ -102,7 +101,7 @@ TArray<FBuoyantMeshSubtriangle> FBuoyantMeshTriangle::GetSubmergedPortion(const 
 		if (bDrawWaterline && IsValid(World))
 		{
 			// The surface line goes from Im to Il.
-			DrawDebugLine(World, Im, Il, FColor::Blue);
+			DrawDebugLine(World, Im, Il, FColor::Blue, false, -1.f, 0, 10.f);
 		}
 
 		TArray<FBuoyantMeshSubtriangle> CutResult;

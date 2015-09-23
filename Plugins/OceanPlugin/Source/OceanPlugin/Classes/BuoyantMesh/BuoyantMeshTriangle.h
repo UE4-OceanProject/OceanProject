@@ -23,7 +23,6 @@
 #include "OceanPluginPrivatePCH.h"
 #include "BuoyantMesh/BuoyantMeshVertex.h"
 #include "BuoyantMesh/BuoyantMeshSubtriangle.h"
-#include "OceanManager.h"
 
 /*
 This class calculates the buoyancy forces on a triangle.

@@ -26,8 +26,6 @@
 
 
 // Represents a submerged part of a BuoyantMeshTriangle.
-
-
 struct FBuoyantMeshSubtriangle
 {
 	const FVector A;
