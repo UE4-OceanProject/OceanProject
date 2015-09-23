@@ -94,7 +94,6 @@ void UBuoyantMeshComponent::GetTriangleVertexIndices(const TArray<FVector>& Worl
 													 const bool b16BitIndices, int32* OutIndex1,
 													 int32* OutIndex2, int32* OutIndex3)
 {
-	// TODO: Make static
 	if (b16BitIndices)
 	{
 		const auto Indices = static_cast<const PxU16*>(VertexIndices);
@@ -113,8 +112,7 @@ void UBuoyantMeshComponent::GetTriangleVertexIndices(const TArray<FVector>& Worl
 	}
 }
 
-void UBuoyantMeshComponent::GetSubtriangleForces(const UWorld& World,
-												 TArray<FForce>& InOutForces,
+void UBuoyantMeshComponent::GetSubtriangleForces(const UWorld& World, TArray<FForce>& InOutForces,
 												 const float GravityMagnitude,
 												 const FVector& TriangleNormal,
 												 const FBuoyantMeshSubtriangle& Subtriangle) const
@@ -176,9 +174,7 @@ void UBuoyantMeshComponent::GetTriangleMeshForces(TArray<FForce>& InOutForces, U
 
 		if (bDrawTriangles)
 		{
-			DrawDebugLine(&InWorld, A.Position, B.Position, FColor::White);
-			DrawDebugLine(&InWorld, B.Position, C.Position, FColor::White);
-			DrawDebugLine(&InWorld, C.Position, A.Position, FColor::White);
+			DrawDebugTriangle(InWorld, A.Position, B.Position, C.Position, FColor::White, 1.f);
 		}
 
 		const auto Triangle = FBuoyantMeshTriangle::FromClockwiseVertices(A, B, C);
@@ -189,13 +185,22 @@ void UBuoyantMeshComponent::GetTriangleMeshForces(TArray<FForce>& InOutForces, U
 		{
 			if (bDrawSubtriangles)
 			{
-				DrawDebugLine(&InWorld, SubTriangle.A, SubTriangle.B, FColor::Yellow, false, -1.f, 0, 2.f);
-				DrawDebugLine(&InWorld, SubTriangle.B, SubTriangle.C, FColor::Yellow, false, -1.f, 0, 2.f);
-				DrawDebugLine(&InWorld, SubTriangle.C, SubTriangle.A, FColor::Yellow, false, -1.f, 0, 2.f);
+				DrawDebugTriangle(InWorld, SubTriangle.A, SubTriangle.B, SubTriangle.C,
+								  FColor::Yellow, 2.f);
 			}
-			GetSubtriangleForces(InWorld, InOutForces, GravityMagnitude, Triangle.Normal, SubTriangle);
+			GetSubtriangleForces(InWorld, InOutForces, GravityMagnitude, Triangle.Normal,
+								 SubTriangle);
 		}
 	}
+}
+
+void UBuoyantMeshComponent::DrawDebugTriangle(const UWorld& World, const FVector& A,
+											  const FVector& B, const FVector& C,
+											  const FColor& Color, const float Thickness)
+{
+	DrawDebugLine(&World, A, B, Color, false, -1.f, 0, Thickness);
+	DrawDebugLine(&World, B, C, Color, false, -1.f, 0, Thickness);
+	DrawDebugLine(&World, C, A, Color, false, -1.f, 0, Thickness);
 }
 
 void UBuoyantMeshComponent::GetStaticMeshForces(TArray<FForce>& InOutForces, UWorld& InWorld,
@@ -220,8 +225,8 @@ void UBuoyantMeshComponent::ApplyHydrostaticForce(UWorld& World, const FForce& F
 		UpdatedPrimitive->AddForceAtLocation(ForceVector, Force.Point);
 		if (bDrawForceArrows)
 		{
-			DrawDebugLine(
-				&World, Force.Point - (ForceVector * ForceArrowSize * 0.0001f), Force.Point, FColor::Blue);
+			DrawDebugLine(&World, Force.Point - (ForceVector * ForceArrowSize * 0.0001f),
+						  Force.Point, FColor::Blue);
 		}
 	}
 }

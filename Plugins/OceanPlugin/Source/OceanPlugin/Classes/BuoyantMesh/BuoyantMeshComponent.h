@@ -36,7 +36,6 @@ DECLARE_CYCLE_STAT(TEXT("GetHydrostaticForces"), STAT_GetHydrostaticForces,
 				   STATGROUP_BuoyantMeshComponent);
 DECLARE_CYCLE_STAT(TEXT("GetHeightAboveWater"), STAT_GetHeightAboveWater,
 				   STATGROUP_BuoyantMeshComponent);
-
 /*
 
 This component applies to the root component buoyancy forces modeled from a static mesh.
@@ -133,15 +132,15 @@ class UBuoyantMeshComponent : public UStaticMeshComponent
 	bool bNeedsInitialization = true;
 	void Initialize();
 
-	// Triangles are stored as indices to vertices in the vertex array. 
+	// Triangles are stored as indices to vertices in the vertex array.
 	// This function gets those indices from the triangles array.
 	static void GetTriangleVertexIndices(const TArray<FVector>& WorldVertexPositions,
 										 const void* const VertexIndices, const PxU32 TriangleIndex,
 										 const bool b16BitIndices, int32* OutIndex1,
 										 int32* OutIndex2, int32* OutIndex3);
 	// Adds the hydrostatic force pressing on a submerged triangle to an array of forces.
-	void GetSubtriangleForces(const UWorld& World, TArray<FForce>& InOutForces, const float GravityMagnitude,
-							  const FVector& TriangleNormal,
+	void GetSubtriangleForces(const UWorld& World, TArray<FForce>& InOutForces,
+							  const float GravityMagnitude, const FVector& TriangleNormal,
 							  const FBuoyantMeshSubtriangle& Subtriangle) const;
 	// Adds the hydrostatic forces pressing on PhysX triangle mesh to an array of forces.
 	void GetTriangleMeshForces(TArray<FForce>& InOutForces, UWorld& InWorld,
@@ -157,4 +156,7 @@ class UBuoyantMeshComponent : public UStaticMeshComponent
 	// The wave height is given by the AOceanManager if available, otherwise it
 	// is 0.
 	float GetHeightAboveWater(const UWorld& World, const FVector& Position) const;
+
+	static void DrawDebugTriangle(const UWorld& World, const FVector& A, const FVector& B,
+								  const FVector& C, const FColor& Color, const float Thickness);
 };
