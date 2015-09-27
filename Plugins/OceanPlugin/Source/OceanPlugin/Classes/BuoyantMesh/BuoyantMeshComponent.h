@@ -50,7 +50,7 @@ Use simplified hull-shaped meshes to keep performance acceptable.
 */
 
 UCLASS(ClassGroup = Physics, config = Engine, editinlinenew, meta = (BlueprintSpawnableComponent))
-class UBuoyantMeshComponent : public UStaticMeshComponent
+class OCEANPLUGIN_API UBuoyantMeshComponent : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 

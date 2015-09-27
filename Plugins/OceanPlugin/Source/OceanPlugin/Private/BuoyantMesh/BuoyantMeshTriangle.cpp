@@ -73,7 +73,7 @@ void FBuoyantMeshTriangle::SortVerticesByHeight(
 
 FBuoyantMeshTriangle::FBuoyantMeshTriangle(const FBuoyantMeshVertex& H, const FBuoyantMeshVertex& M,
 										   const FBuoyantMeshVertex& L, const FVector& Normal)
-	: H{H}, M{M}, L{L}, Normal{Normal}
+	: Normal{Normal}, H{H}, M{M}, L{L}
 {
 }
 

@@ -97,7 +97,7 @@ struct FWaveSetParameters {
 * TODO: Investigate whether a single implementation could be used to increase performance.
 */
 UCLASS(BlueprintType, Blueprintable)
-class AOceanManager : public AActor {
+class OCEANPLUGIN_API AOceanManager : public AActor {
 	GENERATED_UCLASS_BODY()
 
 	// The Direction the waves travel

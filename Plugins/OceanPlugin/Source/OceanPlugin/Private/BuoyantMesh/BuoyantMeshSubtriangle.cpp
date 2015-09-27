@@ -46,13 +46,6 @@ FVector FBuoyantMeshSubtriangle::GetHydrostaticForce(float const WaterDensity,
 													 const FBuoyantMeshVertex& Center,
 													 const FVector& Normal) const
 {
-	if (Center.Height > 0.f)
-	{
-		// Because of the way we have simplified cutting, it is possible for the triangle center
-		// to be found above water. In this case we do not apply any force.
-		return {};
-	}
-
 	const auto Area = GetArea();
 
 	if (FMath::IsNearlyZero(Area))
