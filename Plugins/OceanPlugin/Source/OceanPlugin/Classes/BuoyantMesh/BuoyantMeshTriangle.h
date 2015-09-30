@@ -48,11 +48,11 @@ struct FBuoyantMeshTriangle
 	const FVector Normal;
 
 	// Highest vertex above water.
-	const FBuoyantMeshVertex& H;
+	const FBuoyantMeshVertex H;
 	// Middle vertex above water.
-	const FBuoyantMeshVertex& M;
+	const FBuoyantMeshVertex M;
 	// Lowest vertex above water.
-	const FBuoyantMeshVertex& L;
+	const FBuoyantMeshVertex L;
 
 	// Calculates the submerged part of the triangle.
 	// The triangle is cut into smaller triangles if necessary.
