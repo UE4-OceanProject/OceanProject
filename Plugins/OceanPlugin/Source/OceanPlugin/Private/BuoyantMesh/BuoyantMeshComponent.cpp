@@ -59,25 +59,60 @@ float UBuoyantMeshComponent::GetHeightAboveWater(const UWorld& World, const FVec
 {
 	SCOPE_CYCLE_COUNTER(STAT_GetHeightAboveWater);
 	float WaterHeight = 0.f;
-	if (IsValid(UpdatedPrimitive) && IsValid(OceanManager))
+	if (IsValid(OceanManager))
 	{
 		WaterHeight = OceanManager->GetWaveHeight(Position, &World);
 	}
 	return Position.Z - WaterHeight;
 }
 
-void UBuoyantMeshComponent::Initialize()
+
+UPrimitiveComponent* UBuoyantMeshComponent::GetParentPrimitive() const
 {
-	AActor* OwnerActor = GetOwner();
-	if (IsValid(OwnerActor))
+	if (IsValid(AttachParent))
 	{
-		UpdatedComponent = OwnerActor->GetRootComponent();
-		if (IsValid(UpdatedComponent))
+		const auto PrimitiveComponent = Cast<UPrimitiveComponent>(AttachParent);
+		if (PrimitiveComponent)
 		{
-			UpdatedPrimitive = Cast<UPrimitiveComponent>(UpdatedComponent);
-			UpdatedComponent->PrimaryComponentTick.AddPrerequisite(this, PrimaryComponentTick);
+			return PrimitiveComponent;
 		}
 	}
+	return nullptr;
+}
+
+UPrimitiveComponent* UBuoyantMeshComponent::GetRootPrimitive() const
+{
+	// Use the root component if it's a UPrimitiveComponent
+	const auto OwnerActor = GetOwner();
+	if (IsValid(OwnerActor))
+	{
+		const auto RootComponent = OwnerActor->GetRootComponent();
+		if (IsValid(RootComponent))
+		{
+			const auto RootPrimitive = Cast<UPrimitiveComponent>(RootComponent);
+			if (RootPrimitive != nullptr)
+			{
+				return RootPrimitive;
+			}
+		}
+	}
+	return nullptr;
+}
+
+void UBuoyantMeshComponent::Initialize()
+{
+	if (UpdatedComponent == nullptr)
+	{
+		const auto ParentPrimitive = GetParentPrimitive();
+		UpdatedComponent = ParentPrimitive ? ParentPrimitive : this;
+	}
+
+	// This component needs to tick before the updated component.
+	if (UpdatedComponent != this)
+	{
+		UpdatedComponent->PrimaryComponentTick.AddPrerequisite(this, PrimaryComponentTick);
+	}
+
 	if (!OceanManager)
 	{
 		for (auto Actor : TActorRange<AOceanManager>(GetWorld()))
@@ -99,7 +134,6 @@ void UBuoyantMeshComponent::GetTriangleVertexIndices(const TArray<FVector>& Worl
 	*OutIndex3 = VertexIndices[TriangleIndex * 3 + 2];
 	return;
 }
-
 
 void UBuoyantMeshComponent::GetTriangleVertexIndices(const TArray<FVector>& WorldVertexPositions,
 													 const void* const VertexIndices,
@@ -199,6 +233,7 @@ void UBuoyantMeshComponent::GetTriangleMeshForces(TArray<FForce>& InOutForces, U
 				DrawDebugTriangle(InWorld, SubTriangle.A, SubTriangle.B, SubTriangle.C,
 								  FColor::Yellow, 6.f);
 			}
+			SCOPE_CYCLE_COUNTER(STAT_GetHydrostaticForces);
 			GetSubtriangleForces(InWorld, InOutForces, GravityMagnitude, Triangle.Normal,
 								 SubTriangle);
 		}
@@ -226,19 +261,49 @@ void UBuoyantMeshComponent::GetStaticMeshForces(TArray<FForce>& InOutForces, UWo
 	}
 }
 
-void UBuoyantMeshComponent::ApplyHydrostaticForce(UWorld& World, const FForce& Force)
+void UBuoyantMeshComponent::ApplyHydrostaticForce(UWorld& World, UPrimitiveComponent& Component,
+												  const FForce& Force)
 {
 	const auto ForceVector = bVerticalForcesOnly ? FVector{0.f, 0.f, Force.Vector.Z} : Force.Vector;
+	const auto bIsValidForce = !ForceVector.IsNearlyZero() && isfinite(ForceVector.X) &&
+							   isfinite(ForceVector.Y) && isfinite(ForceVector.Z);
+	if (!bIsValidForce) return;
 
-	if (!ForceVector.IsNearlyZero() && isfinite(ForceVector.X) && isfinite(ForceVector.Y) &&
-		isfinite(ForceVector.Z))
+	Component.AddForceAtLocation(ForceVector, Force.Point);
+	if (bDrawForceArrows)
 	{
-		UpdatedPrimitive->AddForceAtLocation(ForceVector, Force.Point);
-		if (bDrawForceArrows)
-		{
-			DrawDebugLine(&World, Force.Point - (ForceVector * ForceArrowSize * 0.0001f),
-						  Force.Point, FColor::Blue);
-		}
+		DrawDebugLine(&World, Force.Point - (ForceVector * ForceArrowSize * 0.0001f), Force.Point,
+					  FColor::Blue);
+	}
+}
+
+void UBuoyantMeshComponent::ApplyHydrostaticForces()
+{
+	SCOPE_CYCLE_COUNTER(STAT_ApplyHydrostaticForces);
+	const auto World = GetWorld();
+	if (!IsValid(World)) return;
+
+	const auto BodySetup = GetBodySetup();
+	if (!IsValid(BodySetup))
+	{
+		UE_LOG(LogTemp, Error, TEXT("BuoyantMeshComponent has a missing or invalid mesh."));
+		return;
+	}
+
+	if (!IsValid(UpdatedComponent))
+	{
+		UE_LOG(LogTemp, Error,
+			   TEXT("BuoyantMeshComponent has no updated component set up. Use a ")
+				   TEXT("parent component with \"Simulate Physics\" turned on."));
+		return;
+	}
+
+	TArray<FForce> Forces;
+	GetStaticMeshForces(Forces, *World, *BodySetup);
+
+	for (const auto& Force : Forces)
+	{
+		ApplyHydrostaticForce(*World, *UpdatedComponent, Force);
 	}
 }
 
@@ -254,20 +319,5 @@ void UBuoyantMeshComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 		Initialize();
 	}
 
-	const auto World = GetWorld();
-	if (!IsValid(World)) return;
-
-	const auto LocalToWorld = GetComponentTransform();
-
-	const auto BodySetup = GetBodySetup();
-	if (IsValid(BodySetup))
-	{
-		TArray<FForce> Forces;
-		GetStaticMeshForces(Forces, *World, *BodySetup);
-
-		for (const auto& Force : Forces)
-		{
-			ApplyHydrostaticForce(*World, Force);
-		}
-	}
+	ApplyHydrostaticForces();
 }

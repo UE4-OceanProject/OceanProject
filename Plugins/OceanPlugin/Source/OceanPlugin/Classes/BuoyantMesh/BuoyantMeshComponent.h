@@ -34,8 +34,11 @@
 DECLARE_STATS_GROUP(TEXT("BuoyantMeshComponent"), STATGROUP_BuoyantMeshComponent, STATCAT_Advanced);
 DECLARE_CYCLE_STAT(TEXT("GetHydrostaticForces"), STAT_GetHydrostaticForces,
 				   STATGROUP_BuoyantMeshComponent);
+DECLARE_CYCLE_STAT(TEXT("ApplyHydrostaticForces"), STAT_ApplyHydrostaticForces,
+				   STATGROUP_BuoyantMeshComponent);
 DECLARE_CYCLE_STAT(TEXT("GetHeightAboveWater"), STAT_GetHeightAboveWater,
 				   STATGROUP_BuoyantMeshComponent);
+
 /*
 
 This component applies to the root component buoyancy forces modeled from a static mesh.
@@ -58,22 +61,21 @@ class OCEANPLUGIN_API UBuoyantMeshComponent : public UStaticMeshComponent
 	// Sets default values for this component's properties
 	UBuoyantMeshComponent();
 
-	/**
-	* The component we move and update.
-	* If this is null at startup, the owning Actor's root component will automatically be set as our
-	* UpdatedComponent at startup.
-	* @see UpdatedPrimitive
-	*/
-	UPROPERTY(BlueprintReadOnly, DuplicateTransient, Category = MovementComponent)
-	USceneComponent* UpdatedComponent;
+	// The component on which the forces will be applied. If this is null at startup, it will
+	// automatically select the first UPrimitiveComponent parent, or itself if one is not found.
+	UPrimitiveComponent* UpdatedComponent;
 
-	/**
-	* UpdatedComponent, cast as a UPrimitiveComponent. May be invalid if UpdatedComponent was null
-	* or not a
-	* UPrimitiveComponent.
-	*/
-	UPROPERTY(BlueprintReadOnly, DuplicateTransient, Category = MovementComponent)
-	UPrimitiveComponent* UpdatedPrimitive;
+	// Only use the vertical component of the buoyancy forces.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")
+	bool bVerticalForcesOnly;
+
+	// Density of the fluid in kg/uu^3. It is around 0.001027 if 1 unreal unit is 1 cm.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")
+	float WaterDensity;
+
+	// OceanManager used by the component, if unassigned component will auto-detect.
+	UPROPERTY(EditAnywhere, AdvancedDisplay, BlueprintReadWrite, Category = "Buoyancy Settings")
+	AOceanManager* OceanManager;
 
 	// Draw arrows representing the buoyancy forces pushing on the mesh?
 	// The length is proportional to the force magnitude.
@@ -99,18 +101,6 @@ class OCEANPLUGIN_API UBuoyantMeshComponent : public UStaticMeshComponent
 	// Force arrow size multiplier.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
 	float ForceArrowSize = 1.f;
-
-	// Only use the vertical component of the buoyancy forces.
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")
-	bool bVerticalForcesOnly;
-
-	// Density of the fluid in kg/uu^3. It is around 0.001027 if 1 unreal unit is 1 cm.
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")
-	float WaterDensity;
-
-	// OceanManager used by the component, if unassigned component will auto-detect.
-	UPROPERTY(EditAnywhere, AdvancedDisplay, BlueprintReadWrite, Category = "Buoyancy Settings")
-	AOceanManager* OceanManager;
 
 #pragma region UActorComponent Interface
 
@@ -158,8 +148,13 @@ class OCEANPLUGIN_API UBuoyantMeshComponent : public UStaticMeshComponent
 	void GetStaticMeshForces(TArray<FForce>& InOutForces, UWorld& InWorld,
 							 const UBodySetup& BodySetup) const;
 
-	// Applies the buoyancy forces to UpdatedPrimitive.
-	void ApplyHydrostaticForce(UWorld& World, const FForce& Force);
+	// Applies buoyancy forces to InComponent.
+	void ApplyHydrostaticForce(UWorld& World, UPrimitiveComponent& InComponent,
+							   const FForce& Force);
+
+	// Applies all the buoyancy forces to the updated component.
+	void ApplyHydrostaticForces();
+
 	// Gets the height above the water at a determined position.
 	// The wave height is given by the AOceanManager if available, otherwise it
 	// is 0.
@@ -167,4 +162,10 @@ class OCEANPLUGIN_API UBuoyantMeshComponent : public UStaticMeshComponent
 
 	static void DrawDebugTriangle(const UWorld& World, const FVector& A, const FVector& B,
 								  const FVector& C, const FColor& Color, const float Thickness);
+
+	// Returns the root component as a UPrimitiveComponent, if it is one.
+	UPrimitiveComponent* GetRootPrimitive() const;
+
+	// Returns the parent component as a UPrimitiveComponent, if it is one.
+	UPrimitiveComponent* GetParentPrimitive() const;
 };

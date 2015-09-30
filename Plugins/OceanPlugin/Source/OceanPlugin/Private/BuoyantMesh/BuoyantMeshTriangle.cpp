@@ -36,9 +36,12 @@ FBuoyantMeshTriangle FBuoyantMeshTriangle::FromClockwiseVertices(const FBuoyantM
 	return {*H, *M, *L, TriangleNormal};
 }
 
-void FBuoyantMeshTriangle::SortVerticesByHeight(
-	const FBuoyantMeshVertex& InA, const FBuoyantMeshVertex& InB, const FBuoyantMeshVertex& InC,
-	const FBuoyantMeshVertex** OutH, const FBuoyantMeshVertex** OutM, const FBuoyantMeshVertex** OutL)
+void FBuoyantMeshTriangle::SortVerticesByHeight(const FBuoyantMeshVertex& InA,
+												const FBuoyantMeshVertex& InB,
+												const FBuoyantMeshVertex& InC,
+												const FBuoyantMeshVertex** OutH,
+												const FBuoyantMeshVertex** OutM,
+												const FBuoyantMeshVertex** OutL)
 {
 	auto H = &InA;  // Needs to be the sorted so it's the highest vertex.
 	auto M = &InB;  // Needs to be the sorted so it's the middle vertex.
@@ -108,7 +111,7 @@ TArray<FBuoyantMeshSubtriangle> FBuoyantMeshTriangle::GetSubmergedPortion(const 
 		// First triangle cut
 		CutResult.Emplace(FBuoyantMeshSubtriangle{M.Position, Im, L.Position});
 		// Second triangle cut
-		CutResult.Emplace(FBuoyantMeshSubtriangle{ Im, Il, L.Position });
+		CutResult.Emplace(FBuoyantMeshSubtriangle{Im, Il, L.Position});
 		return CutResult;
 	}
 	// Case in which two vertices are above water and one is below.
@@ -129,14 +132,14 @@ TArray<FBuoyantMeshSubtriangle> FBuoyantMeshTriangle::GetSubmergedPortion(const 
 
 		// Return the single triangle cut.
 		TArray<FBuoyantMeshSubtriangle> CutResult;
-		CutResult.Emplace(FBuoyantMeshSubtriangle{ Jh, Jm, L.Position });
+		CutResult.Emplace(FBuoyantMeshSubtriangle{Jh, Jm, L.Position});
 		return CutResult;
 	}
 	else if (H.IsUnderwater() && M.IsUnderwater() && L.IsUnderwater())
 	{
 		// Return the entire triangle.
 		TArray<FBuoyantMeshSubtriangle> CutResult;
-		CutResult.Emplace(FBuoyantMeshSubtriangle{ H.Position, M.Position, L.Position });
+		CutResult.Emplace(FBuoyantMeshSubtriangle{H.Position, M.Position, L.Position});
 		return CutResult;
 	}
 	else if (!H.IsUnderwater() && !M.IsUnderwater() && !L.IsUnderwater())
