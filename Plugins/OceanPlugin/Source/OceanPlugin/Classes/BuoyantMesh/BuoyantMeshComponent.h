@@ -138,6 +138,14 @@ class OCEANPLUGIN_API UBuoyantMeshComponent : public UStaticMeshComponent
 										 const void* const VertexIndices, const PxU32 TriangleIndex,
 										 const bool b16BitIndices, int32* OutIndex1,
 										 int32* OutIndex2, int32* OutIndex3);
+
+	// Triangles are stored as indices to vertices in the vertex array.
+	// This function gets those indices from the triangles array.
+	template <class T>
+	static void GetTriangleVertexIndices(const TArray<FVector>& WorldVertexPositions,
+										 const T* const VertexIndices, const PxU32 TriangleIndex,
+										 int32* OutIndex1, int32* OutIndex2, int32* OutIndex3);
+
 	// Adds the hydrostatic force pressing on a submerged triangle to an array of forces.
 	void GetSubtriangleForces(const UWorld& World, TArray<FForce>& InOutForces,
 							  const float GravityMagnitude, const FVector& TriangleNormal,

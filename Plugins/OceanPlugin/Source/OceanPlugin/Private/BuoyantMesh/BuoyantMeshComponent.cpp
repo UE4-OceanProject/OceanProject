@@ -29,7 +29,7 @@
 #include "BuoyantMesh/BuoyantMeshTriangle.h"
 #include "BuoyantMesh/BuoyantMeshSubtriangle.h"
 
-typedef UBuoyantMeshComponent::FForce FForce;
+using FForce = UBuoyantMeshComponent::FForce;
 
 // Sets default values for this component's properties
 UBuoyantMeshComponent::UBuoyantMeshComponent()
@@ -88,6 +88,19 @@ void UBuoyantMeshComponent::Initialize()
 	}
 }
 
+template <class T>
+void UBuoyantMeshComponent::GetTriangleVertexIndices(const TArray<FVector>& WorldVertexPositions,
+													 const T* const VertexIndices,
+													 const PxU32 TriangleIndex, int32* OutIndex1,
+													 int32* OutIndex2, int32* OutIndex3)
+{
+	*OutIndex1 = VertexIndices[TriangleIndex * 3];
+	*OutIndex2 = VertexIndices[TriangleIndex * 3 + 1];
+	*OutIndex3 = VertexIndices[TriangleIndex * 3 + 2];
+	return;
+}
+
+
 void UBuoyantMeshComponent::GetTriangleVertexIndices(const TArray<FVector>& WorldVertexPositions,
 													 const void* const VertexIndices,
 													 const PxU32 TriangleIndex,
@@ -97,17 +110,15 @@ void UBuoyantMeshComponent::GetTriangleVertexIndices(const TArray<FVector>& Worl
 	if (b16BitIndices)
 	{
 		const auto Indices = static_cast<const PxU16*>(VertexIndices);
-		*OutIndex1 = Indices[TriangleIndex * 3];
-		*OutIndex2 = Indices[TriangleIndex * 3 + 1];
-		*OutIndex3 = Indices[TriangleIndex * 3 + 2];
+		GetTriangleVertexIndices(WorldVertexPositions, Indices, TriangleIndex, OutIndex1, OutIndex2,
+								 OutIndex3);
 		return;
 	}
 	else
 	{
 		const auto Indices = static_cast<const PxU32*>(VertexIndices);
-		*OutIndex1 = Indices[TriangleIndex * 3];
-		*OutIndex2 = Indices[TriangleIndex * 3 + 1];
-		*OutIndex3 = Indices[TriangleIndex * 3 + 2];
+		GetTriangleVertexIndices(WorldVertexPositions, Indices, TriangleIndex, OutIndex1, OutIndex2,
+								 OutIndex3);
 		return;
 	}
 }
@@ -174,7 +185,7 @@ void UBuoyantMeshComponent::GetTriangleMeshForces(TArray<FForce>& InOutForces, U
 
 		if (bDrawTriangles)
 		{
-			DrawDebugTriangle(InWorld, A.Position, B.Position, C.Position, FColor::White, 1.f);
+			DrawDebugTriangle(InWorld, A.Position, B.Position, C.Position, FColor::White, 4.f);
 		}
 
 		const auto Triangle = FBuoyantMeshTriangle::FromClockwiseVertices(A, B, C);
@@ -186,7 +197,7 @@ void UBuoyantMeshComponent::GetTriangleMeshForces(TArray<FForce>& InOutForces, U
 			if (bDrawSubtriangles)
 			{
 				DrawDebugTriangle(InWorld, SubTriangle.A, SubTriangle.B, SubTriangle.C,
-								  FColor::Yellow, 2.f);
+								  FColor::Yellow, 6.f);
 			}
 			GetSubtriangleForces(InWorld, InOutForces, GravityMagnitude, Triangle.Normal,
 								 SubTriangle);

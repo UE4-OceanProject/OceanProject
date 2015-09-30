@@ -101,7 +101,7 @@ TArray<FBuoyantMeshSubtriangle> FBuoyantMeshTriangle::GetSubmergedPortion(const 
 		if (bDrawWaterline && IsValid(World))
 		{
 			// The surface line goes from Im to Il.
-			DrawDebugLine(World, Im, Il, FColor::Blue, false, -1.f, 0, 10.f);
+			DrawDebugLine(World, Im, Il, FColor::Blue, false, -1.f, 0, 16.f);
 		}
 
 		TArray<FBuoyantMeshSubtriangle> CutResult;
