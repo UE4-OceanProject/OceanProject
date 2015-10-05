@@ -38,12 +38,14 @@ struct FBuoyantMeshTriangle
 {
 	// Given three vertices, create a triangle. The vertices need to be in clockwise order.
 	static FBuoyantMeshTriangle FromClockwiseVertices(const FBuoyantMeshVertex& A,
-											   const FBuoyantMeshVertex& B,
-											   const FBuoyantMeshVertex& C);
+	                                                  const FBuoyantMeshVertex& B,
+	                                                  const FBuoyantMeshVertex& C);
 	// Creates a triangle from the ordered vertices and the normal.
 	// H is the highest vertex above water, followed by M then by L.
-	FBuoyantMeshTriangle(const FBuoyantMeshVertex& H, const FBuoyantMeshVertex& M,
-						 const FBuoyantMeshVertex& L, const FVector& Normal);
+	FBuoyantMeshTriangle(const FBuoyantMeshVertex& H,
+	                     const FBuoyantMeshVertex& M,
+	                     const FBuoyantMeshVertex& L,
+	                     const FVector& Normal);
 	// The triangle normal.
 	const FVector Normal;
 
@@ -58,13 +60,17 @@ struct FBuoyantMeshTriangle
 	// The triangle is cut into smaller triangles if necessary.
 	// Returns a list sub-triangles.
 	TArray<FBuoyantMeshSubtriangle> GetSubmergedPortion(const UWorld* World = nullptr,
-														bool bDrawWaterline = false) const;
+	                                                    bool bDrawWaterline = false) const;
 
    private:
-	static void SortVerticesByHeight(const FBuoyantMeshVertex& InA, const FBuoyantMeshVertex& InB,
-							  const FBuoyantMeshVertex& InC, const FBuoyantMeshVertex** OutH,
-							  const FBuoyantMeshVertex** OutM, const FBuoyantMeshVertex** OutL);
+	static void SortVerticesByHeight(const FBuoyantMeshVertex& InA,
+	                                 const FBuoyantMeshVertex& InB,
+	                                 const FBuoyantMeshVertex& InC,
+	                                 const FBuoyantMeshVertex** OutH,
+	                                 const FBuoyantMeshVertex** OutM,
+	                                 const FBuoyantMeshVertex** OutL);
 	// Find the cutting point on a triangle edge, at the determined distance from the start vertex.
-	static FVector FindCutOnEdge(const FBuoyantMeshVertex& Start, const FBuoyantMeshVertex& End,
-								 float const CutDistance);
+	static FVector FindCutOnEdge(const FBuoyantMeshVertex& Start,
+	                             const FBuoyantMeshVertex& End,
+	                             float const CutDistance);
 };

@@ -32,12 +32,15 @@
 
 // For the UE4 Profiler
 DECLARE_STATS_GROUP(TEXT("BuoyantMeshComponent"), STATGROUP_BuoyantMeshComponent, STATCAT_Advanced);
-DECLARE_CYCLE_STAT(TEXT("GetHydrostaticForces"), STAT_GetHydrostaticForces,
-				   STATGROUP_BuoyantMeshComponent);
-DECLARE_CYCLE_STAT(TEXT("ApplyHydrostaticForces"), STAT_ApplyHydrostaticForces,
-				   STATGROUP_BuoyantMeshComponent);
-DECLARE_CYCLE_STAT(TEXT("GetHeightAboveWater"), STAT_GetHeightAboveWater,
-				   STATGROUP_BuoyantMeshComponent);
+DECLARE_CYCLE_STAT(TEXT("GetHydrostaticForces"),
+                   STAT_GetHydrostaticForces,
+                   STATGROUP_BuoyantMeshComponent);
+DECLARE_CYCLE_STAT(TEXT("ApplyHydrostaticForces"),
+                   STAT_ApplyHydrostaticForces,
+                   STATGROUP_BuoyantMeshComponent);
+DECLARE_CYCLE_STAT(TEXT("GetHeightAboveWater"),
+                   STAT_GetHeightAboveWater,
+                   STATGROUP_BuoyantMeshComponent);
 
 /*
 
@@ -104,8 +107,9 @@ class OCEANPLUGIN_API UBuoyantMeshComponent : public UStaticMeshComponent
 
 #pragma region UActorComponent Interface
 
-	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType,
-							   FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void TickComponent(float DeltaTime,
+	                           enum ELevelTick TickType,
+	                           FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void InitializeComponent() override;
 	virtual void BeginPlay() override;
 
@@ -125,32 +129,43 @@ class OCEANPLUGIN_API UBuoyantMeshComponent : public UStaticMeshComponent
 	// Triangles are stored as indices to vertices in the vertex array.
 	// This function gets those indices from the triangles array.
 	static void GetTriangleVertexIndices(const TArray<FVector>& WorldVertexPositions,
-										 const void* const VertexIndices, const PxU32 TriangleIndex,
-										 const bool b16BitIndices, int32* OutIndex1,
-										 int32* OutIndex2, int32* OutIndex3);
+	                                     const void* const VertexIndices,
+	                                     const PxU32 TriangleIndex,
+	                                     const bool b16BitIndices,
+	                                     int32* OutIndex1,
+	                                     int32* OutIndex2,
+	                                     int32* OutIndex3);
 
 	// Triangles are stored as indices to vertices in the vertex array.
 	// This function gets those indices from the triangles array.
 	template <class T>
 	static void GetTriangleVertexIndices(const TArray<FVector>& WorldVertexPositions,
-										 const T* const VertexIndices, const PxU32 TriangleIndex,
-										 int32* OutIndex1, int32* OutIndex2, int32* OutIndex3);
+	                                     const T* const VertexIndices,
+	                                     const PxU32 TriangleIndex,
+	                                     int32* OutIndex1,
+	                                     int32* OutIndex2,
+	                                     int32* OutIndex3);
 
 	// Adds the hydrostatic force pressing on a submerged triangle to an array of forces.
-	void GetSubtriangleForces(const UWorld& World, TArray<FForce>& InOutForces,
-							  const float GravityMagnitude, const FVector& TriangleNormal,
-							  const FBuoyantMeshSubtriangle& Subtriangle) const;
+	void GetSubtriangleForces(const UWorld& World,
+	                          TArray<FForce>& InOutForces,
+	                          const float GravityMagnitude,
+	                          const FVector& TriangleNormal,
+	                          const FBuoyantMeshSubtriangle& Subtriangle) const;
 	// Adds the hydrostatic forces pressing on PhysX triangle mesh to an array of forces.
-	void GetTriangleMeshForces(TArray<FForce>& InOutForces, UWorld& InWorld,
-							   const PxTriangleMesh& TriangleMesh) const;
+	void GetTriangleMeshForces(TArray<FForce>& InOutForces,
+	                           UWorld& InWorld,
+	                           const PxTriangleMesh& TriangleMesh) const;
 
 	// Adds the hydrostatic forces pressing on a static mesh to an array of forces.
-	void GetStaticMeshForces(TArray<FForce>& InOutForces, UWorld& InWorld,
-							 const UBodySetup& BodySetup) const;
+	void GetStaticMeshForces(TArray<FForce>& InOutForces,
+	                         UWorld& InWorld,
+	                         const UBodySetup& BodySetup) const;
 
 	// Applies buoyancy forces to InComponent.
-	void ApplyHydrostaticForce(UWorld& World, UPrimitiveComponent& InComponent,
-							   const FForce& Force);
+	void ApplyHydrostaticForce(UWorld& World,
+	                           UPrimitiveComponent& InComponent,
+	                           const FForce& Force);
 
 	// Applies all the buoyancy forces to the updated component.
 	void ApplyHydrostaticForces();
@@ -160,8 +175,12 @@ class OCEANPLUGIN_API UBuoyantMeshComponent : public UStaticMeshComponent
 	// is 0.
 	float GetHeightAboveWater(const UWorld& World, const FVector& Position) const;
 
-	static void DrawDebugTriangle(const UWorld& World, const FVector& A, const FVector& B,
-								  const FVector& C, const FColor& Color, const float Thickness);
+	static void DrawDebugTriangle(const UWorld& World,
+	                              const FVector& A,
+	                              const FVector& B,
+	                              const FVector& C,
+	                              const FColor& Color,
+	                              const float Thickness);
 
 	// Returns the root component as a UPrimitiveComponent, if it is one.
 	UPrimitiveComponent* GetRootPrimitive() const;

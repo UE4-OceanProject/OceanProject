@@ -28,6 +28,6 @@ bool FBuoyantMeshVertex::IsUnderwater() const
 }
 
 FBuoyantMeshVertex::FBuoyantMeshVertex(const FVector& Position, float HeightAboveWater)
-	: Height{HeightAboveWater}, Position{Position}
+    : Height{HeightAboveWater}, Position{Position}
 {
 }

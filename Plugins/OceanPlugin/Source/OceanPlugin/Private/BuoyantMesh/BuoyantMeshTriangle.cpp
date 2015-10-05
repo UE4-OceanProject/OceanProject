@@ -22,11 +22,11 @@
 #include "BuoyantMesh/BuoyantMeshTriangle.h"
 
 FBuoyantMeshTriangle FBuoyantMeshTriangle::FromClockwiseVertices(const FBuoyantMeshVertex& A,
-																 const FBuoyantMeshVertex& B,
-																 const FBuoyantMeshVertex& C)
+                                                                 const FBuoyantMeshVertex& B,
+                                                                 const FBuoyantMeshVertex& C)
 {
 	const auto TriangleNormal =
-		FVector::CrossProduct(B.Position - A.Position, C.Position - A.Position).GetSafeNormal();
+	    FVector::CrossProduct(B.Position - A.Position, C.Position - A.Position).GetSafeNormal();
 
 	const FBuoyantMeshVertex* H;
 	const FBuoyantMeshVertex* M;
@@ -37,15 +37,15 @@ FBuoyantMeshTriangle FBuoyantMeshTriangle::FromClockwiseVertices(const FBuoyantM
 }
 
 void FBuoyantMeshTriangle::SortVerticesByHeight(const FBuoyantMeshVertex& InA,
-												const FBuoyantMeshVertex& InB,
-												const FBuoyantMeshVertex& InC,
-												const FBuoyantMeshVertex** OutH,
-												const FBuoyantMeshVertex** OutM,
-												const FBuoyantMeshVertex** OutL)
+                                                const FBuoyantMeshVertex& InB,
+                                                const FBuoyantMeshVertex& InC,
+                                                const FBuoyantMeshVertex** OutH,
+                                                const FBuoyantMeshVertex** OutM,
+                                                const FBuoyantMeshVertex** OutL)
 {
-	auto H = &InA;  // Needs to be the sorted so it's the highest vertex.
-	auto M = &InB;  // Needs to be the sorted so it's the middle vertex.
-	auto L = &InC;  // Needs to be the sorted so it's the Lowest vertex.
+	auto H = &InA; // Needs to be the sorted so it's the highest vertex.
+	auto M = &InB; // Needs to be the sorted so it's the middle vertex.
+	auto L = &InC; // Needs to be the sorted so it's the Lowest vertex.
 
 	if (L->Height > H->Height)
 	{
@@ -74,14 +74,17 @@ void FBuoyantMeshTriangle::SortVerticesByHeight(const FBuoyantMeshVertex& InA,
 	*OutL = L;
 }
 
-FBuoyantMeshTriangle::FBuoyantMeshTriangle(const FBuoyantMeshVertex& H, const FBuoyantMeshVertex& M,
-										   const FBuoyantMeshVertex& L, const FVector& Normal)
-	: Normal{Normal}, H{H}, M{M}, L{L}
+FBuoyantMeshTriangle::FBuoyantMeshTriangle(const FBuoyantMeshVertex& H,
+                                           const FBuoyantMeshVertex& M,
+                                           const FBuoyantMeshVertex& L,
+                                           const FVector& Normal)
+    : Normal{Normal}, H{H}, M{M}, L{L}
 {
 }
 
 FVector FBuoyantMeshTriangle::FindCutOnEdge(const FBuoyantMeshVertex& Start,
-											const FBuoyantMeshVertex& End, float const CutDistance)
+                                            const FBuoyantMeshVertex& End,
+                                            float const CutDistance)
 {
 	const auto FullVector = End.Position - Start.Position;
 	const auto CutVector = FullVector * CutDistance;
@@ -89,16 +92,16 @@ FVector FBuoyantMeshTriangle::FindCutOnEdge(const FBuoyantMeshVertex& Start,
 }
 
 TArray<FBuoyantMeshSubtriangle> FBuoyantMeshTriangle::GetSubmergedPortion(const UWorld* World,
-																		  bool bDrawWaterline) const
+                                                                          bool bDrawWaterline) const
 {
 	// Case in which one vertex is above water and the other two are below.
 	// See figure Figure 7 in the article in the header.
 	if (!H.IsUnderwater() && M.IsUnderwater() && L.IsUnderwater())
 	{
-		const auto tM = -M.Height / (H.Height - M.Height);  // Intersection distance for MH
+		const auto tM = -M.Height / (H.Height - M.Height); // Intersection distance for MH
 		const auto Im = FindCutOnEdge(M, H, tM);
 
-		const auto tL = -L.Height / (H.Height - L.Height);  // Intersection distance for LH
+		const auto tL = -L.Height / (H.Height - L.Height); // Intersection distance for LH
 		const auto Il = FindCutOnEdge(L, H, tL);
 
 		if (bDrawWaterline && IsValid(World))
@@ -118,10 +121,10 @@ TArray<FBuoyantMeshSubtriangle> FBuoyantMeshTriangle::GetSubmergedPortion(const 
 	// See figure Figure 8 in the article in the header.
 	else if (!H.IsUnderwater() && !M.IsUnderwater() && L.IsUnderwater())
 	{
-		const auto tM = -L.Height / (M.Height - L.Height);  // Intersection distance for LM
+		const auto tM = -L.Height / (M.Height - L.Height); // Intersection distance for LM
 		const auto Jm = FindCutOnEdge(L, M, tM);
 
-		const auto tH = -L.Height / (H.Height - L.Height);  // Intersection distance for LH
+		const auto tH = -L.Height / (H.Height - L.Height); // Intersection distance for LH
 		const auto Jh = FindCutOnEdge(L, H, tH);
 
 		if (bDrawWaterline && IsValid(World))
@@ -144,7 +147,7 @@ TArray<FBuoyantMeshSubtriangle> FBuoyantMeshTriangle::GetSubmergedPortion(const 
 	}
 	else if (!H.IsUnderwater() && !M.IsUnderwater() && !L.IsUnderwater())
 	{
-		return {};  // No part is underwater.
+		return {}; // No part is underwater.
 	}
 
 	else

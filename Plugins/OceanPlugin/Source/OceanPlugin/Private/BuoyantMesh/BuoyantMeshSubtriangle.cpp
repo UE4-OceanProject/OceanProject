@@ -31,8 +31,9 @@ float FBuoyantMeshSubtriangle::GetArea() const
 	return GetTriangleAreaHeron(A, B, C);
 }
 
-float FBuoyantMeshSubtriangle::GetTriangleAreaHeron(const FVector& Vertex1, const FVector& Vertex2,
-													const FVector& Vertex3)
+float FBuoyantMeshSubtriangle::GetTriangleAreaHeron(const FVector& Vertex1,
+                                                    const FVector& Vertex2,
+                                                    const FVector& Vertex3)
 {
 	const auto A = FVector::Dist(Vertex1, Vertex2);
 	const auto B = FVector::Dist(Vertex2, Vertex3);
@@ -42,9 +43,9 @@ float FBuoyantMeshSubtriangle::GetTriangleAreaHeron(const FVector& Vertex1, cons
 }
 
 FVector FBuoyantMeshSubtriangle::GetHydrostaticForce(float const WaterDensity,
-													 float const GravityMagnitude,
-													 const FBuoyantMeshVertex& Center,
-													 const FVector& Normal) const
+                                                     float const GravityMagnitude,
+                                                     const FBuoyantMeshVertex& Center,
+                                                     const FVector& Normal) const
 {
 	const auto Area = GetArea();
 
@@ -64,8 +65,9 @@ FVector FBuoyantMeshSubtriangle::GetHydrostaticForce(float const WaterDensity,
 	return F;
 }
 
-FBuoyantMeshSubtriangle::FBuoyantMeshSubtriangle(const FVector& A, const FVector& B,
-												 const FVector& C)
-	: A{A}, B{B}, C{C}
+FBuoyantMeshSubtriangle::FBuoyantMeshSubtriangle(const FVector& A,
+                                                 const FVector& B,
+                                                 const FVector& C)
+    : A{A}, B{B}, C{C}
 {
 }
