@@ -3,7 +3,17 @@ An Ocean Simulation project for Unreal Engine 4.
 
 ---------------------
 
-**4.9 Branch - This is the most up to date branch compatible with UE 4.9**
+**4.10 Branch - This is the most up to date branch compatible with UE 4.10**
+
+List of features confirmed working for 4.10:
+
++ Buoyancy
++ Ocean shaders
++ 3rd person player controller
++ 3rd person ship controller
++ Destructible objects
++ Cannons
+
 
 ![img_project](http://www.mediafire.com/convkey/ea7f/9ifotl4151ob4d2zg.jpg?size_id=5)
 
