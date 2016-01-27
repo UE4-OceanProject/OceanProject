@@ -22,7 +22,7 @@ Jan. 27 2016 - Forked Repo
 ######**Where to get it?**
 **4.9 Branch - This is the most up to date branch compatible with UE 4.9**
 
-![img_project](http://www.mediafire.com/convkey/ea7f/9ifotl4151ob4d2zg.jpg?size_id=5)
+![img_project](http://i.imgur.com/iDlYDIj.png)
 
 ######**More information**
 UE4 Forums thread with more info: [[Community Project] WIP Weather & Ocean Water Shader](https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader)
