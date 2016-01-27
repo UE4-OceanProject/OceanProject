@@ -3,7 +3,7 @@ An Ocean Simulation project for Unreal Engine 4. **Focusing on submersibles (sub
 
 #####**What Is This Repo?**
 
-This is **Nsomnias** fork of the amazing community ocean project for Unreal Engine 4 by DotCam and TK-Master. I will be making changes on this fork as my C++ skills increase and as my game gets further along in development.
+This is **Nsomnias** fork of the amazing community ocean project for Unreal Engine 4 by DotCam and TK-Master. I will be making changes on this fork as my C++ skills increase and as my game gets further along in development. More details about the games pre-development can be found here http://www.subsim.com/radioroom/showthread.php?t=218165
 
 #####**Planned features** as soon as possible
 - Typhoon/Hurricane style weather simulation
