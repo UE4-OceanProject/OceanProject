@@ -7,9 +7,10 @@ An Ocean Simulation project for Unreal Engine 4.
 
 ![img_project](http://www.mediafire.com/convkey/ea7f/9ifotl4151ob4d2zg.jpg?size_id=5)
 
-New features coming soon..
+*New features coming when they are ready* :p  - not currently working on it,  see below:
 
----------------------
+
+----------------------
 
 Not currently able to do Dev work on this, you may have known I had to take a few months off last year, and it's happened again, this time even worse. It's hard to do Dev work laying in bed, wish I had a laptop that could run UE4... But I will all least try and help out those who want to try it, and/or make new contributions. 
 
