@@ -1,19 +1,23 @@
+using UnrealBuildTool;
+using System.IO;
 
-namespace UnrealBuildTool.Rules 
+public class OceanPlugin : ModuleRules
 {
-    public class OceanPlugin : ModuleRules {
+    private string ModulePath
+    {
+        get { return Path.GetDirectoryName(RulesCompiler.GetModuleFilename(this.GetType().Name)); }
+    }
 
-        public OceanPlugin(TargetInfo Target) {
+    private string ThirdPartyPath
+    {
+        get { return Path.GetFullPath(Path.Combine(ModulePath, "../../ThirdParty/")); }
+    }
 
-            PublicIncludePaths.AddRange(new string[] { "OceanPlugin/Classes/Fish" });
+    public OceanPlugin(TargetInfo Target)
+    {
+        PrivateIncludePaths.AddRange(new string[] { "OceanPlugin/Private" });
+       // PublicIncludePaths.AddRange(new string[] { "OceanPlugin/Public" });
 
-            PrivateIncludePaths.AddRange(new string[] { "OceanPlugin/Private", "OceanPlugin/Private/Fish" });
-
-            PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
-
-            PrivateDependencyModuleNames.AddRange(new string[] { });
-
-            DynamicallyLoadedModuleNames.AddRange(new string[] { });
-        }
+        PublicDependencyModuleNames.AddRange(new string[] { "Engine", "Core", "CoreUObject", "InputCore", "PhysX", "APEX" });
     }
 }

@@ -1,5 +1,22 @@
-// Kyle Bryant @Komdoman
-// Use wherever your heart desires <3
+/*=================================================
+* FileName: FlockFish.cpp
+* 
+* Created by: Komodoman
+* Project name: OceanProject
+* Unreal Engine version: 4.8.3
+* Created on: 2015/03/17
+*
+* Last Edited on: 2015/06/29
+* Last Edited by: TK-Master
+* 
+* -------------------------------------------------
+* For parts referencing UE4 code, the following copyright applies:
+* Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
+*
+* Feel free to use this software in any commercial/free game.
+* Selling this as a plugin/item, in whole or part, is not allowed.
+* See "OceanProject\License.md" for full licensing details.
+* =================================================*/
 
 #include "OceanPluginPrivatePCH.h"
 #include "Fish/FlockFish.h"
@@ -24,6 +41,44 @@ AFlockFish::AFlockFish(const FObjectInitializer& ObjectInitializer) : Super(Obje
 	{
 		spawnTarget();
 	}
+
+	//Defaults
+	followDist = 50.0;
+	speed = 1200.0;
+	maxSpeed = 2400.0;
+	turnSpeed = 3.0;
+	turnFrequency = 1.0;
+	turnFrequency = 1.0;
+	hungerResetTime = 20.0;
+	distBehindSpeedUpRange = 3000.0;
+	SeperationDistanceMultiplier = 0.75;
+	FleeDistanceMultiplier = 5.0;
+	FleeAccelerationMultiplier = 2.0;
+	ChaseAccelerationMultiplier = 2.0;
+	SeekDecelerationMultiplier = 1.0;
+	AvoidForceMultiplier = 1.0;
+	AvoidanceForce = 20000.0;
+	underwaterMin = FVector(-40000, -40000, -9000);
+	underwaterMax = FVector(40000, 40000, -950);
+	CustomZSeekMin = 0.0;
+	CustomZSeekMax = 0.0;
+	NumNeighborsToEvaluate = 5.0;
+	UpdateEveryTick = 0.0;
+	DebugMode = true;
+	fleeDistance = 0.0;
+	neighborSeperation = 300.0;
+	curSpeed = speed;
+	isFleeing = false;
+	isFull = false;
+	underwaterBoxLength = 10000.0;
+	AvoidanceDistance = 5000.0;
+	curVelocity = FVector(0, 0, 0);
+	curRotation = FRotator(0, 0, 0);
+	turnTimer = 0.0;
+	isSetup = false;
+	hungerTimer = 0.0;
+	updateTimer = 0.0;
+	hasFishManager = false;
 }
 
 void AFlockFish::Tick(float delta)
@@ -107,7 +162,7 @@ FVector AFlockFish::AvoidObstacle()
 
 	FHitResult OutHitResult;
 	FCollisionQueryParams Line(FName("Collision param"), true);
-	bool const bHadBlockingHit = GetWorld()->LineTraceSingle(OutHitResult, actorLocation, forwardVector, COLLISION_TRACE, Line);
+	bool const bHadBlockingHit = GetWorld()->LineTraceSingleByChannel(OutHitResult, actorLocation, forwardVector, COLLISION_TRACE, Line);
 	FVector returnVector = FVector(0, 0, 0);
 	float distanceToBound = distanceToBound = (this->GetActorLocation() - OutHitResult.ImpactPoint).Size();
 	if (bHadBlockingHit)
@@ -308,7 +363,7 @@ void AFlockFish::Setup()
 
 		InteractionSphereRadius = FishInteractionSphere->GetScaledSphereRadius();
 
-		if (CustomZSeekMax == NULL)
+		if (CustomZSeekMax == 0.0)
 		{
 			minZ = underwaterMin.Z;
 			maxZ = underwaterMax.Z;

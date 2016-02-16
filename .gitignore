@@ -1,0 +1,54 @@
+#
+# This file tells Git about engine files that never really belong in source control. They are usually build products, log
+# files and intermediate files generated from a compiler or the engine runtime.
+#
+#
+# NOTE:
+# Paths that start with / match paths relative to the root (where the .gitignore file is)
+# Paths that end with / will match a folder and all files under it (but not a regular file with no extension)
+# Use * for wildcards. Wildcards stop at path separators
+# Use ** for a wildcard that spans path separators
+# Paths in this file should use forward slash characters, not back slashes
+# Use \ to escape special characters like ! and #
+# Use ! to negate a previous pattern. But it doesn't work if the parent sub-folder was masked out already.
+#
+
+# Ignore project files in the root
+*.sln
+*.xcodeproj
+*.sln
+*.xcodeproj
+
+# Ignore local user Visual Studio files in any folder
+*.suo
+*.opensdf
+*.sdf
+
+# Ignore intermediate folders from Xcode
+# TODO: This section can be removed after UnrealBuildTool has been changed to generated Xcode projects that force the 'build' directory to be created under the Intermediate folder instead.
+build/**
+
+# Derived data cache is never checked in
+DerivedDataCache/**
+
+# Engine intermediates
+Intermediate/**
+Plugins/**/Intermediate/**
+
+# Exclude executable binaries too (game DLLs)
+#/*/Binaries/**
+#/*/Plugins/**/Binaries/**
+
+# Ignore any saved local files
+Saved/**
+
+# Ignore SVN files
+.svn
+
+#Ignore binaries
+*.exe
+*.app
+
+#Ignore debug data files
+*.pdb
+*.exp

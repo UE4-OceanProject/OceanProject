@@ -1,5 +1,22 @@
-// Kyle Bryant @Komdoman
-// Use wherever your heart desires <3
+/*=================================================
+* FileName: FlockFish.h
+* 
+* Created by: Komodoman
+* Project name: OceanProject
+* Unreal Engine version: 4.8.3
+* Created on: 2015/03/17
+*
+* Last Edited on: 2015/06/29
+* Last Edited by: TK-Master
+* 
+* -------------------------------------------------
+* For parts referencing UE4 code, the following copyright applies:
+* Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
+*
+* Feel free to use this software in any commercial/free game.
+* Selling this as a plugin/item, in whole or part, is not allowed.
+* See "OceanProject\License.md" for full licensing details.
+* =================================================*/
 
 #pragma once
 
@@ -28,7 +45,7 @@ class AFlockFish : public APawn
 public:
 	// Is this fish a leader
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fish Attributes")
-	bool isLeader = false;
+	bool isLeader;
 
 	// Enemies that fish will flee from
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fish Attributes")
@@ -44,59 +61,59 @@ public:
 
 	// Distance to that fish will try to remain behind leader
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fish Attributes")
-	float followDist = 50;
+	float followDist;
 
 	// Defualt Speed
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fish Attributes")
-	float speed = 1200.0;
+	float speed;
 
 	// Max Speed
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fish Attributes")
-	float maxSpeed = 2400.0;
+	float maxSpeed;
 
 	// Speed at which the fish turns (Try to have predators be slightly faster)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fish Attributes")
-	float turnSpeed = 3.0f;
+	float turnSpeed;
 
 	// Frequency of turning ( turn every "turnFrequency" seconds)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fish Attributes")
-	float turnFrequency = 1.0;
+	float turnFrequency;
 
 	// time after eating until it is hungry again
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fish Attributes")
-	float hungerResetTime = 20.0f;
+	float hungerResetTime;
 
 	// Go faster when fish is this distance behind leader
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fish Attributes")
-	float distBehindSpeedUpRange = 3000;
+	float distBehindSpeedUpRange;
 
 	// Multiplies With Radius of Fish Interaction Sphere for neighbor seperation
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Settings")
-	float SeperationDistanceMultiplier = 0.75;
+	float SeperationDistanceMultiplier;
 
 	// Multiplies With Radius of Fish Interaction Sphere for Flee Distance
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Settings")
-	float FleeDistanceMultiplier = 5;
+	float FleeDistanceMultiplier;
 
 	// Multiplies with delta time since last tick when lerping to max speed (While Fleeing)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Settings")
-	float FleeAccelerationMultiplier = 2;
+	float FleeAccelerationMultiplier;
 
 	// Multiplies with delta time since last tick when lerping to max speed (While Chasing)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Settings")
-	float ChaseAccelerationMultiplier = 2;
+	float ChaseAccelerationMultiplier;
 
 	// Multiplies with delta time since last tick when lerping to regular speed (While Seeking)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Settings")
-	float SeekDecelerationMultiplier = 1;
+	float SeekDecelerationMultiplier;
 
 	// Avoid Distance Multiplier
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Settings")
-	float AvoidForceMultiplier = 1;
+	float AvoidForceMultiplier;
 
 	// Avoidance force
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Settings")
-	float AvoidanceForce = 20000;
+	float AvoidanceForce;
 
 	// Player the fish will avoid
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment Variables")
@@ -104,27 +121,27 @@ public:
 
 	// volume that is considered underwater
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment Variables")
-	FVector underwaterMin = FVector(-40000, -40000, -9000);
+	FVector underwaterMin;
 
 	// volume that is considered underwater
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment Variables")
-	FVector underwaterMax = FVector(40000, 40000, -950);
+	FVector underwaterMax;
 
 	// Custom Z range for targeting (NULL will use full range of min/max)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment Variables")
-	float CustomZSeekMin = NULL;
+	float CustomZSeekMin;
 
 	// Custom Z range for targeting (NULL will use full range of min/max)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment Variables")
-	float CustomZSeekMax = NULL;
+	float CustomZSeekMax;
 
 	// Max number of neighbors to evaluate on a Tick (0 for all neighbors)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Optimization")
-	float NumNeighborsToEvaluate = 5;
+	float NumNeighborsToEvaluate;
 
 	// When set to 0, update every tick, otherwise update after specified time
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Optimization")
-	float UpdateEveryTick = 0;
+	float UpdateEveryTick;
 
 	// This is the target the fish will path to
 	FVector target;
@@ -133,18 +150,18 @@ public:
 
 	// Run fish in debug mode
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TESTING")
-	bool DebugMode = true;
+	bool DebugMode;
 
 	// Flee distance
 	// NOTE: CURRENTLY SET IN CODE
-	float fleeDistance = 0;
+	float fleeDistance;
 
 	// Weight to multiply with cohesion
 	// NOTE: CURRENTLY SET IN CODE
-	float neighborSeperation = 300.0;
+	float neighborSeperation;
 
 	// current speed
-	float curSpeed = speed;
+	float curSpeed;
 
 	// This fish's leader
 	AActor *leader;
@@ -175,17 +192,17 @@ public:
 
 	// is fish currently fleeing
 	// Current state of the Fish
-	bool isFleeing = false;
+	bool isFleeing;
 
 	// is the fish currently full?
-	bool isFull = false;
+	bool isFull;
 
 	/* bounds of underwater box*/
-	float underwaterBoxLength = 10000;
+	float underwaterBoxLength;
 
 	FVector AvoidObstacle();
 
-	float AvoidanceDistance = 5000;
+	float AvoidanceDistance;
 
 	// Max bounds of box
 	float maxX;
@@ -261,28 +278,28 @@ protected:
 	void Debug();
 
 	// current velocity
-	FVector curVelocity = FVector(0, 0, 0);
+	FVector curVelocity;
 
 	// current rotation
-	FRotator curRotation = FRotator(0, 0, 0);
+	FRotator curRotation;
 
 	// turning timer
-	float turnTimer = 0.0;
+	float turnTimer;
 
 	// Are the array's setup?
-	bool isSetup = false;
+	bool isSetup;
 
 	// current hunger timer
-	float hungerTimer = 0.0f;
+	float hungerTimer;
 
 	// Tick Timer
-	float updateTimer = 0.0f;
+	float updateTimer;
 
 	// player holder
 	//AActor* player;
 
 	// has fish manager?
-	bool hasFishManager = false;
+	bool hasFishManager;
 
 	// fish manager
 	AActor* fishManager;

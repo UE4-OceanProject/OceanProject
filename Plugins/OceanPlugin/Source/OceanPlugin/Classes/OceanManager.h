@@ -1,4 +1,22 @@
-// OceanPlugin version
+/*=================================================
+* FileName: OceanManager.h
+* 
+* Created by: DotCam
+* Project name: OceanProject
+* Unreal Engine version: 4.8.3
+* Created on: 2015/03/20
+*
+* Last Edited on: 2015/08/09
+* Last Edited by: DotCam
+* 
+* -------------------------------------------------
+* For parts referencing UE4 code, the following copyright applies:
+* Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
+*
+* Feel free to use this software in any commercial/free game.
+* Selling this as a plugin/item, in whole or part, is not allowed.
+* See "OceanProject\License.md" for full licensing details.
+* =================================================*/
 
 #pragma once
 
@@ -69,10 +87,6 @@ UCLASS(BlueprintType, Blueprintable)
 class AOceanManager : public AActor {
 	GENERATED_UCLASS_BODY()
 
-	// The world location of the ocean mesh
-	UPROPERTY(BlueprintReadWrite)
-	FVector MeshCenter;
-
 	// The Direction the waves travel
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector WaveDirection;
@@ -94,12 +108,17 @@ class AOceanManager : public AActor {
 	//FWaveSetParameters WaveSet2;
 
 public:
-	FVector GetWaveHeightValue(FVector location, float time);
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool EnableGerstnerWaves;
+
+	UPROPERTY(BlueprintReadWrite)
+	float NetWorkTimeOffset;
+
+	UFUNCTION(BlueprintCallable, Category = "Ocean Manager")
+	FVector GetWaveHeightValue(FVector location);
 
 private:
 	FVector CalculateGerstnerWaveSet(FWaveParameter global, FWaveSetParameters ws, FVector2D direction, FVector position, float time);
 
 	FVector CalculateGertnerWave(float rotation, float waveLength, float amplitude, float steepness, FVector2D direction, FVector position, float time);
 	};
-
-
