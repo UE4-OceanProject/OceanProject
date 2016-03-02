@@ -3,7 +3,7 @@
 * 
 * Created by: TK-Master
 * Project name: OceanProject
-* Unreal Engine version: 4.8.3
+* Unreal Engine version: 4.10
 * Created on: 2015/04/26
 *
 * Last Edited on: 2015/06/29
@@ -56,10 +56,13 @@ void UBuoyancyForceComponent::InitializeComponent()
 
 	//UE_LOG(LogTemp, Warning, TEXT("We're initializing..."));
 
+	//Store the world ref.
+	World = GetWorld();
+
 	// If no OceanManager is defined, auto-detect
 	if (!OceanManager)
 	{
-		for (TActorIterator<AOceanManager> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+		for (TActorIterator<AOceanManager> ActorItr(World); ActorItr; ++ActorItr)
 		{
 			OceanManager = Cast<AOceanManager>(*ActorItr);
 			break;
@@ -82,9 +85,9 @@ void UBuoyancyForceComponent::InitializeComponent()
 void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
+
 	// If disabled or we are not attached to a parent component, return.
-	if( !bIsActive || !AttachParent ) return;
+	if (!bIsActive || !AttachParent) return;
 
 	if (!OceanManager) return;
 
@@ -95,8 +98,10 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 	{
 		if (!SnapToSurfaceIfNoPhysics) return;
 
-		FVector waveHeight = OceanManager->GetWaveHeightValue(BasePrimComp->GetComponentLocation());
-		BasePrimComp->SetWorldLocation(FVector(BasePrimComp->GetComponentLocation().X, BasePrimComp->GetComponentLocation().Y, waveHeight.Z), true);
+		UE_LOG(LogTemp, Warning, TEXT("Running in no physics mode.."));
+
+		float waveHeight = OceanManager->GetWaveHeightValue(BasePrimComp->GetComponentLocation(), World, true, TwoGerstnerIterations).Z;
+		BasePrimComp->SetWorldLocation(FVector(BasePrimComp->GetComponentLocation().X, BasePrimComp->GetComponentLocation().Y, waveHeight));
 		return;
 	}
 
@@ -119,7 +124,7 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 				bool isUnderwater = false;
 				//FVector worldBoneLoc = SkeletalComp->GetBoneLocation(BoneNames[Itr]);
 				FVector worldBoneLoc = BI->GetCOMPosition(); //Use center of mass of the bone's physics body instead of bone's location
-				float waveHeight = OceanManager->GetWaveHeightValue(worldBoneLoc).Z;
+				FVector waveHeight = OceanManager->GetWaveHeightValue(worldBoneLoc, World, true, TwoGerstnerIterations);
 
 				float BoneDensity = MeshDensity;
 				float BoneTestRadius = FMath::Abs(TestPointRadius);
@@ -139,16 +144,16 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 				}
 
 				//If test point radius is below water surface, add buoyancy force.
-				if (waveHeight > (worldBoneLoc.Z + SignedBoneRadius))
+				if (waveHeight.Z > (worldBoneLoc.Z + SignedBoneRadius))
 				{
 					isUnderwater = true;
 
-					float DepthMultiplier = (waveHeight - (worldBoneLoc.Z + SignedBoneRadius)) / (BoneTestRadius * 2);
+					float DepthMultiplier = (waveHeight.Z - (worldBoneLoc.Z + SignedBoneRadius)) / (BoneTestRadius * 2);
 					DepthMultiplier = FMath::Clamp(DepthMultiplier, 0.f, 1.f);
 
 					float Mass = SkeletalComp->CalculateMass(BoneNames[Itr]); //Mass of this specific bone's physics body
 
-					/**
+					 /**
 					* --------
 					* Buoyancy force formula: (Volume(Mass / Density) * Fluid Density * -Gravity) / Total Points * Depth Multiplier
 					* --------
@@ -158,11 +163,11 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 					//Velocity damping.
 					FVector DampingForce = -BI->GetUnrealWorldVelocity() * VelocityDamper * Mass * DepthMultiplier;
 
-					//Experimental wave push force
+					//Experimental xy wave force
 					if (EnableWaveForces)
 					{
 						float waveVelocity = FMath::Clamp(BI->GetUnrealWorldVelocity().Z, -20.f, 150.f) * (1 - DepthMultiplier);
-						DampingForce += OceanManager->WaveDirection * Mass * waveVelocity * WaveForceMultiplier;
+						DampingForce += FVector(OceanManager->GlobalWaveDirection.X, OceanManager->GlobalWaveDirection.Y, 0) * Mass * waveVelocity * WaveForceMultiplier;
 					}
 
 					//Add force to this bone
@@ -188,7 +193,7 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 				{
 					FColor DebugColor = FLinearColor(0.8, 0.7, 0.2, 0.8).ToRGBE();
 					if (isUnderwater) { DebugColor = FLinearColor(0, 0.2, 0.7, 0.8).ToRGBE(); } //Blue color underwater, yellow out of watter
-					DrawDebugSphere(GetWorld(), worldBoneLoc, BoneTestRadius, 8, DebugColor);
+					DrawDebugSphere(World, worldBoneLoc, BoneTestRadius, 8, DebugColor);
 				}
 			}
 		}
@@ -207,19 +212,19 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 		bool isUnderwater = false;
 		FVector testPoint = TestPoints[pointIndex];
 		FVector worldTestPoint = BasePrimComp->GetComponentTransform().TransformPosition(testPoint);
-		float waveHeight = OceanManager->GetWaveHeightValue(worldTestPoint).Z;
+		FVector waveHeight = OceanManager->GetWaveHeightValue(worldTestPoint, World, !EnableWaveForces, TwoGerstnerIterations);
 
 		//Direction of radius (test radius is actually a Z offset, should probably rename it!). Just in case we need an upside down world.
 		float SignedRadius = FMath::Sign(BasePrimComp->GetPhysicsVolume()->GetGravityZ()) * TestPointRadius;
 
 		//If test point radius is below water surface, add buoyancy force.
-		if (waveHeight > (worldTestPoint.Z + SignedRadius) 
+		if (waveHeight.Z > (worldTestPoint.Z + SignedRadius)
 			&& BasePrimComp->IsGravityEnabled()) //Buoyancy doesn't exist without gravity
 		{
 			PointsUnderWater++;
 			isUnderwater = true;
 
-			float DepthMultiplier = (waveHeight - (worldTestPoint.Z + SignedRadius)) / (TestPointRadius * 2);
+			float DepthMultiplier = (waveHeight.Z - (worldTestPoint.Z + SignedRadius)) / (TestPointRadius * 2);
 			DepthMultiplier = FMath::Clamp(DepthMultiplier, 0.f, 1.f);
 
 			//If we have a point density override, use the overridden value instead of MeshDensity
@@ -235,11 +240,12 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 			//Experimental velocity damping using VelocityAtPoint.
 			FVector DampingForce = -GetUnrealVelocityAtPoint(BasePrimComp, worldTestPoint) * VelocityDamper * BasePrimComp->GetMass() * DepthMultiplier;
 
-			//Experimental wave push force
+			//Experimental xy wave force
 			if (EnableWaveForces)
 			{
-				float waveVelocity = FMath::Clamp(GetUnrealVelocityAtPoint(BasePrimComp, worldTestPoint).Z, -20.f, 150.f) * (1 - DepthMultiplier);
-				DampingForce += OceanManager->WaveDirection * BasePrimComp->GetMass() * waveVelocity * WaveForceMultiplier / TotalPoints;
+				DampingForce += BasePrimComp->GetMass() * FVector2D(waveHeight.X, waveHeight.Y).Size() * FVector(OceanManager->GlobalWaveDirection.X, OceanManager->GlobalWaveDirection.Y, 0) * WaveForceMultiplier / TotalPoints;
+				//float waveVelocity = FMath::Clamp(GetUnrealVelocityAtPoint(BasePrimComp, worldTestPoint).Z, -20.f, 150.f) * (1 - DepthMultiplier);
+				//DampingForce += OceanManager->GlobalWaveDirection * BasePrimComp->GetMass() * waveVelocity * WaveForceMultiplier / TotalPoints;
 			}
 
 			//Add force for this test point
@@ -250,7 +256,7 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 		{
 			FColor DebugColor = FLinearColor(0.8, 0.7, 0.2, 0.8).ToRGBE();
 			if (isUnderwater) { DebugColor = FLinearColor(0, 0.2, 0.7, 0.8).ToRGBE(); } //Blue color underwater, yellow out of watter
-			DrawDebugSphere(GetWorld(), worldTestPoint, TestPointRadius, 8, DebugColor);
+			DrawDebugSphere(World, worldTestPoint, TestPointRadius, 8, DebugColor);
 		}
 	}
 

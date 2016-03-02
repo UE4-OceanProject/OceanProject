@@ -3,10 +3,10 @@
 * 
 * Created by: TK-Master
 * Project name: OceanProject
-* Unreal Engine version: 4.8.3
+* Unreal Engine version: 4.10
 * Created on: 2015/04/26
 *
-* Last Edited on: 2015/06/29
+* Last Edited on: 2016/02/28
 * Last Edited by: TK-Master
 * 
 * -------------------------------------------------
@@ -38,6 +38,16 @@ UInfiniteSystemComponent::UInfiniteSystemComponent(const class FObjectInitialize
 	ScaleStartDistance = 1;
 	ScaleMin = 1;
 	ScaleMax = 100;
+
+	World = GetWorld();
+}
+
+void UInfiniteSystemComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	//Store the world ref.
+	World = GetWorld();
 }
 
 void UInfiniteSystemComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
@@ -45,7 +55,7 @@ void UInfiniteSystemComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// If disabled or we are not attached to a parent component, return.
-	if (!bIsActive || !AttachParent || !GetWorld()) return;
+	if (!bIsActive || !AttachParent || !World) return;
 
 	FVector CamLoc;
 	FRotator CamRot;
@@ -79,29 +89,49 @@ void UInfiniteSystemComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 			AttachParent->SetRelativeLocation(FVector(0, 0, 0)); //Reset location
 		}
 
-		if (ScaleByDistance && FMath::Abs(CamLoc.Z - AttachParent->GetComponentLocation().Z) > ScaleStartDistance)
+		float Distance = FMath::Abs(CamLoc.Z - AttachParent->GetComponentLocation().Z);
+
+		if (ScaleByDistance && Distance > ScaleStartDistance)
 		{
-			float DistScale = FMath::Abs(CamLoc.Z - AttachParent->GetComponentLocation().Z) / ScaleDistanceFactor;
+			Distance = Distance - ScaleStartDistance;
+			Distance = FMath::Max(Distance, 0.f);
+
+			float DistScale = Distance / ScaleDistanceFactor;
 			DistScale = FMath::Clamp(DistScale, ScaleMin, ScaleMax);
-			AttachParent->SetRelativeScale3D(FVector(DistScale, DistScale, 1)); //Scale only on x & y axis
+			AttachParent->SetRelativeScale3D(FVector(DistScale, DistScale, 1));
 		}
-		else if (!ScaleByDistance)
+		else if (ScaleByDistance)
 		{
-			AttachParent->SetRelativeScale3D(FVector(1, 1, 1)); //Reset scale
+			AttachParent->SetRelativeScale3D(FVector(ScaleMin, ScaleMin, 1));
 		}
+		else
+		{
+			AttachParent->SetRelativeScale3D(FVector(1, 1, 1));
+		}
+
+// 		if (ScaleByDistance && FMath::Abs(CamLoc.Z - AttachParent->GetComponentLocation().Z) > ScaleStartDistance)
+// 		{
+// 			float DistScale = FMath::Abs(CamLoc.Z - AttachParent->GetComponentLocation().Z) / ScaleDistanceFactor;
+// 			DistScale = FMath::Clamp(DistScale, ScaleMin, ScaleMax);
+// 			AttachParent->SetRelativeScale3D(FVector(DistScale, DistScale, 1)); //Scale only on x & y axis
+// 		}
+// 		else if (!ScaleByDistance)
+// 		{
+// 			AttachParent->SetRelativeScale3D(FVector(1, 1, 1)); //Reset scale
+// 		}
 		return;
 	}
 #endif
 
-	if (GetWorld()->WorldType == EWorldType::Game || GetWorld()->WorldType == EWorldType::PIE)
+	if (World->WorldType == EWorldType::Game || World->WorldType == EWorldType::PIE)
 	{
-		if (!GEngine || !GEngine->GetFirstLocalPlayerController(GetWorld())) return;
+		if (!GEngine || !GEngine->GetFirstLocalPlayerController(World)) return;
 		
-		GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager->GetCameraViewPoint(CamLoc, CamRot);
+		GEngine->GetFirstLocalPlayerController(World)->PlayerCameraManager->GetCameraViewPoint(CamLoc, CamRot);
 
-		if (GEngine->GetFirstLocalPlayerController(GetWorld())->GetPawn()) //null check
+		if (GEngine->GetFirstLocalPlayerController(World)->GetPawn()) //null check
 		{
-			PawnLoc = GEngine->GetFirstLocalPlayerController(GetWorld())->GetPawn()->GetActorLocation();
+			PawnLoc = GEngine->GetFirstLocalPlayerController(World)->GetPawn()->GetActorLocation();
 		}
 		else
 		{
@@ -129,11 +159,24 @@ void UInfiniteSystemComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 
 	//UE_LOG(LogTemp, Warning, TEXT("Camera Z Distance from Plane: %f"), FMath::Abs(CamLoc.Z - AttachParent->GetComponentLocation().Z));
 
-	if (ScaleByDistance && FMath::Abs(CamLoc.Z - AttachParent->GetComponentLocation().Z) > ScaleStartDistance)
+	float Distance = FMath::Abs(CamLoc.Z - AttachParent->GetComponentLocation().Z);
+
+	if (ScaleByDistance && Distance > ScaleStartDistance)
 	{
-		float DistScale = FMath::Abs(CamLoc.Z - AttachParent->GetComponentLocation().Z) / ScaleDistanceFactor;
+		Distance = Distance - ScaleStartDistance;
+		Distance = FMath::Max(Distance, 0.f);
+
+		float DistScale = Distance / ScaleDistanceFactor;
 		DistScale = FMath::Clamp(DistScale, ScaleMin, ScaleMax);
-		AttachParent->SetRelativeScale3D(FVector(DistScale, DistScale, 1)); //Scale only on x & y axis
+		AttachParent->SetRelativeScale3D(FVector(DistScale, DistScale, 1));
+	}
+	else if (ScaleByDistance)
+	{
+		AttachParent->SetRelativeScale3D(FVector(ScaleMin, ScaleMin, 1));
+	}
+	else
+	{
+		AttachParent->SetRelativeScale3D(FVector(1, 1, 1));
 	}
 
 	if (FollowMethod == Stationary) return;

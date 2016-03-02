@@ -119,7 +119,7 @@ void UBuoyantDestructibleComponent::TickComponent(float DeltaTime, enum ELevelTi
 				if (EnableWaveForces)
 				{
 					float waveVelocity = FMath::Clamp(P2UVector(Chunk->getLinearVelocity()).Z, -20.f, 150.f) * (1 - DepthMultiplier);
-					DampingForce += OceanManager->WaveDirection * Chunk->getMass() * waveVelocity * WaveForceMultiplier;
+					DampingForce += FVector(OceanManager->GlobalWaveDirection.X, OceanManager->GlobalWaveDirection.Y, 0) * Chunk->getMass() * waveVelocity * WaveForceMultiplier;
 				}
 
 				//Add force for this chunk

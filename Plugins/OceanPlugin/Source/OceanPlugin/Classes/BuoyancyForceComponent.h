@@ -3,7 +3,7 @@
 * 
 * Created by: TK-Master
 * Project name: OceanProject
-* Unreal Engine version: 4.8.3
+* Unreal Engine version: 4.10
 * Created on: 2015/04/26
 *
 * Last Edited on: 2015/08/27
@@ -26,7 +26,7 @@
 
 //Custom bone density/radius override struct.
 USTRUCT(BlueprintType)
-struct FStructBoneOverride
+struct OCEANPLUGIN_API FStructBoneOverride
 {
 	GENERATED_USTRUCT_BODY();
 
@@ -101,6 +101,14 @@ class UBuoyancyForceComponent : public USceneComponent
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")
 	bool SnapToSurfaceIfNoPhysics;
 
+	/**
+	* More accurate gerstner wave height calculations by accounting for the x/y displacement.
+	* Keep in mind that this effectively doubles the gerstner calculations per test point.
+	* Use only if accurate height readback is needed.
+	*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")
+	bool TwoGerstnerIterations;
+
 	/* Per-point mesh density override, can be used for half-sinking objects etc. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, AdvancedDisplay, Category = "Buoyancy Settings")
 	TArray<float> PointDensityOverride;
@@ -154,5 +162,7 @@ private:
 
 	float _baseAngularDamping;
 	float _baseLinearDamping;
+
+	UWorld* World;
 	
 };

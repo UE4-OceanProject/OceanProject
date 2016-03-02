@@ -127,7 +127,7 @@ void UBuoyancyComponent::TickComponent(float DeltaTime, enum ELevelTick TickType
 			if (EnableWaveForces)
 			{
 				float waveVelocity = FMath::Clamp(GetVelocityAtPoint(UpdatedPrimitive, worldTestPoint).Z, -20.f, 150.f) * (1 - DepthMultiplier);
-				DampingForce += OceanManager->WaveDirection * UpdatedPrimitive->GetMass() * waveVelocity * WaveForceMultiplier / TotalPoints;
+				DampingForce += FVector(OceanManager->GlobalWaveDirection.X, OceanManager->GlobalWaveDirection.Y, 0) * UpdatedPrimitive->GetMass() * waveVelocity * WaveForceMultiplier / TotalPoints;
 			}
 
 			//Add force for this test point

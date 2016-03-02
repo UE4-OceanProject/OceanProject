@@ -3,7 +3,7 @@ An Ocean Simulation project for Unreal Engine 4.
 
 ---------------------
 
-**4.10 Branch - This is the most up to date branch compatible with UE 4.10.x
+**4.10 Branch - This is the most up to date branch compatible with UE 4.10.x**
 
 ![img_project](ProjectScreenshot.jpg)
 
@@ -19,7 +19,7 @@ New features in 4.10:
 * Accurate height readback by accounting for x,y displacement
 * Harpoon gun with rope physics
 * Various code improvements
-* Various shader improvements
+* Various shader improvements  
 (Visit the forum thread for more info)
 
 

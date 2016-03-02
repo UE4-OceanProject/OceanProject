@@ -3,7 +3,7 @@
 * 
 * Created by: TK-Master
 * Project name: OceanProject
-* Unreal Engine version: 4.8.3
+* Unreal Engine version: 4.10
 * Created on: 2015/06/26
 *
 * Last Edited on: 2015/06/26
@@ -36,8 +36,8 @@ enum EFollowMethod
  *	Infinite Ocean Plane System.
  *	Follows camera and scales by distance to make a plane appear as infinite.
  */
-UCLASS(hidecategories=(Object, Mobility, LOD), ClassGroup=Physics, showcategories=Trigger, MinimalAPI, meta=(BlueprintSpawnableComponent))
-class UInfiniteSystemComponent : public USceneComponent
+UCLASS(hidecategories=(Object, Mobility, LOD), ClassGroup=Physics, showcategories=Trigger, meta=(BlueprintSpawnableComponent))
+class OCEANPLUGIN_API UInfiniteSystemComponent : public USceneComponent
 {
 	GENERATED_UCLASS_BODY()
 
@@ -69,4 +69,8 @@ class UInfiniteSystemComponent : public USceneComponent
 	float ScaleMax;
 	
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+	virtual void BeginPlay() override;
+
+protected:
+	UWorld* World;
 };
