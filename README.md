@@ -10,7 +10,7 @@ An Ocean Simulation project for Unreal Engine 4.
 
 New features in 4.10:
 
-* Uderwater post process with exponential fog
+* Underwater post process with exponential fog
 * Stencil-based underwater masking
 * Wet lens post process
 * Landscape heightmap-based displacement modulation

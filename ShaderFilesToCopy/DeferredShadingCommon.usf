@@ -754,5 +754,59 @@ FScreenSpaceData GetScreenSpaceData(float2 UV, bool bGetNormalizedNormal = true)
 	}
 #endif
 
+float CalcCustomDepth( float2 ScreenUV )
+{
+#if SCENE_TEXTURES_DISABLED
+	return 0.0f;
+#else
+
+#if FEATURE_LEVEL > FEATURE_LEVEL_ES3_1
+	return ConvertFromDeviceZ(Texture2DSampleLevel(CustomDepthTexture, CustomDepthTextureSampler, ScreenUV, 0).r);
+#else
+	#if COMPILER_GLSL_ES2
+		#if IOS
+			// Only call FramebufferFetch when actually compiling for IOS ES2.
+			return FramebufferFetchES2().w;
+		#elif WEBGL
+			return Texture2DSampleLevel(SceneAlphaCopyTexture, SceneAlphaCopyTextureSampler, ScreenUV, 0).r;
+		#else 
+			float SceneW = ConvertFromDeviceZ(Texture2DSampleLevel(CustomDepthTexture, CustomDepthTextureSampler, ScreenUV, 0).r);		
+			return DepthbufferFetchES2(SceneW, View.InvDeviceZToWorldZTransform[2], View.InvDeviceZToWorldZTransform[3]);
+		#endif 
+	#elif METAL_PROFILE
+			return FramebufferFetchES2().w;
+	#else
+		return ConvertFromDeviceZ(Texture2DSampleLevel(CustomDepthTexture, CustomDepthTextureSampler, ScreenUV, 0).r);
+	#endif
+#endif
+#endif
+}
+
+float4 GatherCustomDepth(float2 UV, float2 InvBufferSize)
+{
+#if FEATURE_LEVEL >= FEATURE_LEVEL_SM5
+	// using Gather: xyzw in counter clockwise order starting with the sample to the lower left of the queried location
+	float4 DeviceZ = CustomDepthTextureNonMS.Gather(CustomDepthTextureSampler, UV);
+
+	return float4(
+		ConvertFromDeviceZ(DeviceZ.x),
+		ConvertFromDeviceZ(DeviceZ.y),
+		ConvertFromDeviceZ(DeviceZ.z),
+		ConvertFromDeviceZ(DeviceZ.w)
+		);
+#elif FEATURE_LEVEL == FEATURE_LEVEL_SM4
+	float2 TexelScale = 0.5f * InvBufferSize;
+	// @todo Optimize
+	// Manually sample neighbouring texels in counter clockwise order starting with the sample to the lower left of the queried location.
+	return float4(
+		CalcCustomDepth(UV + (float2(-1, 1) * TexelScale)),
+		CalcCustomDepth(UV + (float2( 1, 1) * TexelScale)),
+		CalcCustomDepth(UV + (float2( 1,-1) * TexelScale)),
+		CalcCustomDepth(UV + (float2(-1,-1) * TexelScale))
+		); 
+#else
+	return (float4)CalcCustomDepth(UV);
+#endif // FEATURE_LEVEL
+}
 
 #endif // __DEFERRED_SHADING_COMMON__

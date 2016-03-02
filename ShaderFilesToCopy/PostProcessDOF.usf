@@ -57,7 +57,7 @@ void SetupPS(
 
 	float MaskDistance = View.DepthOfFieldFocalDistance + View.DepthOfFieldFocalRegion * 0.5f;
 
-	float4 DepthQuad = GatherSceneDepth(UV, PostprocessInput1Size.zw);
+	float4 DepthQuad = min(GatherSceneDepth(UV, PostprocessInput1Size.zw), GatherCustomDepth(UV, PostprocessInput1Size.zw));
 
 #if ENABLE_NEAR_BLUR == 0
 	// We aren't writing out to the second render target, so we'll just make a dummy value here which 
@@ -81,7 +81,7 @@ void SetupPS(
 
 	// can be optimized, needed to not blur the skybox
 	float3 ScreenVector = normalize(mul(float4(ScreenSpacePos, 1, 0), View.ScreenToWorld).xyz);
-	float SkyWithoutHorizonMask = saturate(ScreenVector.z * 3.0f);
+	float SkyWithoutHorizonMask = saturate(ScreenVector.z * 2560.0f);
 	
 	Mask = ComputeDOFFocalMask(DepthQuad.x, SkyWithoutHorizonMask);
 	Sample = float4(Texture2DSampleLevel(PostprocessInput0, PostprocessInput0Sampler, UV + Offset * float2(-1, 1), 0).rgb, 1);
@@ -135,7 +135,7 @@ void MainRecombinePS(
 	ViewportUV.y = clamp(ViewportUV.y, DepthOfFieldUVLimit.y, DepthOfFieldUVLimit.w);
 
 
-	float4 SceneColorAndDepth = float4(Texture2DSample(PostprocessInput0, PostprocessInput0Sampler, FullResUV).rgb, CalcSceneDepth(FullResUV));
+	float4 SceneColorAndDepth = float4(Texture2DSample(PostprocessInput0, PostprocessInput0Sampler, FullResUV).rgb, min(CalcSceneDepth(FullResUV), CalcCustomDepth(FullResUV)));
 
 	float3 UnfocusedSceneColor = SceneColorAndDepth.rgb;
 
@@ -622,7 +622,7 @@ void CirclePS(float4 UVAndScreenPos : TEXCOORD0, out float4 OutColor0 : SV_Targe
 void MainCircleRecombinePS(in float4 UVAndScreenPos : TEXCOORD0, out float4 OutColor : SV_Target0)
 {
 	// Circle of confusion size for the pixel.
-	float PixDepth = CalcSceneDepth(UVAndScreenPos.xy);
+	float PixDepth = min(CalcSceneDepth(UVAndScreenPos.xy), CalcCustomDepth(UVAndScreenPos.xy));
 	float PixCoc = DepthToCoc(PixDepth);
 
 	// Grab nearest Coc.
