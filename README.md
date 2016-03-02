@@ -3,26 +3,30 @@ An Ocean Simulation project for Unreal Engine 4.
 
 ---------------------
 
-**4.9 Branch - This is the most up to date branch compatible with UE 4.9, and UE 4.10**
+**4.10 Branch - This is the most up to date branch compatible with UE 4.10.x
 
-![img_project](http://www.mediafire.com/convkey/ea7f/9ifotl4151ob4d2zg.jpg?size_id=5)
-
-*New features coming when they are ready* :p  - not currently working on it,  see below:
+![img_project](ProjectScreenshot.jpg)
 
 
-----------------------
+New features in 4.10:
 
-Not currently able to do Dev work on this, you may have known I had to take a few months off last year, and it's happened again, this time even worse. It's hard to do Dev work laying in bed, wish I had a laptop that could run UE4... But I will all least try and help out those who want to try it, and/or make new contributions. 
-
-Thanks all, the info below on regarding trello is not currently being monitored, but feel free to make a post here on github in the "issues" section temporarily. 
-
-See you guys on the forums in the coming days! 
+* Uderwater post process with exponential fog
+* Stencil-based underwater masking
+* Wet lens post process
+* Landscape heightmap-based displacement modulation
+* OceanStorm example map (40 Gerstner waves)
+* Advanced BuoyantMesh component by Nubtron
+* Accurate height readback by accounting for x,y displacement
+* Harpoon gun with rope physics
+* Various code improvements
+* Various shader improvements
+(Visit the forum thread for more info)
 
 
 ===================================================================
 
 
-*Vote for upcoming features on our [Trello](https://trello.com/b/7dzOdkvw/ue4-ocean-weather-project)*
+Vote for upcoming features on our [Trello](https://trello.com/b/7dzOdkvw/ue4-ocean-weather-project)
 
 UE4 Forums thread with more info: [[Community Project] WIP Weather & Ocean Water Shader](https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader)
 
