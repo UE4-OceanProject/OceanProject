@@ -3,12 +3,12 @@ An Ocean Simulation project for Unreal Engine 4.
 
 ---------------------
 
-**4.10 Branch - This is the most up to date branch compatible with UE 4.10.x**
+**4.11 Branch - This is the most up to date branch compatible with UE 4.11.x**
 
 ![img_project](ProjectScreenshot.jpg)
 
 
-New features in 4.10:
+New features in added in 4.10:
 
 * Underwater post process with exponential fog
 * Stencil-based underwater masking
