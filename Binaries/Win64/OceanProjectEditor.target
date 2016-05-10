@@ -6,92 +6,232 @@
 	"Version" : 
 	{
 		"MajorVersion" : 4,
-		"MinorVersion" : 11,
-		"PatchVersion" : 2,
-		"Changelist" : 2946394,
+		"MinorVersion" : 12,
+		"PatchVersion" : 0,
+		"Changelist" : 2970308,
 		"IsLicenseeVersion" : 0,
-		"BranchName" : "++UE4+Release-4.11"
+		"BranchName" : "++UE4+Release-4.12"
 	},
 	"BuildProducts" :
 	[
 		{
-			"Path" : "$(ProjectDir)\\Plugins\\OceanPlugin\\Binaries\\Win64\\UE4Editor-OceanPlugin.dll",
+			"Path" : "$(ProjectDir)/Plugins/OceanPlugin/Binaries/Win64/UE4Editor-OceanPlugin.dll",
 			"Type" : "DynamicLibrary"
 		},
 		{
-			"Path" : "$(ProjectDir)\\Plugins\\OceanPlugin\\Binaries\\Win64\\UE4Editor-OceanPlugin.pdb",
+			"Path" : "$(ProjectDir)/Plugins/OceanPlugin/Binaries/Win64/UE4Editor-OceanPlugin.pdb",
 			"Type" : "SymbolFile"
 		},
 		{
-			"Path" : "$(ProjectDir)\\Plugins\\OceanPlugin\\Intermediate\\Build\\Win64\\UE4Editor\\Development\\UE4Editor-OceanPlugin.lib",
+			"Path" : "$(ProjectDir)/Plugins/OceanPlugin/Intermediate/Build/Win64/UE4Editor/Development/UE4Editor-OceanPlugin.lib",
 			"Type" : "ImportLibrary"
 		},
 		{
-			"Path" : "$(ProjectDir)\\Binaries\\Win64\\UE4Editor-OceanProject.dll",
+			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-OceanProject.dll",
 			"Type" : "DynamicLibrary"
 		},
 		{
-			"Path" : "$(ProjectDir)\\Binaries\\Win64\\UE4Editor-OceanProject.pdb",
+			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor-OceanProject.pdb",
 			"Type" : "SymbolFile"
 		},
 		{
-			"Path" : "$(ProjectDir)\\Intermediate\\Build\\Win64\\UE4Editor\\Development\\UE4Editor-OceanProject.lib",
+			"Path" : "$(ProjectDir)/Intermediate/Build/Win64/UE4Editor/Development/UE4Editor-OceanProject.lib",
 			"Type" : "ImportLibrary"
 		}
 	],
 	"RuntimeDependencies" :
 	[
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3PROFILE_x64.dll"
+			"Path" : "$(ProjectDir)/OceanProject.uproject",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(ProjectDir)/Plugins/OceanPlugin/OceanPlugin.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/2D/Paper2D/Paper2D.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Blendables/LightPropagationVolume/LightPropagationVolume.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Developer/GitSourceControl/GitSourceControl.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Developer/PerforceSourceControl/PerforceSourceControl.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Developer/SubversionSourceControl/SubversionSourceControl.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Developer/UObjectPlugin/UObjectPlugin.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Developer/VisualStudioSourceCodeAccess/VisualStudioSourceCodeAccess.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Editor/EpicSurvey/EpicSurvey.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Editor/PluginBrowser/PluginBrowser.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Editor/SpeedTreeImporter/SpeedTreeImporter.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Editor/SuperSearchEditor/SuperSearchEditor.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Experimental/CharacterAI/CharacterAI.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Experimental/HTML5Networking/HTML5Networking.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Media/MediaPlayerEditor/MediaPlayerEditor.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Media/WmfMedia/WmfMedia.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Messaging/UdpMessaging/UdpMessaging.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/MovieScene/LevelSequenceEditor/LevelSequenceEditor.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/MovieScene/MatineeToLevelSequence/MatineeToLevelSequence.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Runtime/ArchVisCharacter/ArchVisCharacter.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Runtime/CableComponent/CableComponent.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Runtime/CustomMeshComponent/CustomMeshComponent.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Runtime/ExampleDeviceProfileSelector/ExampleDeviceProfileSelector.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Runtime/OculusInput/OculusInput.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Runtime/OculusLibrary/OculusLibrary.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Runtime/OculusRift/OculusRift.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Runtime/ProceduralMeshComponent/ProceduralMeshComponent.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Runtime/Steam/SteamVR/SteamVR.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Runtime/WindowsMoviePlayer/WindowsMoviePlayer.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Slate/SlateRemote/SlateRemote.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Content/Slate/...",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(ProjectDir)/Content/Slate/...",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3PROFILE_x64.dll",
+			"Type" : "NonUFS"
 		},
 		{
 			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3PROFILE_x64.pdb",
-			"IgnoreIfMissing" : true
+			"Type" : "DebugNonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3CommonPROFILE_x64.dll"
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3CommonPROFILE_x64.dll",
+			"Type" : "NonUFS"
 		},
 		{
 			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3CommonPROFILE_x64.pdb",
-			"IgnoreIfMissing" : true
+			"Type" : "DebugNonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3CookingPROFILE_x64.dll"
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3CookingPROFILE_x64.dll",
+			"Type" : "NonUFS"
 		},
 		{
 			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3CookingPROFILE_x64.pdb",
-			"IgnoreIfMissing" : true
+			"Type" : "DebugNonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/nvToolsExt64_1.dll"
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/nvToolsExt64_1.dll",
+			"Type" : "NonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_ClothingPROFILE_x64.dll"
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_ClothingPROFILE_x64.dll",
+			"Type" : "NonUFS"
 		},
 		{
 			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_ClothingPROFILE_x64.dll.pdb",
-			"IgnoreIfMissing" : true
+			"Type" : "DebugNonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_DestructiblePROFILE_x64.dll"
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_DestructiblePROFILE_x64.dll",
+			"Type" : "NonUFS"
 		},
 		{
 			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_DestructiblePROFILE_x64.dll.pdb",
-			"IgnoreIfMissing" : true
+			"Type" : "DebugNonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_LegacyPROFILE_x64.dll"
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_LegacyPROFILE_x64.dll",
+			"Type" : "NonUFS"
 		},
 		{
 			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_LegacyPROFILE_x64.dll.pdb",
-			"IgnoreIfMissing" : true
+			"Type" : "DebugNonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/ApexFrameworkPROFILE_x64.dll"
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/ApexFrameworkPROFILE_x64.dll",
+			"Type" : "NonUFS"
 		},
 		{
 			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/ApexFrameworkPROFILE_x64.dll.pdb",
-			"IgnoreIfMissing" : true
+			"Type" : "DebugNonUFS"
 		}
 	]
 }
