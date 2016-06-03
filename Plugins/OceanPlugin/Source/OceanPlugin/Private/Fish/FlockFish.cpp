@@ -33,9 +33,9 @@ AFlockFish::AFlockFish(const FObjectInitializer& ObjectInitializer) : Super(Obje
 	// Fish interaction sphere
 	FishInteractionSphere = ObjectInitializer.CreateDefaultSubobject<USphereComponent>(this, TEXT("FishInteractionSphere"));
 	FishInteractionSphere->SetSphereRadius(10);
-	FishInteractionSphere->AttachTo(RootComponent);
-	//FishInteractionSphere->OnComponentBeginOverlap.AddDynamic(this, &AFlockFish::OnBeginOverlap);
-	//FishInteractionSphere->OnComponentEndOverlap.AddDynamic(this, &AFlockFish::OnEndOverlap);
+	FishInteractionSphere->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
+	FishInteractionSphere->OnComponentBeginOverlap.AddDynamic(this, &AFlockFish::OnBeginOverlap);
+	FishInteractionSphere->OnComponentEndOverlap.AddDynamic(this, &AFlockFish::OnEndOverlap);
 
 	if (isLeader == true)
 	{
@@ -217,7 +217,7 @@ void AFlockFish::UpdateState(float delta)
 }
 
 
-void AFlockFish::OnBeginOverlap(AActor* otherActor, UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
+void AFlockFish::OnBeginOverlap(UPrimitiveComponent* activatedComp, AActor* otherActor, UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult)
 {
 	// Is overlapping with enemy?
 	if (enemyTypes.Find(otherActor->GetClass()) >= 0)
@@ -244,7 +244,7 @@ void AFlockFish::OnBeginOverlap(AActor* otherActor, UPrimitiveComponent* otherCo
 	}
 }
 
-void AFlockFish::OnEndOverlap(AActor* otherActor, UPrimitiveComponent* otherComp, int32 otherBodyIndex)
+void AFlockFish::OnEndOverlap(UPrimitiveComponent* activatedComp, AActor* otherActor, UPrimitiveComponent* otherComp, int32 otherBodyIndex)
 {
 	if (nearbyEnemies.Find(otherActor) >= 0)
 	{

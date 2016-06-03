@@ -55,7 +55,7 @@ void UInfiniteSystemComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// If disabled or we are not attached to a parent component, return.
-	if (!bIsActive || !AttachParent || !World) return;
+	if (!bIsActive || !GetAttachParent() || !World) return;
 
 	FVector CamLoc;
 	FRotator CamRot;
@@ -81,15 +81,15 @@ void UInfiniteSystemComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 		{
 			NewLoc = CamLoc;
 			NewLoc = NewLoc.GridSnap(GridSnapSize);
-			NewLoc.Z = AttachParent->GetComponentLocation().Z;
-			AttachParent->SetWorldLocation(NewLoc);
+			NewLoc.Z = GetAttachParent()->GetComponentLocation().Z;
+			GetAttachParent()->SetWorldLocation(NewLoc);
 		}
 		else
 		{
-			AttachParent->SetRelativeLocation(FVector(0, 0, 0)); //Reset location
+			GetAttachParent()->SetRelativeLocation(FVector(0, 0, 0)); //Reset location
 		}
 
-		float Distance = FMath::Abs(CamLoc.Z - AttachParent->GetComponentLocation().Z);
+		float Distance = FMath::Abs(CamLoc.Z - GetAttachParent()->GetComponentLocation().Z);
 
 		if (ScaleByDistance && Distance > ScaleStartDistance)
 		{
@@ -98,15 +98,15 @@ void UInfiniteSystemComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 
 			float DistScale = Distance / ScaleDistanceFactor;
 			DistScale = FMath::Clamp(DistScale, ScaleMin, ScaleMax);
-			AttachParent->SetRelativeScale3D(FVector(DistScale, DistScale, 1));
+			GetAttachParent()->SetRelativeScale3D(FVector(DistScale, DistScale, 1));
 		}
 		else if (ScaleByDistance)
 		{
-			AttachParent->SetRelativeScale3D(FVector(ScaleMin, ScaleMin, 1));
+			GetAttachParent()->SetRelativeScale3D(FVector(ScaleMin, ScaleMin, 1));
 		}
 		else
 		{
-			AttachParent->SetRelativeScale3D(FVector(1, 1, 1));
+			GetAttachParent()->SetRelativeScale3D(FVector(1, 1, 1));
 		}
 
 // 		if (ScaleByDistance && FMath::Abs(CamLoc.Z - AttachParent->GetComponentLocation().Z) > ScaleStartDistance)
@@ -135,14 +135,14 @@ void UInfiniteSystemComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 		}
 		else
 		{
-			PawnLoc = AttachParent->GetComponentLocation();
+			PawnLoc = GetAttachParent()->GetComponentLocation();
 		}
 	}
 
 	switch (FollowMethod)
 	{
 		case LookAtLocation:
-			if (!FMath::SegmentPlaneIntersection(CamLoc, CamLoc + CamRot.Vector() * MaxLookAtDistance, FPlane(AttachParent->GetComponentLocation(), FVector(0, 0, 1)), NewLoc))
+			if (!FMath::SegmentPlaneIntersection(CamLoc, CamLoc + CamRot.Vector() * MaxLookAtDistance, FPlane(GetAttachParent()->GetComponentLocation(), FVector(0, 0, 1)), NewLoc))
 			{
 				NewLoc = CamLoc + CamRot.Vector() * MaxLookAtDistance;
 			}
@@ -159,7 +159,7 @@ void UInfiniteSystemComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 
 	//UE_LOG(LogTemp, Warning, TEXT("Camera Z Distance from Plane: %f"), FMath::Abs(CamLoc.Z - AttachParent->GetComponentLocation().Z));
 
-	float Distance = FMath::Abs(CamLoc.Z - AttachParent->GetComponentLocation().Z);
+	float Distance = FMath::Abs(CamLoc.Z - GetAttachParent()->GetComponentLocation().Z);
 
 	if (ScaleByDistance && Distance > ScaleStartDistance)
 	{
@@ -168,20 +168,20 @@ void UInfiniteSystemComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 
 		float DistScale = Distance / ScaleDistanceFactor;
 		DistScale = FMath::Clamp(DistScale, ScaleMin, ScaleMax);
-		AttachParent->SetRelativeScale3D(FVector(DistScale, DistScale, 1));
+		GetAttachParent()->SetRelativeScale3D(FVector(DistScale, DistScale, 1));
 	}
 	else if (ScaleByDistance)
 	{
-		AttachParent->SetRelativeScale3D(FVector(ScaleMin, ScaleMin, 1));
+		GetAttachParent()->SetRelativeScale3D(FVector(ScaleMin, ScaleMin, 1));
 	}
 	else
 	{
-		AttachParent->SetRelativeScale3D(FVector(1, 1, 1));
+		GetAttachParent()->SetRelativeScale3D(FVector(1, 1, 1));
 	}
 
 	if (FollowMethod == Stationary) return;
 
 	NewLoc = NewLoc.GridSnap(GridSnapSize);
-	NewLoc.Z = AttachParent->GetComponentLocation().Z;
-	AttachParent->SetWorldLocation(NewLoc);
+	NewLoc.Z = GetAttachParent()->GetComponentLocation().Z;
+	GetAttachParent()->SetWorldLocation(NewLoc);
 }

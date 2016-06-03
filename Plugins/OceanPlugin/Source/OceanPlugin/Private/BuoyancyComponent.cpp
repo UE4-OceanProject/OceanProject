@@ -206,7 +206,7 @@ void UBuoyancyComponent::ApplyUprightConstraint()
 			ConstraintComp->SetWorldLocation(UpdatedPrimitive->GetComponentLocation());
 
 			//Attach
-			ConstraintComp->AttachTo(UpdatedComponent, NAME_None, EAttachLocation::KeepRelativeOffset);
+			ConstraintComp->AttachToComponent(UpdatedComponent, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 			ConstraintComp->SetConstrainedComponents(UpdatedPrimitive, NAME_None, NULL, NAME_None);
 		}
 	}

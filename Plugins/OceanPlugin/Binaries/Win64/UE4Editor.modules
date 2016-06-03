@@ -1,6 +1,6 @@
 {
-	"Changelist" : 2970308,
-	"BuildId" : "",
+	"Changelist" : 2992821,
+	"BuildId" : "087c9b59-508a-4010-82dd-80fc0ee1fe0a",
 	"Modules" : 
 	{
 		"OceanPlugin" : "UE4Editor-OceanPlugin.dll"

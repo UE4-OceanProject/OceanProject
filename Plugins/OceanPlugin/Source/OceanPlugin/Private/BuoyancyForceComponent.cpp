@@ -71,7 +71,7 @@ void UBuoyancyForceComponent::InitializeComponent()
 
 	TestPointRadius = FMath::Abs(TestPointRadius);
 
-	UPrimitiveComponent* BasePrimComp = Cast<UPrimitiveComponent>(AttachParent);
+	UPrimitiveComponent* BasePrimComp = Cast<UPrimitiveComponent>(GetAttachParent());
 	if (BasePrimComp)
 	{
 		ApplyUprightConstraint(BasePrimComp);
@@ -87,11 +87,11 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// If disabled or we are not attached to a parent component, return.
-	if (!bIsActive || !AttachParent) return;
+	if (!bIsActive || !GetAttachParent()) return;
 
 	if (!OceanManager) return;
 
-	UPrimitiveComponent* BasePrimComp = Cast<UPrimitiveComponent>(AttachParent);
+	UPrimitiveComponent* BasePrimComp = Cast<UPrimitiveComponent>(GetAttachParent());
 	if (!BasePrimComp) return;
 
 	if (!BasePrimComp->IsSimulatingPhysics())
@@ -109,7 +109,7 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 	float Gravity = BasePrimComp->GetPhysicsVolume()->GetGravityZ();
 
 	//--------------- If Skeletal ---------------
-	USkeletalMeshComponent* SkeletalComp = Cast<USkeletalMeshComponent>(AttachParent);
+	USkeletalMeshComponent* SkeletalComp = Cast<USkeletalMeshComponent>(GetAttachParent());
 	if (SkeletalComp && ApplyForceToBones)
 	{
 		TArray<FName> BoneNames;
@@ -327,7 +327,7 @@ void UBuoyancyForceComponent::ApplyUprightConstraint(UPrimitiveComponent* BasePr
 			ConstraintComp->SetWorldLocation(BasePrimComp->GetComponentLocation());
 
 			//Attach
-			ConstraintComp->AttachTo(BasePrimComp, NAME_None, EAttachLocation::KeepRelativeOffset);
+			ConstraintComp->AttachToComponent(BasePrimComp, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 			ConstraintComp->SetConstrainedComponents(BasePrimComp, NAME_None, NULL, NAME_None);
 		}
 	}

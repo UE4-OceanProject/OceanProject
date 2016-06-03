@@ -60,9 +60,9 @@ float UBuoyantMeshComponent::GetHeightAboveWater(const FVector& Position) const
 
 UPrimitiveComponent* UBuoyantMeshComponent::GetParentPrimitive() const
 {
-	if (IsValid(AttachParent))
+	if (IsValid(GetAttachParent()))
 	{
-		const auto PrimitiveComponent = Cast<UPrimitiveComponent>(AttachParent);
+		const auto PrimitiveComponent = Cast<UPrimitiveComponent>(GetAttachParent());
 		if (PrimitiveComponent)
 		{
 			return PrimitiveComponent;

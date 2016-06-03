@@ -1,0 +1,447 @@
+// Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
+
+/*=============================================================================
+	PostProcessBokehDOF.usf: PostProcessing Lens Flares.
+=============================================================================*/
+
+#include "Common.usf"
+#include "PostProcessCommon.usf"
+#include "DepthOfFieldCommon.usf"
+#include "SeparateTranslucency.usf"
+#include "DeferredShadingCommon.usf"		// Custom Depth Data
+
+// for the BokehDOF vertex shader, from postprocessing settings
+// .x: color threshold, .y:size threshold, zw: unused
+float4 DepthOfFieldThresholds;
+
+// .xy:tilecount, .zw:tilesize
+uint4 TileCountAndSize;
+// .xy:size in pixels, .zw:LeftTop of the original viewport in rendertaregt scaled coordiantes
+float4 KernelSize;
+
+// small Bokeh like texture
+Texture2D LensTexture;
+SamplerState LensTextureSampler;
+
+// @return x:layer in front of focal plane, y: layer behind focal plane  1-x-y:layer in focus
+float2 ComputeLayerContributions(float Depth)
+{
+	float Front = saturate((Frame.DepthOfFieldFocalDistance - Depth) / Frame.DepthOfFieldNearTransitionRegion);
+	float Back = saturate((Depth - Frame.DepthOfFieldFocalDistance - Frame.DepthOfFieldFocalRegion) / max(Frame.DepthOfFieldFarTransitionRegion, 0.0001f));
+
+	return float2(Front, Back);
+}
+
+
+// can be optimized
+float2 PixelToScreenPos(float2 PixelPos)
+{
+	return (PixelPos - ScreenPosToPixel.zw) / ScreenPosToPixel.xy;
+}
+
+
+#if DOF_METHOD == 0
+
+// vertex shader
+void MainVS(
+	uint VId : SV_VertexID,
+	uint IId : SV_InstanceID,
+	out noperspective float2 OutTexCoord : TEXCOORD0,
+	out nointerpolation float4 OutColor : TEXCOORD1,
+	out float4 OutPosition : SV_POSITION
+	)
+{
+	uint2 TileCount = TileCountAndSize.xy;
+	uint2 TileSize = TileCountAndSize.zw;
+
+	// needs to be the same on C++ side (faster on NVIDIA and AMD)
+	uint QuadsPerInstance = 8;
+	// remap the indices to get vertexid to VId and quadid into IId
+	IId = IId * QuadsPerInstance + (VId / 4);
+	VId = VId % 4;
+
+	// triangle A: 0:left top, 1:right top, 2: left bottom
+	// triangle B: 3:right bottom, 4:left bottom, 5: right top
+	float2 LocalPos = float2(VId % 2, VId / 2);
+	float2 TilePos = float2(IId % TileCount.x, IId / TileCount.x);
+	
+	OutPosition =  float4(0, 0, 0, 1);
+	OutTexCoord = LocalPos.xy;
+	
+	float2 LeftTop = KernelSize.zw;
+
+	float2 PixelPos = TilePos * TileSize + LeftTop;
+	float2 InputTexCoord = PixelPos * PostprocessInput0Size.zw;
+	float BrightnessAdjustment = 1;
+	float OpacityAdjustment = 1;
+
+	// move sprite by one texel to capture fine details better
+	float4 SceneColorAndDepth;
+	{
+		float4 ColorAndDepths[4];
+		
+		ColorAndDepths[0] = Texture2DSampleLevel(PostprocessInput0, PostprocessInput0Sampler, InputTexCoord + float2(-0.5f, -0.5f) * PostprocessInput0Size.zw, 0);
+		ColorAndDepths[1] = Texture2DSampleLevel(PostprocessInput0, PostprocessInput0Sampler, InputTexCoord + float2( 0.5f, -0.5f) * PostprocessInput0Size.zw, 0);
+		ColorAndDepths[2] = Texture2DSampleLevel(PostprocessInput0, PostprocessInput0Sampler, InputTexCoord + float2(-0.5f,  0.5f) * PostprocessInput0Size.zw, 0);
+		ColorAndDepths[3] = Texture2DSampleLevel(PostprocessInput0, PostprocessInput0Sampler, InputTexCoord + float2( 0.5f,  0.5f) * PostprocessInput0Size.zw, 0);
+
+		float4 Lum = float4(dot(ColorAndDepths[0].rgb, 1), dot(ColorAndDepths[1].rgb, 1), dot(ColorAndDepths[2].rgb, 1), dot(ColorAndDepths[3].rgb, 1));
+		float InvTotalLum = 1.0f / max(0.0001f, dot(Lum, 1));
+
+		float2 SubPixel = float2((Lum.y + Lum.w) * InvTotalLum, (Lum.z + Lum.w) * InvTotalLum);
+
+		float2 SubPixelOffset = SubPixel - 0.5f;
+
+		PixelPos += SubPixelOffset;
+		InputTexCoord += SubPixelOffset * PostprocessInput0Size.zw;
+
+		// adjusting the sample position affects the brightness so we compensate for that
+		float CorrectBrightness = dot(Lum, 0.25f);
+		float2 LumFiltered2 = lerp(Lum.xz, Lum.yw, SubPixel.x);
+		float LumFiltered = lerp(LumFiltered2.x, LumFiltered2.y, SubPixel.y);
+
+		BrightnessAdjustment = CorrectBrightness / max(0.001f, LumFiltered);
+
+		SceneColorAndDepth = (ColorAndDepths[0] * Lum.x + ColorAndDepths[1] * Lum.y + ColorAndDepths[2] * Lum.z + ColorAndDepths[3] * Lum.w) * InvTotalLum;
+	}
+	
+	SceneColorAndDepth.rgb *= BrightnessAdjustment;
+
+	float SceneDepth = SceneColorAndDepth.a;
+
+	// ---------------------------------------------
+
+	// 0..1
+	float CircleOfConfusion = ComputeCircleOfConfusion(SceneDepth);
+
+	float OcclusionTweakFactor2 = 1.0f;
+
+	// todo: max(1.0 looks wrong
+	OutColor = float4(SceneColorAndDepth.rgb, 1) / max(1.0f, pow(CircleOfConfusion, OcclusionTweakFactor2));
+	OutColor.a *= OpacityAdjustment;
+
+	// added bias to get some content even from a very small radius
+	float2 CoCPixelSize = CircleOfConfusion * KernelSize.xy + 2.0f;
+
+	// offset in half res pixels to put two views in one texture with safety border
+	float YOffset = SceneDepth < Frame.DepthOfFieldFocalDistance ? DepthOfFieldParams[1].w : 0;
+
+	// offset the corners
+	OutPosition.xy = PixelToScreenPos(PixelPos + (LocalPos - 0.5f) * CoCPixelSize + float2(0, YOffset));
+}
+
+#else // DOF_METHOD == 0
+
+
+
+// vertex shader
+void MainVS(
+	uint VId : SV_VertexID,
+	uint IId : SV_InstanceID,
+	out float2 OutTexCoord : TEXCOORD0,
+	out nointerpolation float4 OutColor : TEXCOORD1,
+	out float4 OutPosition : SV_POSITION
+	)
+{
+	uint2 TileCount = TileCountAndSize.xy;
+	uint2 TileSize = TileCountAndSize.zw;
+
+	// needs to be the same on C++ side (faster on NVIDIA and AMD)
+	uint QuadsPerInstance = 8;
+	// remap the indices to get vertexid to VId and quadid into IId
+	uint QuadId = VId / 4;
+
+	// triangle A: 0:left top, 1:right top, 2: left bottom
+	// triangle B: 3:right bottom, 4:left bottom, 5: right top
+	uint VertexId = VId % 4;
+	uint HalfTileCountX = TileCount.x / 2;
+	uint QuarterTileCountX = TileCount.x / 4;
+	float2 LocalPos = float2(VertexId % 2, VertexId / 2);
+	uint QuadIdIndex = QuadId%4;
+	float2 TilePos = float2(IId % QuarterTileCountX, IId / QuarterTileCountX) * uint2(4,2) + uint2(QuadId/4,0)*2;
+
+	bool bRenderAll4Quads = false;
+
+
+	OutPosition =  float4(0, 0, 0, 1);
+	OutTexCoord = LocalPos.xy;
+	
+	float2 LeftTop = KernelSize.zw;
+	
+	float2 PixelPos = TilePos * TileSize + LeftTop;
+
+	// to not get filtered samples
+//	PixelPos -= 0.5f;
+
+	float2 InputTexCoord = PixelPos * PostprocessInput0Size.zw;
+
+
+
+	float4 ColorAndDepths[4];
+		
+	ColorAndDepths[0] = Texture2DSampleLevel(PostprocessInput0, PostprocessInput0Sampler, InputTexCoord + float2(-0.5f, -0.5f) * PostprocessInput0Size.zw, 0);
+	ColorAndDepths[1] = Texture2DSampleLevel(PostprocessInput0, PostprocessInput0Sampler, InputTexCoord + float2( 0.5f, -0.5f) * PostprocessInput0Size.zw, 0);
+	ColorAndDepths[2] = Texture2DSampleLevel(PostprocessInput0, PostprocessInput0Sampler, InputTexCoord + float2(-0.5f,  0.5f) * PostprocessInput0Size.zw, 0);
+	ColorAndDepths[3] = Texture2DSampleLevel(PostprocessInput0, PostprocessInput0Sampler, InputTexCoord + float2( 0.5f,  0.5f) * PostprocessInput0Size.zw, 0);
+
+	float4 MinColorAndDepths = min(min(ColorAndDepths[0], ColorAndDepths[1]), min(ColorAndDepths[2], ColorAndDepths[3]));
+	float4 MaxColorAndDepths = max(max(ColorAndDepths[0], ColorAndDepths[1]), max(ColorAndDepths[2], ColorAndDepths[3]));
+	
+	{
+		float3 AbsColor = MaxColorAndDepths.rgb - MinColorAndDepths.rgb;
+
+		if(dot(AbsColor, 1) > DepthOfFieldThresholds.x)
+		{
+			// disable adaptive if the colors are too different
+			bRenderAll4Quads = true;
+		}
+	}
+	
+	{
+		bool MinLayer = MinColorAndDepths.a < Frame.DepthOfFieldFocalDistance;
+		bool MaxLayer = MaxColorAndDepths.a < Frame.DepthOfFieldFocalDistance + Frame.DepthOfFieldFocalRegion;
+
+		if(MinLayer != MaxLayer)
+		{
+			// disble adaptive if we cross layers
+			bRenderAll4Quads = true;
+		}
+	}
+
+	float AvgDepth =  (MinColorAndDepths.a + MaxColorAndDepths.a) * 0.5f;
+
+	// can be optimized
+	{
+		float CircleOfConfusion = ComputeCircleOfConfusion(AvgDepth);
+
+		if(CircleOfConfusion < DepthOfFieldThresholds.y)
+		{
+			// disable adaptive if the quads are too small
+			// small quads don't cost much performance and skipping those would alias
+			bRenderAll4Quads = true;
+		}
+	}
+
+	// by now bRenderAll4Quads should be set --------------------------------
+
+	float4 SceneColorAndDepth;
+
+	if(bRenderAll4Quads)
+	{
+		// can be optimized?
+		SceneColorAndDepth = ColorAndDepths[QuadIdIndex];
+
+		// offset the 4 quads
+		PixelPos += float2(QuadId % 2, QuadIdIndex / 2) - 0.5f;
+	}
+	else
+	{
+		SceneColorAndDepth = (ColorAndDepths[0] + ColorAndDepths[1] + ColorAndDepths[2] + ColorAndDepths[3]) * 0.25f;
+	}
+
+	float SceneDepth = SceneColorAndDepth.a;
+
+	// ---------------------------------------------
+
+	// 0..1
+	float CircleOfConfusion = ComputeCircleOfConfusion(SceneDepth);
+
+	// added bias to get some content even from a very small radius
+	float2 CoCPixelSize = CircleOfConfusion * KernelSize.xy + 2.0f;
+
+	float OcclusionTweakFactor2 = 1.0f;
+
+	// todo: max(1.0 looks wrong
+	OutColor = float4(SceneColorAndDepth.rgb, 1) / max(1.0f, pow(CircleOfConfusion, OcclusionTweakFactor2));
+
+	float2 Layer = ComputeLayerContributions(SceneDepth);
+
+	OutColor *= (SceneDepth < Frame.DepthOfFieldFocalDistance) ? Layer.r : Layer.g;
+
+	if(!bRenderAll4Quads)
+	{
+		// we should reject 3 quads (making them a point)
+		if(QuadIdIndex == 0)
+		{
+			// offset it to the center
+//			PixelPos += 1.0f;
+		}
+		else
+		{
+			// reject 3 quads
+			CoCPixelSize = 0;
+		}
+#if DOF_METHOD == 2
+		// VisualizeAdaptiveDOF: green when is rendered fast (1 quad instead of 4 quads)
+		OutColor.rgb *= dot(OutColor.rgb, 1.0f/3.0f) * float3(0, 1, 0);
+#endif
+	}
+	else
+	{
+		// it's either one strong quad or 4 faint ones
+		OutColor *= 0.25f;
+#if DOF_METHOD == 2
+		// VisualizeAdaptiveDOF: red when is rendered slow (all 4 quads)
+		OutColor.rgb = dot(OutColor.rgb, 1.0f/3.0f) * float3(1, 0, 0);
+#endif
+	}
+
+	// offset in half res pixels to put two views in one texture with safety border
+	float YOffset = SceneDepth < Frame.DepthOfFieldFocalDistance ? DepthOfFieldParams[1].w : 0;
+
+	// offset the corners
+	OutPosition.xy = PixelToScreenPos(PixelPos + (LocalPos - 0.5f) * CoCPixelSize + float2(0, YOffset));
+}
+
+#endif // DOF_METHOD == 0
+
+
+// @return OutColor
+float4 CommonDOFSetup(in float2 CenterUV, out bool bFrontLayer, out float4 Mask )
+{
+	float2 Offset = PostprocessInput0Size.zw;
+
+	float2 UV[4];
+
+	// no filtering (2x2 kernel) to get no leaking in Depth of Field
+	UV[0] = CenterUV + Offset * float2(-0.5f, -0.5f);
+	UV[1] = CenterUV + Offset * float2( 0.5f, -0.5f);
+	UV[2] = CenterUV + Offset * float2(-0.5f,  0.5f);
+	UV[3] = CenterUV + Offset * float2( 0.5f,  0.5f);
+
+	float4 ColorAndDepth[4];
+	float2 Layer[4];
+
+	FLATTEN for(uint i = 0; i < 4; ++i)
+	{
+		// clamping to a small number fixes black dots appearing (denorms?, 0 doesn't fix it)
+		ColorAndDepth[i].rgb = max(float3(0.0001f, 0.0001f, 0.0001f), Texture2DSample(PostprocessInput0, PostprocessInput0Sampler, UV[i]).rgb);
+		ColorAndDepth[i].a = min(CalcSceneDepth(UV[i]), CalcCustomDepth(UV[i]));
+		Layer[i] = ComputeLayerContributions(ColorAndDepth[i].a);
+	}
+
+	float2 LayerSum = Layer[0] + Layer[1] + Layer[2] + Layer[3];
+	bFrontLayer = LayerSum.x > LayerSum.y;
+
+	Mask = bFrontLayer ?
+		float4(Layer[0].x, Layer[1].x, Layer[2].x, Layer[3].x) :
+		float4(Layer[0].y, Layer[1].y, Layer[2].y, Layer[3].y);
+
+	float SumMask = dot(Mask, 1);
+
+	float4 OutColor;
+
+	FLATTEN if(SumMask > 0.001f)
+	{
+		OutColor = (
+			ColorAndDepth[0] * Mask.x +
+			ColorAndDepth[1] * Mask.y +
+			ColorAndDepth[2] * Mask.z +
+			ColorAndDepth[3] * Mask.w ) / SumMask;
+	}
+	else
+	{
+		OutColor = ColorAndDepth[0];
+	}
+
+	return OutColor;
+}
+
+// downsample to half res, put depth in alpha
+void MainSetupPS(in noperspective float4 UVAndScreenPos : TEXCOORD0, out float4 OutColor : SV_Target0)
+{
+	// unused for this pass
+	bool bFrontLayer;
+	float4 Mask;
+
+	OutColor = CommonDOFSetup(UVAndScreenPos.xy, bFrontLayer, Mask);
+
+	// clamp to avoid artifacts from exceeding fp16 through framebuffer blending of multiple very bright lights
+	OutColor.rgb = min(float3(256 * 256, 256 * 256, 256 * 256), OutColor.rgb);
+}
+
+// pixel shader to accumulate the Bokeh shaped elements
+void MainPS(
+	noperspective float2 TexCoord : TEXCOORD0,
+	nointerpolation float4 InColor : TEXCOORD1,
+	out float4 OutColor : SV_Target0
+	)
+{
+	float4 Kernel = Texture2DSample(LensTexture, LensTextureSampler, TexCoord);
+
+	// to make sure the quad is centered around the content
+	// watch out: the texture can be offset
+//	Kernel=float4(1,0,0,0.5f);
+
+	OutColor = InColor * Kernel;
+}
+
+// pixel shader to combine the full res scene and the blurred images behind and in front of the the focal plane
+void MainRecombinePS(
+	noperspective in float4 UVAndScreenPos : TEXCOORD0,
+	float4 SvPosition : SV_POSITION,
+	out float4 OutColor : SV_Target0
+	)
+{
+	// SceneColor in full res
+	float2 PixelPosCenter = SvPosition.xy;
+
+	float2 FullResUV = PixelPosCenter * PostprocessInput0Size.zw;
+
+	float4 SceneColorAndDepth = float4(Texture2DSample(PostprocessInput0, PostprocessInput0Sampler, FullResUV).rgb, CalcSceneDepth(FullResUV));
+
+	float3 UnfocusedSceneColor = SceneColorAndDepth.rgb;
+
+	OutColor.rgb = UnfocusedSceneColor;
+	OutColor.a = 0;
+
+#if RECOMBINE_METHOD == 1 || RECOMBINE_METHOD == 3
+	// BokehDOF in half res
+//	float2 BokehViewportUV = FullResUV * float2(1, DepthOfFieldParams[1].z);// - 0.5 * PostprocessInput1Size.zw;
+//	float2 BokehViewportUV = (PixelPos * 0.5f + 0.5f) * PostprocessInput1Size.zw;
+	float2 BokehViewportUV = UVAndScreenPos.xy;
+
+	// behind focal plane
+	float4 BokehDOFAccumLayer1 = Texture2DSample(PostprocessInput1, PostprocessInput1Sampler, BokehViewportUV);
+
+	// in front of focal plane
+	float4 BokehDOFAccumLayer3 = Texture2DSample(PostprocessInput1, PostprocessInput1Sampler, BokehViewportUV + float2(0.0f, DepthOfFieldParams[1].y));
+
+	float OcclusionTweakFactor1 = DepthOfFieldParams[0].w;
+
+	float Layer1Mask = saturate(BokehDOFAccumLayer1.a * OcclusionTweakFactor1);
+	float Layer2Mask = 1.0f - saturate(ComputeCircleOfConfusion(SceneColorAndDepth.a) * 5);	// todo: expose 5 as tweak value
+	float Layer3Mask = saturate(BokehDOFAccumLayer3.a * OcclusionTweakFactor1);
+
+	half FocusedWeight;
+
+	// 3 layers
+	{
+		// RGB color, A how much the full resolution shows through
+		float4 LayerMerger = 0;
+
+		// Layer 1: half res background
+		LayerMerger.rgb = lerp(UnfocusedSceneColor, BokehDOFAccumLayer1.rgb / max(BokehDOFAccumLayer1.a, 0.001f), Layer1Mask);
+
+		// Layer 2: then we add the focused scene to fill the empty areas
+		LayerMerger = lerp(LayerMerger, float4(SceneColorAndDepth.rgb, 1), Layer2Mask);
+
+		// Layer 3: on top of that blend the front half res layer	
+		LayerMerger = lerp(LayerMerger, float4(BokehDOFAccumLayer3.rgb / max(BokehDOFAccumLayer3.a, 0.001f), 0), Layer3Mask);
+
+		UnfocusedSceneColor = LayerMerger.rgb;
+
+		// blend in full resolution where we are most in focus
+		FocusedWeight = LayerMerger.a;
+	}
+
+	OutColor.rgb = lerp(UnfocusedSceneColor, OutColor.rgb, FocusedWeight);
+#endif
+
+#if RECOMBINE_METHOD == 2 || RECOMBINE_METHOD == 3
+	float4 SeparateTranslucency = UpsampleSeparateTranslucency(SvPosition.xy, FullResUV);
+
+	// add RGB, darken by A (this allows to represent translucent and additive blending)
+	OutColor.rgb = OutColor.rgb * SeparateTranslucency.a + SeparateTranslucency.rgb;
+#endif
+}
