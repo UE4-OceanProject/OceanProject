@@ -3,11 +3,11 @@
 * 
 * Created by: DotCam
 * Project name: OceanProject
-* Unreal Engine version: 4.10
+* Unreal Engine version: 4.12.2
 * Created on: 2015/03/05
 *
-* Last Edited on: 2016/02/28
-* Last Edited by: TK-Master
+* Last Edited on: 2016/06/10
+* Last Edited by: DotCam
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
