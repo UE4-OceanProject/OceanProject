@@ -27,7 +27,7 @@
  * Custom player controller that has custom functionality to help possess vehicles.
  */
 UCLASS()
-class ACustomVehicleController : public APlayerController
+class OCEANPLUGIN_API ACustomVehicleController : public APlayerController
 {
 	GENERATED_UCLASS_BODY()
 
