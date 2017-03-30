@@ -185,7 +185,7 @@ void UBuoyancyComponent::ApplyUprightConstraint()
 		ConstraintInstance.SetAngularSwing2Motion(EAngularConstraintMotion::ACM_Limited);
 		ConstraintInstance.SetAngularTwistMotion(EAngularConstraintMotion::ACM_Limited);
 
-		ConstraintInstance.SetAngularPositionDrive(true, true);
+		ConstraintInstance.SetOrientationDriveTwistAndSwing(true, true);
 
 		//ConstraintInstance.SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Locked, 0);
 		ConstraintInstance.SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0);

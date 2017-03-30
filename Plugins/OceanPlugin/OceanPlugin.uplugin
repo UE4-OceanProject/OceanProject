@@ -3,7 +3,7 @@
     "FriendlyName" : "Ocean Project Plugin",
     "Version" : 1,
     "VersionName": "1.0",
-    "EngineVersion" : "4.14",
+    "EngineVersion" : "4.15",
     "Description" : "Provides the code base classes for the ocean system.",
     "Category" : "Ocean",
     "CreatedBy" : "DotCam",
