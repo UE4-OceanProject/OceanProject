@@ -3,7 +3,7 @@ An Ocean Simulation project for Unreal Engine 4.
 
 ---------------------
 
-**4.14 Branch - This is the most up to date branch compatible with UE 4.14.x**
+**4.15 Branch - This is the most up to date branch compatible with UE 4.15.x**
 
 ![img_project](ProjectScreenshot.jpg)
 
