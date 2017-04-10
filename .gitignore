@@ -16,8 +16,6 @@
 # Ignore project files in the root
 *.sln
 *.xcodeproj
-*.sln
-*.xcodeproj
 
 # Ignore local user Visual Studio files in any folder
 *.suo
@@ -52,3 +50,4 @@ Saved/**
 #Ignore debug data files
 *.pdb
 *.exp
+*.VC.db

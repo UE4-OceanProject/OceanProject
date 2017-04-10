@@ -2,13 +2,13 @@
 	"TargetName" : "OceanProjectEditor",
 	"Platform" : "Win64",
 	"Configuration" : "Development",
-	"BuildId" : "80bbb9d4-1e8b-454f-b4e8-30440e0fa674",
+	"BuildId" : "45e96ef6-70a3-404e-8f1a-927893b5e5bc",
 	"Version" : 
 	{
 		"MajorVersion" : 4,
 		"MinorVersion" : 12,
-		"PatchVersion" : 2,
-		"Changelist" : 3005592,
+		"PatchVersion" : 5,
+		"Changelist" : 3039270,
 		"IsLicenseeVersion" : 0,
 		"BranchName" : "++UE4+Release-4.12"
 	},
