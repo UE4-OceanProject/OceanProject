@@ -1,14 +1,21 @@
-# OceanProject
+ # OceanProject
 An Ocean Simulation project for Unreal Engine 4.
 
 ---------------------
 
-**4.12 Branch - This is the most up to date branch compatible with UE 4.12.x**
+**4.15 Branch - This is the most up to date branch compatible with UE 4.15.x**
 
 ![img_project](ProjectScreenshot.jpg)
 
+**Changelog:**
 
-New features in added in 4.10:
+
+Added in 4.15:
+
+* Advanced Buoyancy Component by Burnrate.
+* Compatibility fixes.
+
+Added in 4.10:
 
 * Underwater post process with exponential fog
 * Stencil-based underwater masking
@@ -20,8 +27,32 @@ New features in added in 4.10:
 * Harpoon gun with rope physics
 * Various code improvements
 * Various shader improvements  
-(Visit the forum thread for more info)
+[(Forum post with more info)](https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader&p=485675&viewfull=1#post485675)
 
+Added in 4.8:
+
+* Screen Space Reflections (SSR)
+* Distance Blended Normals
+* Infinite Ocean System
+* Configurable Sets of Panning Normals (Small, Medium, Far)
+* Heightmap-based Seafoam & Foam Wave Caps
+* Cubmap-based Reflections
+* Exposed many parameters to BP_Ocean
+* Underwater Distortion Effect
+* Underwater Caustics
+[Forum post with more info](https://forums.unrealengine.com/showthread.php?42092&p=311982&viewfull=1#post311982)
+
+Added in 4.7:
+
+* Removed the old buoyancy movement component.
+* Added new buoyancy force component.
+* Added custom player controller.
+* Added example assets: wooden barrels, crate, cannon, icebergs, flag/sails (with apex cloth) & warship HMS Victory.
+* Added simple UI (UMG), with health bar, ship speedometer (knots) etc.
+* Added simple drivable boat blueprint with (multiplayer support).
+* Added advanced warship blueprint with physics + per-poly collision
+* Updated OceanExampleMap_01 to include example boats, ships, cannons, buoyant objects & destructible icebergs.
+[Full 4.7 changelist](https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader&p=279737&viewfull=1#post279737)
 
 ===================================================================
 

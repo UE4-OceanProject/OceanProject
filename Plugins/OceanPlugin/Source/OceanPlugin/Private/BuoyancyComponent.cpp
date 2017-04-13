@@ -20,7 +20,8 @@
 
 #include "OceanPluginPrivatePCH.h"
 #include "BuoyancyComponent.h"
-
+#include "PhysicsEngine/ConstraintInstance.h"
+#include "PhysicsEngine/PhysicsConstraintComponent.h"
 
 UBuoyancyComponent::UBuoyancyComponent(const class FObjectInitializer& PCIP)
 	: Super(PCIP) 
@@ -146,8 +147,8 @@ void UBuoyancyComponent::TickComponent(float DeltaTime, enum ELevelTick TickType
 	if (ClampMaxVelocity && PointsUnderWater > 0
 		&& UpdatedPrimitive->GetPhysicsLinearVelocity().Size() > MaxUnderwaterVelocity)
 	{
-		FVector	Velocity = UpdatedPrimitive->GetPhysicsLinearVelocity().GetSafeNormal() * MaxUnderwaterVelocity;
-		UpdatedPrimitive->SetPhysicsLinearVelocity(Velocity);
+		FVector	v = UpdatedPrimitive->GetPhysicsLinearVelocity().GetSafeNormal() * MaxUnderwaterVelocity;
+		UpdatedPrimitive->SetPhysicsLinearVelocity(v);
 	}
 
 	//Update damping based on number of underwater test points
@@ -175,27 +176,23 @@ void UBuoyancyComponent::ApplyUprightConstraint()
 		//Settings
 		FConstraintInstance ConstraintInstance;
 
-		ConstraintInstance.LinearXMotion = ELinearConstraintMotion::LCM_Free;
-		ConstraintInstance.LinearYMotion = ELinearConstraintMotion::LCM_Free;
-		ConstraintInstance.LinearZMotion = ELinearConstraintMotion::LCM_Free;
+		ConstraintInstance.SetLinearXMotion(ELinearConstraintMotion::LCM_Free);
+		ConstraintInstance.SetLinearYMotion(ELinearConstraintMotion::LCM_Free);
+		ConstraintInstance.SetLinearZMotion(ELinearConstraintMotion::LCM_Free);
 
 		//ConstraintInstance.LinearLimitSize = 0;
 
 		//ConstraintInstance.AngularSwing1Motion = EAngularConstraintMotion::ACM_Limited;
-		ConstraintInstance.AngularSwing2Motion = EAngularConstraintMotion::ACM_Limited;
-		ConstraintInstance.AngularTwistMotion = EAngularConstraintMotion::ACM_Limited;
+		ConstraintInstance.SetAngularSwing2Motion(EAngularConstraintMotion::ACM_Limited);
+		ConstraintInstance.SetAngularTwistMotion(EAngularConstraintMotion::ACM_Limited);
 
-		ConstraintInstance.bSwingLimitSoft = true;
-		ConstraintInstance.bTwistLimitSoft = true;
+		ConstraintInstance.SetOrientationDriveTwistAndSwing(true, true);
 
 		//ConstraintInstance.Swing1LimitAngle = 0;
-		ConstraintInstance.Swing2LimitAngle = 0;
-		ConstraintInstance.TwistLimitAngle = 0;
+		ConstraintInstance.SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0);
+		ConstraintInstance.SetAngularTwistLimit(EAngularConstraintMotion::ACM_Locked, 0);
 
-		ConstraintInstance.SwingLimitStiffness = StayUprightStiffness;
-		ConstraintInstance.SwingLimitDamping = StayUprightDamping;
-		ConstraintInstance.TwistLimitStiffness = StayUprightStiffness;
-		ConstraintInstance.TwistLimitDamping = StayUprightDamping;
+		ConstraintInstance.SetAngularDriveParams(StayUprightStiffness, StayUprightDamping, 0);
 
 		ConstraintInstance.AngularRotationOffset = UpdatedPrimitive->GetComponentRotation().GetInverse() + StayUprightDesiredRotation;
 

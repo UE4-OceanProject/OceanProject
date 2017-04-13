@@ -2,15 +2,17 @@
 	"TargetName" : "OceanProjectEditor",
 	"Platform" : "Win64",
 	"Configuration" : "Development",
-	"BuildId" : "45e96ef6-70a3-404e-8f1a-927893b5e5bc",
+	"BuildId" : "86226abb-1506-46a3-9d36-eb1f59efc4ed",
 	"Version" : 
 	{
 		"MajorVersion" : 4,
-		"MinorVersion" : 12,
-		"PatchVersion" : 5,
-		"Changelist" : 3039270,
+		"MinorVersion" : 15,
+		"PatchVersion" : 0,
+		"Changelist" : 3299760,
+		"CompatibleChangelist" : 0,
 		"IsLicenseeVersion" : 0,
-		"BranchName" : "++UE4+Release-4.12"
+		"IsPromotedBuild" : 1,
+		"BranchName" : "++UE4+Release-4.15"
 	},
 	"BuildProducts" :
 	[
@@ -37,6 +39,14 @@
 		{
 			"Path" : "$(ProjectDir)/Intermediate/Build/Win64/UE4Editor/Development/UE4Editor-OceanProject.lib",
 			"Type" : "ImportLibrary"
+		},
+		{
+			"Path" : "$(ProjectDir)/Plugins/OceanPlugin/Binaries/Win64/UE4Editor.modules",
+			"Type" : "RequiredResource"
+		},
+		{
+			"Path" : "$(ProjectDir)/Binaries/Win64/UE4Editor.modules",
+			"Type" : "RequiredResource"
 		}
 	],
 	"RuntimeDependencies" :
@@ -78,7 +88,23 @@
 			"Type" : "UFS"
 		},
 		{
+			"Path" : "$(EngineDir)/Plugins/Editor/AudioCapture/AudioCapture.uplugin",
+			"Type" : "UFS"
+		},
+		{
 			"Path" : "$(EngineDir)/Plugins/Editor/EpicSurvey/EpicSurvey.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Editor/FacialAnimation/FacialAnimation.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Editor/GameplayTagsEditor/GameplayTagsEditor.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Editor/MobileLauncherProfileWizard/MobileLauncherProfileWizard.uplugin",
 			"Type" : "UFS"
 		},
 		{
@@ -94,6 +120,10 @@
 			"Type" : "UFS"
 		},
 		{
+			"Path" : "$(EngineDir)/Plugins/Experimental/AlembicImporter/AlembicImporter.uplugin",
+			"Type" : "UFS"
+		},
+		{
 			"Path" : "$(EngineDir)/Plugins/Experimental/CharacterAI/CharacterAI.uplugin",
 			"Type" : "UFS"
 		},
@@ -102,11 +132,27 @@
 			"Type" : "UFS"
 		},
 		{
+			"Path" : "$(EngineDir)/Plugins/Media/AndroidMedia/AndroidMedia.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Media/AvfMedia/AvfMedia.uplugin",
+			"Type" : "UFS"
+		},
+		{
 			"Path" : "$(EngineDir)/Plugins/Media/MediaPlayerEditor/MediaPlayerEditor.uplugin",
 			"Type" : "UFS"
 		},
 		{
+			"Path" : "$(EngineDir)/Plugins/Media/MfMedia/MfMedia.uplugin",
+			"Type" : "UFS"
+		},
+		{
 			"Path" : "$(EngineDir)/Plugins/Media/WmfMedia/WmfMedia.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Messaging/TcpMessaging/TcpMessaging.uplugin",
 			"Type" : "UFS"
 		},
 		{
@@ -119,6 +165,18 @@
 		},
 		{
 			"Path" : "$(EngineDir)/Plugins/MovieScene/MatineeToLevelSequence/MatineeToLevelSequence.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Online/OnlineSubsystem/OnlineSubsystem.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Online/OnlineSubsystemNull/OnlineSubsystemNull.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Online/OnlineSubsystemUtils/OnlineSubsystemUtils.uplugin",
 			"Type" : "UFS"
 		},
 		{
@@ -138,6 +196,14 @@
 			"Type" : "UFS"
 		},
 		{
+			"Path" : "$(EngineDir)/Plugins/Runtime/LocationServicesBPLibrary/LocationServicesBPLibrary.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Runtime/MobilePatchingUtils/MobilePatchingUtils.uplugin",
+			"Type" : "UFS"
+		},
+		{
 			"Path" : "$(EngineDir)/Plugins/Runtime/OculusInput/OculusInput.uplugin",
 			"Type" : "UFS"
 		},
@@ -147,6 +213,10 @@
 		},
 		{
 			"Path" : "$(EngineDir)/Plugins/Runtime/OculusRift/OculusRift.uplugin",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Plugins/Runtime/PhysXVehicles/PhysXVehicles.uplugin",
 			"Type" : "UFS"
 		},
 		{
@@ -162,11 +232,11 @@
 			"Type" : "UFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Plugins/Slate/SlateRemote/SlateRemote.uplugin",
+			"Path" : "$(EngineDir)/Content/Slate/...",
 			"Type" : "UFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Content/Slate/...",
+			"Path" : "$(EngineDir)/Content/SlateDebug/...",
 			"Type" : "UFS"
 		},
 		{
@@ -174,63 +244,87 @@
 			"Type" : "UFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3PROFILE_x64.dll",
+			"Path" : "$(EngineDir)/Content/SlateDebug/...",
+			"Type" : "UFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/PxFoundationPROFILE_x64.dll",
 			"Type" : "NonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3PROFILE_x64.pdb",
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/PxFoundationPROFILE_x64.pdb",
 			"Type" : "DebugNonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3CommonPROFILE_x64.dll",
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/PxPvdSDKPROFILE_x64.dll",
 			"Type" : "NonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3CommonPROFILE_x64.pdb",
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/PxPvdSDKPROFILE_x64.pdb",
 			"Type" : "DebugNonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3CookingPROFILE_x64.dll",
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/PhysX3PROFILE_x64.dll",
 			"Type" : "NonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/PhysX3CookingPROFILE_x64.pdb",
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/PhysX3PROFILE_x64.pdb",
 			"Type" : "DebugNonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/PhysX-3.3/Win64/VS2015/nvToolsExt64_1.dll",
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/PhysX3CookingPROFILE_x64.dll",
 			"Type" : "NonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_ClothingPROFILE_x64.dll",
-			"Type" : "NonUFS"
-		},
-		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_ClothingPROFILE_x64.dll.pdb",
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/PhysX3CookingPROFILE_x64.pdb",
 			"Type" : "DebugNonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_DestructiblePROFILE_x64.dll",
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/PhysX3CommonPROFILE_x64.dll",
 			"Type" : "NonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_DestructiblePROFILE_x64.dll.pdb",
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/PhysX3CommonPROFILE_x64.pdb",
 			"Type" : "DebugNonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_LegacyPROFILE_x64.dll",
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/PxFoundationPROFILE_x64.dll",
 			"Type" : "NonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/APEX_LegacyPROFILE_x64.dll.pdb",
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/PxPvdSDKPROFILE_x64.dll",
+			"Type" : "NonUFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/APEX_ClothingPROFILE_x64.dll",
+			"Type" : "NonUFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/APEX_ClothingPROFILE_x64.pdb",
 			"Type" : "DebugNonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/ApexFrameworkPROFILE_x64.dll",
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/APEX_DestructiblePROFILE_x64.dll",
 			"Type" : "NonUFS"
 		},
 		{
-			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/APEX-1.3/Win64/VS2015/ApexFrameworkPROFILE_x64.dll.pdb",
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/APEX_DestructiblePROFILE_x64.pdb",
+			"Type" : "DebugNonUFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/APEX_LegacyPROFILE_x64.dll",
+			"Type" : "NonUFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/APEX_LegacyPROFILE_x64.pdb",
+			"Type" : "DebugNonUFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/ApexFrameworkPROFILE_x64.dll",
+			"Type" : "NonUFS"
+		},
+		{
+			"Path" : "$(EngineDir)/Binaries/ThirdParty/PhysX/Win64/VS2015/ApexFrameworkPROFILE_x64.pdb",
 			"Type" : "DebugNonUFS"
 		}
 	]

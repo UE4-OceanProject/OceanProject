@@ -55,7 +55,7 @@ void UAdvancedBuoyancyComponent::InitializeComponent()
 	// Get the static mesh component we are checking for buoyancy and ensure it has a valid static mesh assigned
 	if (!BuoyantMesh) { BuoyantMesh = Cast<UStaticMeshComponent>(GetAttachParent()); }
 	if (!BuoyantMesh) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Missed"))); return; }
-	if (!BuoyantMesh->StaticMesh) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Mesh Missed"))); return; }
+	if (!BuoyantMesh->GetStaticMesh()) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Mesh Missed"))); return; }
 
 	BuoyantMesh->GetLocalBounds(MinBound, MaxBound);
 
@@ -213,8 +213,8 @@ void UAdvancedBuoyancyComponent::DrawDebugStuff(FForceTriangle TriForce, FColor 
 void UAdvancedBuoyancyComponent::PopulateTrianglesFromStaticMesh()
 {
 	
-	int32 NumLODs = BuoyantMesh->StaticMesh->RenderData->LODResources.Num();
-	FStaticMeshLODResources& LODResource = BuoyantMesh->StaticMesh->RenderData->LODResources[NumLODs - 1];
+	int32 NumLODs = BuoyantMesh->GetStaticMesh()->RenderData->LODResources.Num();
+	FStaticMeshLODResources& LODResource = BuoyantMesh->GetStaticMesh()->RenderData->LODResources[NumLODs - 1];
 
 	int numIndices = LODResource.IndexBuffer.IndexBufferRHI->GetSize() / sizeof(uint16);
 	uint16* Indices = new uint16[numIndices];
@@ -243,7 +243,7 @@ void UAdvancedBuoyancyComponent::PopulateTrianglesFromStaticMesh()
 	int32 NumTris;
 
 	if (!BuoyantMesh) { GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, GetOwner()->GetName() + ": Where did the mesh go?!"); return; }
-	if (!BuoyantMesh->StaticMesh) { GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, GetOwner()->GetName() + ": Where did the mesh go?!"); return; }
+	if (!BuoyantMesh->GetStaticMesh()) { GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, GetOwner()->GetName() + ": Where did the mesh go?!"); return; }
 
 	NumVerts = LODResource.GetNumVertices();
 	NumTris = LODResource.GetNumTriangles();
@@ -337,7 +337,7 @@ void UAdvancedBuoyancyComponent::AdvancedBuoyancy()
 
 	if (!BuoyantMesh) { BuoyantMesh = Cast<UStaticMeshComponent>(GetAttachParent()); }
 	if (!BuoyantMesh) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Missed"))); return; }
-	if (!BuoyantMesh->StaticMesh) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Mesh Missed"))); return; }
+	if (!BuoyantMesh->GetStaticMesh()) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Mesh Missed"))); return; }
 
 
 	// Create the grid for ocean height sampling based on the size of the boat mesh

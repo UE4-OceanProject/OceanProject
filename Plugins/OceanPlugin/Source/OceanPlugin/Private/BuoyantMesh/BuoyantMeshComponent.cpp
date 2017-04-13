@@ -191,7 +191,7 @@ void UBuoyantMeshComponent::TickComponent(float DeltaTime,
 
 void UBuoyantMeshComponent::ApplyMeshForces()
 {
-	auto World = GetWorld();
+	//auto World = GetWorld();
 
 	const auto LocalToWorld = GetComponentTransform();
 
