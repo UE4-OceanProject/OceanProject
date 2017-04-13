@@ -9,7 +9,6 @@ An Ocean Simulation project for Unreal Engine 4.
 
 **Changelog:**
 
-
 Added in 4.15:
 
 * Advanced Buoyancy Component by Burnrate.
@@ -39,8 +38,8 @@ Added in 4.8:
 * Cubmap-based Reflections
 * Exposed many parameters to BP_Ocean
 * Underwater Distortion Effect
-* Underwater Caustics
-[Forum post with more info](https://forums.unrealengine.com/showthread.php?42092&p=311982&viewfull=1#post311982)
+* Underwater Caustics  
+[(Forum post with more info)](https://forums.unrealengine.com/showthread.php?42092&p=311982&viewfull=1#post311982)
 
 Added in 4.7:
 
@@ -51,8 +50,8 @@ Added in 4.7:
 * Added simple UI (UMG), with health bar, ship speedometer (knots) etc.
 * Added simple drivable boat blueprint with (multiplayer support).
 * Added advanced warship blueprint with physics + per-poly collision
-* Updated OceanExampleMap_01 to include example boats, ships, cannons, buoyant objects & destructible icebergs.
-[Full 4.7 changelist](https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader&p=279737&viewfull=1#post279737)
+* Updated OceanExampleMap_01 to include example boats, ships, cannons, buoyant objects & destructible icebergs.  
+[(Full 4.7 changelist)](https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader&p=279737&viewfull=1#post279737)
 
 ===================================================================
 
