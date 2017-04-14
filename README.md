@@ -1,4 +1,4 @@
- # OceanProject
+# OceanProject
 An Ocean Simulation project for Unreal Engine 4.
 
 ---------------------
@@ -13,6 +13,10 @@ Added in 4.15:
 
 * Advanced Buoyancy Component by Burnrate.
 * Compatibility fixes.
+
+Added in 4.12:
+* Implemented Planar Reflections as a component of the BP_Ocean blueprint
+* Implemented highly accurate calculations for sun/moon in the plugin, updated skydome to use the new calendar and sky system. This sets the base for the new Skydome, features coming in subsequent updates.
 
 Added in 4.10:
 

@@ -17,6 +17,9 @@
 *.sln
 *.xcodeproj
 
+# Ignore VS 2017 project folder
+.vs/
+
 # Ignore local user Visual Studio files in any folder
 *.suo
 *.opensdf
@@ -51,3 +54,8 @@ Saved/**
 *.pdb
 *.exp
 *.VC.db
+
+#Ignore visual studio build files
+*.target
+*.modules
+*.lib

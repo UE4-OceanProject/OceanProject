@@ -180,15 +180,11 @@ void UBuoyancyComponent::ApplyUprightConstraint()
 		ConstraintInstance.SetLinearYMotion(ELinearConstraintMotion::LCM_Free);
 		ConstraintInstance.SetLinearZMotion(ELinearConstraintMotion::LCM_Free);
 
-		//ConstraintInstance.LinearLimitSize = 0;
-
-		//ConstraintInstance.AngularSwing1Motion = EAngularConstraintMotion::ACM_Limited;
 		ConstraintInstance.SetAngularSwing2Motion(EAngularConstraintMotion::ACM_Limited);
 		ConstraintInstance.SetAngularTwistMotion(EAngularConstraintMotion::ACM_Limited);
 
 		ConstraintInstance.SetOrientationDriveTwistAndSwing(true, true);
 
-		//ConstraintInstance.Swing1LimitAngle = 0;
 		ConstraintInstance.SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0);
 		ConstraintInstance.SetAngularTwistLimit(EAngularConstraintMotion::ACM_Locked, 0);
 
@@ -196,7 +192,6 @@ void UBuoyancyComponent::ApplyUprightConstraint()
 
 		ConstraintInstance.AngularRotationOffset = UpdatedPrimitive->GetComponentRotation().GetInverse() + StayUprightDesiredRotation;
 
-		//UPhysicsConstraintComponent* ConstraintComp = NewObject<UPhysicsConstraintComponent>(UpdatedPrimitive);
 		if (ConstraintComp)
 		{
 			ConstraintComp->ConstraintInstance = ConstraintInstance; //Set instance parameters
