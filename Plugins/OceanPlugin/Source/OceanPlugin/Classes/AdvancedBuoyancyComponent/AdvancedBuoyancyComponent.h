@@ -32,7 +32,7 @@
 #include "AdvancedBuoyancyComponent.generated.h"
 
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FBuoyancyVertex
 {
 	GENERATED_USTRUCT_BODY()
@@ -41,7 +41,7 @@ struct FBuoyancyVertex
 	float Depth = 0.f;
 };
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FForceTriangle
 {
 	GENERATED_USTRUCT_BODY()

@@ -4,8 +4,11 @@ using UnrealBuildTool;
 
 public class OceanProject : ModuleRules
 {
-	public OceanProject(TargetInfo Target)
+	public OceanProject(ReadOnlyTargetRules Target) : base(Target)
 	{
+
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

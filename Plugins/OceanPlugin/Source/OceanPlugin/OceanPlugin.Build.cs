@@ -13,7 +13,7 @@ public class OceanPlugin : ModuleRules
         get { return Path.GetFullPath(Path.Combine(ModulePath, "../../ThirdParty/")); }
     }
 
-    public OceanPlugin(TargetInfo Target)
+    public OceanPlugin(ReadOnlyTargetRules Target) : base(Target)
     {
         PrivateIncludePaths.AddRange(new string[] { "OceanPlugin/Private" });
        // PublicIncludePaths.AddRange(new string[] { "OceanPlugin/Public" });
