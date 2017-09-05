@@ -4,7 +4,7 @@ using UnrealBuildTool;
 
 public class OceanProject : ModuleRules
 {
-	public OceanProject(TargetInfo Target)
+	public OceanProject(ReadOnlyTargetRules Target):base(Target)
 	{
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
