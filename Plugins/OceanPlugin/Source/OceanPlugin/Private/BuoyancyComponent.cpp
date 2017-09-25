@@ -3,11 +3,11 @@
 * 
 * Created by: TK-Master
 * Project name: OceanProject
-* Unreal Engine version: 4.12.2
+* Unreal Engine version: 4.17
 * Created on: 2015/04/26
 *
-* Last Edited on: 2016/06/10
-* Last Edited by: DotCam
+* Last Edited on: 2017/09/25
+* Last Edited by: Zoc (Felipe Silveira)
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -23,8 +23,8 @@
 #include "PhysicsEngine/ConstraintInstance.h"
 #include "PhysicsEngine/PhysicsConstraintComponent.h"
 
-UBuoyancyComponent::UBuoyancyComponent(const class FObjectInitializer& PCIP)
-	: Super(PCIP) 
+UBuoyancyComponent::UBuoyancyComponent(const class FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
 	//Defaults
 	MeshDensity = 600.0f;
@@ -46,10 +46,13 @@ void UBuoyancyComponent::InitializeComponent()
 {
 	Super::InitializeComponent();
 
-	// If no OceanManager is defined auto-detect
+	//Store the world ref.
+	World = GetWorld();
+
+	// If no OceanManager is defined, auto-detect
 	if (!OceanManager)
 	{
-		for (TActorIterator<AOceanManager> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+		for (TActorIterator<AOceanManager> ActorItr(World); ActorItr; ++ActorItr)
 		{
 			OceanManager = Cast<AOceanManager>(*ActorItr);
 			break;
@@ -65,6 +68,7 @@ void UBuoyancyComponent::InitializeComponent()
 
 	if (UpdatedPrimitive->IsValidLowLevel())
 	{
+		//Store the initial damping values.
 		_baseLinearDamping = UpdatedPrimitive->GetLinearDamping();
 		_baseAngularDamping = UpdatedPrimitive->GetAngularDamping();
 	}
@@ -111,7 +115,7 @@ void UBuoyancyComponent::TickComponent(float DeltaTime, enum ELevelTick TickType
 			float DepthMultiplier = (waveHeight - (worldTestPoint.Z + _SignedRadius)) / (TestPointRadius * 2);
 			DepthMultiplier = FMath::Clamp(DepthMultiplier, 0.f, 1.f);
 
-			//If we have a point density override, use the overriden value insted of MeshDensity
+			//If we have a point density override, use the overridden value instead of MeshDensity
 			float PointDensity = PointDensityOverride.IsValidIndex(pointIndex) ? PointDensityOverride[pointIndex] : MeshDensity;
 
 			/**
@@ -139,7 +143,7 @@ void UBuoyancyComponent::TickComponent(float DeltaTime, enum ELevelTick TickType
 		{
 			FColor DebugColor = FLinearColor(0.8, 0.7, 0.2, 0.8).ToRGBE();
 			if (isUnderwater) { DebugColor = FLinearColor(0, 0.2, 0.7, 0.8).ToRGBE(); } //Blue color underwater, yellow out of watter
-			DrawDebugSphere(GetWorld(), worldTestPoint, TestPointRadius, 8, DebugColor);
+			DrawDebugSphere(World, worldTestPoint, TestPointRadius, 8, DebugColor);
 		}
 	}
 
@@ -147,8 +151,8 @@ void UBuoyancyComponent::TickComponent(float DeltaTime, enum ELevelTick TickType
 	if (ClampMaxVelocity && PointsUnderWater > 0
 		&& UpdatedPrimitive->GetPhysicsLinearVelocity().Size() > MaxUnderwaterVelocity)
 	{
-		FVector	v = UpdatedPrimitive->GetPhysicsLinearVelocity().GetSafeNormal() * MaxUnderwaterVelocity;
-		UpdatedPrimitive->SetPhysicsLinearVelocity(v);
+		FVector	vVelocity = UpdatedPrimitive->GetPhysicsLinearVelocity().GetSafeNormal() * MaxUnderwaterVelocity;
+		UpdatedPrimitive->SetPhysicsLinearVelocity(vVelocity);
 	}
 
 	//Update damping based on number of underwater test points
@@ -158,11 +162,14 @@ void UBuoyancyComponent::TickComponent(float DeltaTime, enum ELevelTick TickType
 
 FVector UBuoyancyComponent::GetVelocityAtPoint(UPrimitiveComponent* Target, FVector Point, FName BoneName)
 {
+	if (!Target) return FVector::ZeroVector;
+
 	FBodyInstance* BI = Target->GetBodyInstance(BoneName);
-	if (BI != NULL && BI->IsValidBodyInstance())
+	if (BI->IsValidBodyInstance())
 	{
 		return BI->GetUnrealWorldVelocityAtPoint(Point);
 	}
+
 	return FVector::ZeroVector;
 }
 
@@ -180,11 +187,15 @@ void UBuoyancyComponent::ApplyUprightConstraint()
 		ConstraintInstance.SetLinearYMotion(ELinearConstraintMotion::LCM_Free);
 		ConstraintInstance.SetLinearZMotion(ELinearConstraintMotion::LCM_Free);
 
+		//ConstraintInstance.LinearLimitSize = 0;
+
+		//ConstraintInstance.SetAngularSwing1Motion(EAngularConstraintMotion::ACM_Limited);
 		ConstraintInstance.SetAngularSwing2Motion(EAngularConstraintMotion::ACM_Limited);
 		ConstraintInstance.SetAngularTwistMotion(EAngularConstraintMotion::ACM_Limited);
 
 		ConstraintInstance.SetOrientationDriveTwistAndSwing(true, true);
 
+		//ConstraintInstance.SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Locked, 0);
 		ConstraintInstance.SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0);
 		ConstraintInstance.SetAngularTwistLimit(EAngularConstraintMotion::ACM_Locked, 0);
 
@@ -192,6 +203,7 @@ void UBuoyancyComponent::ApplyUprightConstraint()
 
 		ConstraintInstance.AngularRotationOffset = UpdatedPrimitive->GetComponentRotation().GetInverse() + StayUprightDesiredRotation;
 
+		//UPhysicsConstraintComponent* ConstraintComp = NewObject<UPhysicsConstraintComponent>(UpdatedPrimitive);
 		if (ConstraintComp)
 		{
 			ConstraintComp->ConstraintInstance = ConstraintInstance; //Set instance parameters

@@ -3,11 +3,11 @@
 * 
 * Created by: TK-Master
 * Project name: OceanProject
-* Unreal Engine version: 4.10
+* Unreal Engine version: 4.17
 * Created on: 2015/04/26
 *
-* Last Edited on: 2015/08/27
-* Last Edited by: TK-Master
+* Last Edited on: 2017/09/25
+* Last Edited by: Zoc (Felipe Silveira)
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -152,7 +152,6 @@ class UBuoyancyForceComponent : public USceneComponent
 	//Begin UActorComponent Interface
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 	virtual void InitializeComponent() override;
-	//virtual void PostLoad() override;
 	//End UActorComponent Interface
 
 private:

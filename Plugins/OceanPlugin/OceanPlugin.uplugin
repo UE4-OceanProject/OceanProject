@@ -1,21 +1,20 @@
 {
-	"FileVersion" : 3,
-	"FriendlyName" : "Ocean Project Plugin",
-	"Version" : 1,
-	"VersionName": "1.0",
-	"EngineVersion" : "4.15",
-	"Description" : "Provides the code base classes for the ocean system.",
-	"Category" : "Ocean",
-	"CreatedBy" : "DotCam",
-	"CreatedByURL" : "https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader",
-	"CanContainContent" : "false",
-	"EnabledByDefault" : true,
+    "FileVersion" : 3,
+    "FriendlyName" : "Ocean Project Plugin",
+    "Version" : 11,
+    "VersionName": "1.1",
+    "Description" : "Provides the code base classes for the ocean system.",
+    "Category" : "Ocean",
+    "CreatedBy" : "DotCam",
+    "CreatedByURL" : "https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader",
+    "CanContainContent" : "true",
+    "EnabledByDefault" : true,
 
-	"Modules" :
-	[
-		{
-			"Name" : "OceanPlugin",
-			"Type" : "Runtime"
-		} 
-	]
+    "Modules" :
+    [
+        {
+            "Name" : "OceanPlugin",
+            "Type" : "Runtime"
+        } 
+    ]
 }

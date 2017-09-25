@@ -3,11 +3,11 @@
 * 
 * Created by: TK-Master
 * Project name: OceanProject
-* Unreal Engine version: 4.12.2
+* Unreal Engine version: 4.17
 * Created on: 2015/04/26
 *
-* Last Edited on: 2016/06/10
-* Last Edited by: DotCam
+* Last Edited on: 2017/09/25
+* Last Edited by: Zoc (Felipe Silveira)
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -46,16 +46,9 @@ UBuoyancyForceComponent::UBuoyancyForceComponent(const class FObjectInitializer&
 	WaveForceMultiplier = 2.0f;
 }
 
-/*void UBuoyancyForceComponent::PostLoad()
-{
-	Super::PostLoad();
-}*/
-
 void UBuoyancyForceComponent::InitializeComponent()
 {
 	Super::InitializeComponent();
-
-	//UE_LOG(LogTemp, Warning, TEXT("We're initializing..."));
 
 	//Store the world ref.
 	World = GetWorld();
@@ -238,7 +231,7 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 			*/
 			float BuoyancyForceZ = BasePrimComp->GetMass() / PointDensity * FluidDensity * -Gravity / TotalPoints * DepthMultiplier;
 
-			//Experimental velocity damping using VelocityAtPoint.
+			//Experimental velocity damping using GetUnrealWorldVelocityAtPoint!
 			FVector DampingForce = -GetUnrealVelocityAtPoint(BasePrimComp, worldTestPoint) * VelocityDamper * BasePrimComp->GetMass() * DepthMultiplier;
 
 			//Experimental xy wave force
@@ -301,11 +294,15 @@ void UBuoyancyForceComponent::ApplyUprightConstraint(UPrimitiveComponent* BasePr
 		ConstraintInstance.SetLinearYMotion(ELinearConstraintMotion::LCM_Free);
 		ConstraintInstance.SetLinearZMotion(ELinearConstraintMotion::LCM_Free);
 
+		//ConstraintInstance.LinearLimitSize = 0;
+
+		//ConstraintInstance.SetAngularSwing1Motion(EAngularConstraintMotion::ACM_Limited);
 		ConstraintInstance.SetAngularSwing2Motion(EAngularConstraintMotion::ACM_Limited);
 		ConstraintInstance.SetAngularTwistMotion(EAngularConstraintMotion::ACM_Limited);
 
 		ConstraintInstance.SetOrientationDriveTwistAndSwing(true, true);
 
+		//ConstraintInstance.SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Locked, 0);
 		ConstraintInstance.SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0);
 		ConstraintInstance.SetAngularTwistLimit(EAngularConstraintMotion::ACM_Locked, 0);
 
@@ -313,6 +310,7 @@ void UBuoyancyForceComponent::ApplyUprightConstraint(UPrimitiveComponent* BasePr
 
 		ConstraintInstance.AngularRotationOffset = BasePrimComp->GetComponentRotation().GetInverse() + StayUprightDesiredRotation;
 
+		//UPhysicsConstraintComponent* ConstraintComp = NewObject<UPhysicsConstraintComponent>(BasePrimComp);
 		if (ConstraintComp)
 		{
 			ConstraintComp->ConstraintInstance = ConstraintInstance; //Set instance parameters

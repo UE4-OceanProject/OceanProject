@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.12.2
 * Created on: 2015/03/05
 *
-* Last Edited on: 2016/06/10
-* Last Edited by: DotCam
+* Last Edited on: 2017/09/25
+* Last Edited by: Zoc (Felipe Silveira)
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -23,8 +23,8 @@
 #include "OceanManager.h"
 
 
-AOceanManager::AOceanManager(const class FObjectInitializer& PCIP)
-	: Super(PCIP)
+AOceanManager::AOceanManager(const class FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
 

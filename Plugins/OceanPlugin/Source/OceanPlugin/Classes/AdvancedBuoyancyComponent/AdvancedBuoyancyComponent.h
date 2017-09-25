@@ -3,11 +3,11 @@
 *
 * Created by: Burnrate (Justin Beales)
 * Project name: OceanProject
-* Unreal Engine version: 4.12.5
+* Unreal Engine version: 4.17
 * Created on: 2017/01/01
 *
-* Last Edited on: 2017/01/01
-* Last Edited by: Burnrate
+* Last Edited on: 2017/09/25
+* Last Edited by: Zoc (Felipe Silveira)
 *
 * -------------------------------------------------
 * Created with Misc. Games and Intelligent Procedure for:
@@ -32,7 +32,7 @@
 #include "AdvancedBuoyancyComponent.generated.h"
 
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FBuoyancyVertex
 {
 	GENERATED_USTRUCT_BODY()
@@ -41,7 +41,7 @@ struct FBuoyancyVertex
 	float Depth = 0.f;
 };
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FForceTriangle
 {
 	GENERATED_USTRUCT_BODY()
