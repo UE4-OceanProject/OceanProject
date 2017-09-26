@@ -39,6 +39,12 @@ AOceanManager::AOceanManager(const class FObjectInitializer& PCIP)
 	ModulationStartHeight = -2000.f;
 	ModulationMaxHeight = 200.f;
 	ModulationPower = 0.9f;
+
+	// Our root component will be a sphere that reacts to physics
+	USphereComponent* SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("RootComponent"));
+	RootComponent = SphereComponent;
+	SphereComponent->InitSphereRadius(40.0f);
+	SphereComponent->SetCollisionProfileName(TEXT("Pawn"));
 }
 
 void AOceanManager::BeginPlay()
