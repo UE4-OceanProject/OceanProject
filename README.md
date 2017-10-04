@@ -3,14 +3,17 @@ An Ocean Simulation project for Unreal Engine 4.
 
 ---------------------
 
-**4.15 Branch - This is the most up to date branch compatible with UE 4.15.x**
+**4.17 Branch - This is the most up to date branch compatible with UE 4.17.x**
 
 ![img_project](ProjectScreenshot.jpg)
 
 **Changelog:**
 
-Added in 4.15:
+Changes in 4.17:
+* Many bugfixes
+* Code cleanup
 
+Added in 4.15:
 * Advanced Buoyancy Component by Burnrate.
 * Compatibility fixes.
 
