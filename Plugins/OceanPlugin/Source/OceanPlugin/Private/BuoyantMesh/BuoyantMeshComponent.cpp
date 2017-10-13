@@ -191,7 +191,7 @@ void UBuoyantMeshComponent::TickComponent(float DeltaTime,
 
 void UBuoyantMeshComponent::ApplyMeshForces()
 {
-	//auto World = GetWorld();
+	auto debugWorld = GetWorld();
 
 	const auto LocalToWorld = GetComponentTransform();
 
@@ -213,18 +213,18 @@ void UBuoyantMeshComponent::ApplyMeshForces()
 
 			if (bDrawTriangles)
 			{
-				DrawDebugTriangle(World, A.Position, B.Position, C.Position, FColor::White, 4.f);
+				DrawDebugTriangle(debugWorld, A.Position, B.Position, C.Position, FColor::White, 4.f);
 			}
 
 			const auto Triangle = FBuoyantMeshTriangle::FromClockwiseVertices(A, B, C);
 
-			const auto SubTriangles = Triangle.GetSubmergedPortion(World, bDrawWaterline);
+			const auto SubTriangles = Triangle.GetSubmergedPortion(debugWorld, bDrawWaterline);
 
 			for (const auto& SubTriangle : SubTriangles)
 			{
 				if (bDrawSubtriangles)
 				{
-					DrawDebugTriangle(World, SubTriangle.A, SubTriangle.B, SubTriangle.C, FColor::Yellow, 6.f);
+					DrawDebugTriangle(debugWorld, SubTriangle.A, SubTriangle.B, SubTriangle.C, FColor::Yellow, 6.f);
 				}
 
 				const auto SubtriangleForce = GetSubmergedTriangleForce(SubTriangle, Triangle.Normal);
