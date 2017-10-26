@@ -4,15 +4,15 @@
 *
 * Created by: DotCam
 * Project name: OceanProject
-* Unreal Engine version: 4.12.2
+* Unreal Engine version: 4.18
 * Created on: 2015/07/12
 *
-* Last Edited on: 2016/06/12
-* Last Edited by: DotCam
+* Last Edited on: 2017/10/26
+* Last Edited by: Zoc
 *
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
-* Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
+* Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
 *
 * Feel free to use this software in any commercial/free game.
 * Selling this as a plugin/item, in whole or part, is not allowed.
@@ -182,12 +182,7 @@ void ATimeManager::IncrementTime(float deltaTime)
 		return;
 	    }
 
-	double increment = deltaTime * TimeScaleMultiplier;
-	double millisec = FMath::Frac(increment) * 1000;
-	double microsec = FMath::Frac(millisec) * 1000;
-
-	InternalTime = InternalTime + FTimespan(0, 0, 0, FPlatformMath::FloorToInt(increment),
-		FPlatformMath::FloorToInt(millisec), FPlatformMath::FloorToInt(microsec));
+	InternalTime += FTimespan::FromSeconds(deltaTime);
 
 	if (CurrentLocalTime.Day != InternalTime.GetDay())
 	    {

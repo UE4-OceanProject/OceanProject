@@ -3,15 +3,15 @@
 * 
 * Created by: TK-Master
 * Project name: OceanProject
-* Unreal Engine version: 4.9
+* Unreal Engine version: 4.18
 * Created on: 2015/08/27
 *
-* Last Edited on: 2015/08/28
-* Last Edited by: TK-Master
+* Last Edited on: 2017/10/26
+* Last Edited by: Zoc
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
-* Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
+* Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
 *
 * Feel free to use this software in any commercial/free game.
 * Selling this as a plugin/item, in whole or part, is not allowed.
@@ -20,8 +20,9 @@
 
 #pragma once
 
-#include "OceanManager.h"
 #include "OceanPluginPrivatePCH.h"
+#include "OceanManager.h"
+#include "DestructibleComponent.h"
 #include "BuoyantDestructibleComponent.generated.h"
 
 UCLASS(ClassGroup = Physics, hidecategories = (Object, Mesh, "Components|SkinnedMesh", Mirroring, Activation, "Components|Activation"), config = Engine, editinlinenew, meta = (BlueprintSpawnableComponent))

@@ -3,15 +3,15 @@
 * 
 * Created by: TK-Master
 * Project name: OceanProject
-* Unreal Engine version: 4.17
+* Unreal Engine version: 4.18
 * Created on: 2015/04/26
 *
-* Last Edited on: 2017/09/25
+* Last Edited on: 2017/10/26
 * Last Edited by: Zoc (Felipe Silveira)
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
-* Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
+* Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
 *
 * Feel free to use this software in any commercial/free game.
 * Selling this as a plugin/item, in whole or part, is not allowed.
@@ -173,7 +173,7 @@ void UBuoyancyForceComponent::TickComponent(float DeltaTime, enum ELevelTick Tic
 				if (isUnderwater)
 				{
 					BI->SetLinearVelocity(-BI->GetUnrealWorldVelocity() * (FluidLinearDamping / 10), true);
-					BI->SetAngularVelocity(-BI->GetUnrealWorldAngularVelocity() * (FluidAngularDamping / 10), true);
+					BI->SetAngularVelocityInRadians(-BI->GetUnrealWorldAngularVelocityInRadians() * FMath::DegreesToRadians(FluidAngularDamping / 10), true);
 
 					//Clamp the velocity to MaxUnderwaterVelocity
 					if (ClampMaxVelocity && BI->GetUnrealWorldVelocity().Size() > MaxUnderwaterVelocity)

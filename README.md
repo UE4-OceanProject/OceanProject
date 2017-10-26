@@ -3,11 +3,14 @@ An Ocean Simulation project for Unreal Engine 4.
 
 ---------------------
 
-**4.17 Branch - This is the most up to date branch compatible with UE 4.17.x**
+**4.18 Branch - This is the most up to date branch compatible with UE 4.18.x**
 
 ![img_project](ProjectScreenshot.jpg)
 
 **Changelog:**
+
+Changes in 4.18:
+* Minor fixes
 
 Changes in 4.17:
 * Many bugfixes
@@ -66,6 +69,5 @@ Added in 4.7:
 Vote for upcoming features on our [Trello](https://trello.com/b/7dzOdkvw/ue4-ocean-weather-project)
 
 UE4 Forums thread with more info: [[Community Project] WIP Weather & Ocean Water Shader](https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader)
-
 
 If you would like to contribute to this project, please PM me on the UE4 forums with your GitHub user name and contact info.
