@@ -16,5 +16,13 @@
             "Name" : "OceanPlugin",
             "Type" : "Runtime"
         } 
-    ]
+    ],
+	
+	"Plugins":
+	[
+		{
+			"Name": "ApexDestruction",
+			"Enabled": true
+		}
+	]
 }
