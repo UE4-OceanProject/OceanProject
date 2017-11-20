@@ -57,5 +57,4 @@ Saved/**
 
 #Ignore visual studio build files
 *.target
-*.modules
 *.lib
