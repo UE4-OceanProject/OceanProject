@@ -182,7 +182,7 @@ void ATimeManager::IncrementTime(float deltaTime)
 		return;
 	    }
 
-	InternalTime += FTimespan::FromSeconds(deltaTime);
+	InternalTime += FTimespan::FromSeconds(deltaTime * TimeScaleMultiplier);
 
 	if (CurrentLocalTime.Day != InternalTime.GetDay())
 	    {
