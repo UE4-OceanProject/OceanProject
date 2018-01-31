@@ -3,11 +3,11 @@
 * 
 * Created by: TK-Master
 * Project name: OceanProject
-* Unreal Engine version: 4.17
+* Unreal Engine version: 4.18.3
 * Created on: 2015/03/29
 *
-* Last Edited on: 2017/09/25
-* Last Edited by: Zoc (Felipe Silveira)
+* Last Edited on: 2018/1/30
+* Last Edited by: saschaelble
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -20,8 +20,9 @@
 
 #pragma once
 
-#include "OceanPluginPrivatePCH.h"
+#include "EngineMinimal.h"
 #include "OceanManager.h"
+#include "Runtime/Engine/Classes/PhysicsEngine/PhysicsConstraintComponent.h"
 #include "BuoyancyComponent.generated.h"
 
 /**

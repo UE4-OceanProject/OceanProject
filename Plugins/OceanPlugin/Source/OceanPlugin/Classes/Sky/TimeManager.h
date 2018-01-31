@@ -4,11 +4,11 @@
 *
 * Created by: DotCam
 * Project name: OceanProject
-* Unreal Engine version: 4.12.2
+* Unreal Engine version: 4.18.3
 * Created on: 2015/07/12
 *
-* Last Edited on: 2016/06/12
-* Last Edited by: DotCam
+* Last Edited on: 2018/1/30
+* Last Edited by: saschaelble
 *
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -21,7 +21,6 @@
 
 #pragma once
 
-#include "OceanPluginPrivatePCH.h"
 #include "Sky/TimeDate.h"
 #include "TimeManager.generated.h"
 

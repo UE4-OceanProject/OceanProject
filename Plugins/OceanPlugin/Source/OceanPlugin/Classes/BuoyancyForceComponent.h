@@ -3,11 +3,11 @@
 * 
 * Created by: TK-Master
 * Project name: OceanProject
-* Unreal Engine version: 4.17
+* Unreal Engine version: 4.18.3
 * Created on: 2015/04/26
 *
-* Last Edited on: 2017/09/25
-* Last Edited by: Zoc (Felipe Silveira)
+* Last Edited on: 2018/1/30
+* Last Edited by: saschaelble
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -21,7 +21,7 @@
 #pragma once
 
 #include "OceanManager.h"
-#include "OceanPluginPrivatePCH.h"
+#include "CoreMinimal.h"
 #include "BuoyancyForceComponent.generated.h"
 
 //Custom bone density/radius override struct.

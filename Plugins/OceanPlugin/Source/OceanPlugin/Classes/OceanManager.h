@@ -3,11 +3,11 @@
 * 
 * Created by: DotCam
 * Project name: OceanProject
-* Unreal Engine version: 4.9
+* Unreal Engine version: 4.18.3
 * Created on: 2015/03/20
 *
-* Last Edited on: 2016/02/28
-* Last Edited by: TK-Master
+* Last Edited on: 2018/1/30
+* Last Edited by: saschaelble
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -20,8 +20,6 @@
 
 #pragma once
 
-#include "OceanPluginPrivatePCH.h"
-#include "GameFramework/Actor.h"
 #include "Runtime/Landscape/Classes/Landscape.h"
 #include "OceanManager.generated.h"
 

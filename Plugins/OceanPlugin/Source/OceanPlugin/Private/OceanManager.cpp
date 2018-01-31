@@ -3,11 +3,11 @@
 * 
 * Created by: DotCam
 * Project name: OceanProject
-* Unreal Engine version: 4.12.2
+* Unreal Engine version: 4.18.3
 * Created on: 2015/03/05
 *
-* Last Edited on: 2017/09/25
-* Last Edited by: Zoc (Felipe Silveira)
+* Last Edited on: 2018/1/30
+* Last Edited by: saschaelble
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -18,10 +18,8 @@
 * See "OceanProject\License.md" for full licensing details.
 * =================================================*/
 
-
-#include "OceanPluginPrivatePCH.h"
 #include "OceanManager.h"
-
+#include "CoreMinimal.h"
 
 AOceanManager::AOceanManager(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

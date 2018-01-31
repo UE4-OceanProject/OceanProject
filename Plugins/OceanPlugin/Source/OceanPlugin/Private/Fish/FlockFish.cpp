@@ -3,11 +3,11 @@
 * 
 * Created by: Komodoman
 * Project name: OceanProject
-* Unreal Engine version: 4.12.2
+* Unreal Engine version: 4.18.3
 * Created on: 2015/03/17
 *
-* Last Edited on: 2016/06/10
-* Last Edited by: DotCam
+* Last Edited on: 2018/1/30
+* Last Edited by: saschaelble
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -18,8 +18,8 @@
 * See "OceanProject\License.md" for full licensing details.
 * =================================================*/
 
-#include "OceanPluginPrivatePCH.h"
 #include "Fish/FlockFish.h"
+#include "CoreMinimal.h"
 #include "Fish/FishManager.h"
 
 #define COLLISION_TRACE ECC_GameTraceChannel4
