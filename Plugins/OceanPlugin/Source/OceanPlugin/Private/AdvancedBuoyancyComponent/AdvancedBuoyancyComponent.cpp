@@ -3,11 +3,11 @@
 *
 * Created by: Burnrate (Justin Beales)
 * Project name: OceanProject
-* Unreal Engine version: 4.17
+* Unreal Engine version: 4.18.3
 * Created on: 2017/01/01
 *
-* Last Edited on: 2017/09/25
-* Last Edited by: Zoc (Felipe Silveira)
+* Last Edited on: 2018/1/30
+* Last Edited by: saschaelble
 *
 * -------------------------------------------------
 * Created with Misc. Games and Intelligent Procedure for:
@@ -23,11 +23,12 @@
 * See "OceanProject\License.md" for full licensing details.
 * =================================================*/
 
-
-#include "OceanPluginPrivatePCH.h"
+#include "AdvancedBuoyancyComponent/AdvancedBuoyancyComponent.h"
+#include "CoreMinimal.h"
+#include "Runtime/Engine/Public/EngineUtils.h"
 #include "StaticMeshResources.h"
 #include "Runtime/RenderCore/Public/RenderingThread.h"
-#include "AdvancedBuoyancyComponent/AdvancedBuoyancyComponent.h"
+#include "Runtime/Engine/Public/DrawDebugHelpers.h"
 
 // Constructor
 UAdvancedBuoyancyComponent::UAdvancedBuoyancyComponent()

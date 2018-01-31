@@ -4,11 +4,11 @@
 *
 * Created by: quantumv
 * Project name: OceanProject
-* Unreal Engine version: 4.9
+* Unreal Engine version: 4.18.3
 * Created on: 2015/09/21
 *
-* Last Edited on: 2015/09/21
-* Last Edited by: quantumv
+* Last Edited on: 2018/1/30
+* Last Edited by: saschaelble
 *
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -19,7 +19,6 @@
 * See "OceanProject\License.md" for full licensing details.
 * =================================================*/
 
-#include "OceanPluginPrivatePCH.h"
 #include "BuoyantMesh/BuoyantMeshVertex.h"
 
 bool FBuoyantMeshVertex::IsUnderwater() const

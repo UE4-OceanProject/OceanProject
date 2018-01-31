@@ -3,11 +3,11 @@
 * 
 * Created by: Komodoman
 * Project name: OceanProject
-* Unreal Engine version: 4.8.3
+* Unreal Engine version: 4.18.3
 * Created on: 2015/03/17
 *
-* Last Edited on: 2015/03/17
-* Last Edited by: Komodoman
+* Last Edited on: 2018/1/30
+* Last Edited by: saschaelble
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -20,7 +20,6 @@
 
 #pragma once
 
-#include "OceanPluginPrivatePCH.h"
 #include "GameFramework/Actor.h"
 #include "FishManager.generated.h"
 

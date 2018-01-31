@@ -3,11 +3,11 @@
 * 
 * Created by: DotCam
 * Project name: OceanProject
-* Unreal Engine version: 4.8.3
+* Unreal Engine version: 4.18.3
 * Created on: 2015/03/05
 *
-* Last Edited on: 2015/03/05
-* Last Edited by: DotCam
+* Last Edited on: 2018/1/30
+* Last Edited by: saschaelble
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -18,7 +18,6 @@
 * See "OceanProject\License.md" for full licensing details.
 * =================================================*/
 
-#include "OceanPluginPrivatePCH.h"
 #include "OceanPlugin.h"
 
 void OceanPluginImpl::StartupModule()
