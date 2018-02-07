@@ -3,24 +3,23 @@
 * 
 * Created by: TK-Master
 * Project name: OceanProject
-* Unreal Engine version: 4.12.2
+* Unreal Engine version: 4.18.3
 * Created on: 2015/04/26
 *
-* Last Edited on: 2016/06/10
-* Last Edited by: DotCam
+* Last Edited on: 2018/01/30
+* Last Edited by: SaschaElble
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
-* Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
+* Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 *
 * Feel free to use this software in any commercial/free game.
 * Selling this as a plugin/item, in whole or part, is not allowed.
 * See "OceanProject\License.md" for full licensing details.
 * =================================================*/
 
-#include "OceanPluginPrivatePCH.h"
 #include "InfiniteSystemComponent.h"
-//#include "UnrealEd.h"
+#include "Kismet/GameplayStatics.h"
 
 UInfiniteSystemComponent::UInfiniteSystemComponent(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer) 
@@ -125,13 +124,12 @@ void UInfiniteSystemComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 
 	if (World->WorldType == EWorldType::Game || World->WorldType == EWorldType::PIE)
 	{
-		if (!GEngine || !GEngine->GetFirstLocalPlayerController(World)) return;
-		
-		GEngine->GetFirstLocalPlayerController(World)->PlayerCameraManager->GetCameraViewPoint(CamLoc, CamRot);
+		if (!UGameplayStatics::GetPlayerController(World, 0)) return;
+		UGameplayStatics::GetPlayerController(World, 0)->PlayerCameraManager->GetCameraViewPoint(CamLoc, CamRot);
 
-		if (GEngine->GetFirstLocalPlayerController(World)->GetPawn()) //null check
+		if (UGameplayStatics::GetPlayerPawn(World, 0)) //null check
 		{
-			PawnLoc = GEngine->GetFirstLocalPlayerController(World)->GetPawn()->GetActorLocation();
+			PawnLoc = UGameplayStatics::GetPlayerController(World, 0)->GetPawn()->GetActorLocation();
 		}
 		else
 		{
