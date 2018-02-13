@@ -59,12 +59,15 @@ void UAdvancedBuoyancyComponent::InitializeComponent()
 	// if (!BuoyantMesh) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Missed"))); return; }
 	// if (!BuoyantMesh->GetStaticMesh()) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Mesh Missed"))); return; }
 
-	BuoyantMesh->GetLocalBounds(MinBound, MaxBound);
+	// Check again to prevent crash incase was added to an actor without a mesh
+	if (BuoyantMesh != nullptr) {
+		BuoyantMesh->GetLocalBounds(MinBound, MaxBound);
 
-	if (BuoyantMesh->LODData.Num() == 0) {
-		BuoyantMesh->SetLODDataCount(1, BuoyantMesh->LODData.Num());
+		if (BuoyantMesh->LODData.Num() == 0) {
+			BuoyantMesh->SetLODDataCount(1, BuoyantMesh->LODData.Num());
+		}
+		PopulateTrianglesFromStaticMesh();
 	}
-	PopulateTrianglesFromStaticMesh();
 
 	ForceC = -CorrectedWaterDensity * Gravity;
 }
