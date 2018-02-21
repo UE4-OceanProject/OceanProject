@@ -38,12 +38,8 @@ public class OceanPlugin : ModuleRules
         PrivateIncludePaths.AddRange(new string[] { "OceanPlugin/Private" });
         // PublicIncludePaths.AddRange(new string[] { "OceanPlugin/Public" });
 
-        //Enable IWYU but keep our PrivatePCH in use
-        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-
         //Our PrivatePCH that we want to globally #include
         PrivatePCHHeaderFile = "Classes/OceanPluginPrivatePCH.h";
-        
         PublicDependencyModuleNames.AddRange(new string[] { "Engine", "Core", "CoreUObject", "InputCore", "PhysX", "APEX", "ApexDestruction", "Landscape", "RHI", "RenderCore" });
     }
 }
