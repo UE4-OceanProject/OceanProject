@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2017/01/01
 *
-* Last Edited on: 2018/01/30
-* Last Edited by: SaschaElble
+* Last Edited on: 2018/03/15
+* Last Edited by: Felipe "Zoc" Silveira
 *
 * -------------------------------------------------
 * Created with Misc. Games and Intelligent Procedure for:
@@ -24,12 +24,12 @@
 * =================================================*/
 
 #include "AdvancedBuoyancyComponent/AdvancedBuoyancyComponent.h"
+#include "Classes/Engine/StaticMesh.h"
 #include "StaticMeshResources.h"
 #include "DrawDebugHelpers.h"
 #include "EngineUtils.h"
-//Commented Engine.h include, and all associated OnScreenDebug code. Left commented incase this is needed again.
-//Engine.h is a HUGE header, avoid.
-//#include "Engine.h"
+#include "Engine/Engine.h"	// According to UE4's IWYU Reference Guide, this is the correct Engine.h to include
+
 
 // Constructor
 UAdvancedBuoyancyComponent::UAdvancedBuoyancyComponent()
@@ -56,8 +56,8 @@ void UAdvancedBuoyancyComponent::InitializeComponent()
 
 	// Get the static mesh component we are checking for buoyancy and ensure it has a valid static mesh assigned
 	if (!BuoyantMesh) { BuoyantMesh = Cast<UStaticMeshComponent>(GetAttachParent()); }
-	// if (!BuoyantMesh) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Missed"))); return; }
-	// if (!BuoyantMesh->GetStaticMesh()) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Mesh Missed"))); return; }
+	if (!BuoyantMesh) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Missed"))); return; }
+	if (!BuoyantMesh->GetStaticMesh()) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Mesh Missed"))); return; }
 
 	BuoyantMesh->GetLocalBounds(MinBound, MaxBound);
 
@@ -244,8 +244,8 @@ void UAdvancedBuoyancyComponent::PopulateTrianglesFromStaticMesh()
 	int32 NumVerts;
 	int32 NumTris;
 
-	// if (!BuoyantMesh) { GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, GetOwner()->GetName() + ": Where did the mesh go?!"); return; }
-	// if (!BuoyantMesh->GetStaticMesh()) { GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, GetOwner()->GetName() + ": Where did the mesh go?!"); return; }
+	if (!BuoyantMesh) { GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, GetOwner()->GetName() + ": Where did the mesh go?!"); return; }
+	if (!BuoyantMesh->GetStaticMesh()) { GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, GetOwner()->GetName() + ": Where did the mesh go?!"); return; }
 
 	NumVerts = LODResource.GetNumVertices();
 	NumTris = LODResource.GetNumTriangles();
@@ -335,12 +335,9 @@ void UAdvancedBuoyancyComponent::ApplySlamForce(FVector SlamForce, FVector TriCe
 
 void UAdvancedBuoyancyComponent::AdvancedBuoyancy()
 {
-
-
 	if (!BuoyantMesh) { BuoyantMesh = Cast<UStaticMeshComponent>(GetAttachParent()); }
-	// if (!BuoyantMesh) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Missed"))); return; }
-	// if (!BuoyantMesh->GetStaticMesh()) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Mesh Missed"))); return; }
-
+	if (!BuoyantMesh) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Missed"))); return; }
+	if (!BuoyantMesh->GetStaticMesh()) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Mesh Missed"))); return; }
 
 	// Create the grid for ocean height sampling based on the size of the boat mesh
 	AdvancedGridHeight.Empty();

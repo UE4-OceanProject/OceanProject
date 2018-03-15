@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2015/03/17
 *
-* Last Edited on: 2018/01/30
-* Last Edited by: SaschaElble
+* Last Edited on: 2018/03/15
+* Last Edited by: Felipe "Zoc" Silveira
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -20,6 +20,9 @@
 
 #include "Fish/FishManager.h"
 #include "Fish/FlockFish.h"
+#include "Classes/Kismet/GameplayStatics.h"
+#include "Classes/Engine/World.h"
+
 
 AFishManager::AFishManager(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {

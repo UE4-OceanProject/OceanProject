@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2015/09/21
 *
-* Last Edited on: 2018/01/30
-* Last Edited by: SaschaElble
+* Last Edited on: 2018/03/15
+* Last Edited by: Felipe "Zoc" Silveira
 *
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -20,6 +20,9 @@
 
 #include "BuoyantMesh/WaterHeightmapComponent.h"
 #include "OceanManager.h"
+#include "DrawDebugHelpers.h"
+#include "EngineUtils.h"
+
 
 using FTrianglePlane = UWaterHeightmapComponent::FTrianglePlane;
 using FIntVector2D = UWaterHeightmapComponent::FIntVector2D;

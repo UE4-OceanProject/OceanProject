@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2017/01/01
 *
-* Last Edited on: 2018/01/30
-* Last Edited by: SaschaElble
+* Last Edited on: 2018/03/15
+* Last Edited by: Felipe "Zoc" Silveira
 *
 * -------------------------------------------------
 * Created with Misc. Games and Intelligent Procedure for:
@@ -26,6 +26,7 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "OceanManager.h"
 #include "AdvancedBuoyancyComponent.generated.h"
 

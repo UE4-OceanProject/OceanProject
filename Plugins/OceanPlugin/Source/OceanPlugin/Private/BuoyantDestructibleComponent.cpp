@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2015/08/27
 *
-* Last Edited on: 2018/01/30
-* Last Edited by: SaschaElble
+* Last Edited on: 2018/03/15
+* Last Edited by: Felipe "Zoc" Silveira
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -19,10 +19,12 @@
 * =================================================*/
 
 #include "BuoyantDestructibleComponent.h"
-
-// PhysX 			
+#include "Classes/GameFramework/PhysicsVolume.h"
+#include "DrawDebugHelpers.h"
+#include "EngineUtils.h"
 #include "PhysXIncludes.h" 
 #include "PhysXPublic.h"
+
 
 UBuoyantDestructibleComponent::UBuoyantDestructibleComponent(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {

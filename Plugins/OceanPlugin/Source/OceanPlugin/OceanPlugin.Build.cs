@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2015/03/20
 *
-* Last Edited on: 2018/01/30
-* Last Edited by: SaschaElble
+* Last Edited on: 2018/03/15
+* Last Edited by: Felipe "Zoc" Silveira
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -37,6 +37,9 @@ public class OceanPlugin : ModuleRules
     {
         PrivateIncludePaths.AddRange(new string[] { "OceanPlugin/Private" });
         // PublicIncludePaths.AddRange(new string[] { "OceanPlugin/Public" });
+
+        // Make sure UBT reminds us of how to keep the project IWYU compliant
+        bEnforceIWYU = true;
 
         //Enable IWYU but keep our PrivatePCH in use
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;

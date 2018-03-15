@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2015/03/20
 *
-* Last Edited on: 2018/01/30
-* Last Edited by: SaschaElble
+* Last Edited on: 2018/03/15
+* Last Edited by: Felipe "Zoc" Silveira
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -20,8 +20,10 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "Landscape.h"
 #include "OceanManager.generated.h"
+
 
 /*
 * Contains the parameters necessary for a single Gerstner wave.

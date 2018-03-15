@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2015/08/27
 *
-* Last Edited on: 2018/01/30
-* Last Edited by: SaschaElble
+* Last Edited on: 2018/03/15
+* Last Edited by: Felipe "Zoc" Silveira
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -20,9 +20,11 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "OceanManager.h"
 #include "DestructibleComponent.h"
 #include "BuoyantDestructibleComponent.generated.h"
+
 
 UCLASS(ClassGroup = Physics, hidecategories = (Object, Mesh, "Components|SkinnedMesh", Mirroring, Activation, "Components|Activation"), config = Engine, editinlinenew, meta = (BlueprintSpawnableComponent))
 class OCEANPLUGIN_API UBuoyantDestructibleComponent : public UDestructibleComponent

@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2015/04/26
 *
-* Last Edited on: 2018/01/30
-* Last Edited by: SaschaElble
+* Last Edited on: 2018/03/15
+* Last Edited by: Felipe "Zoc" Silveira
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -19,8 +19,14 @@
 * =================================================*/
 
 #include "BuoyancyForceComponent.h"
-#include "PhysicsEngine/ConstraintInstance.h"
+#include "Classes/Engine/World.h"
+#include "Classes/PhysicsEngine/PhysicsConstraintComponent.h"
+#include "Components/PrimitiveComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "DrawDebugHelpers.h"
+#include "EngineUtils.h"
 #include "GameFramework/PhysicsVolume.h"
+#include "PhysicsEngine/ConstraintInstance.h"
  	
 UBuoyancyForceComponent::UBuoyancyForceComponent(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer) 

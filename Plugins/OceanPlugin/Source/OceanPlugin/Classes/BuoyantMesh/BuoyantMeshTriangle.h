@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2015/09/21
 *
-* Last Edited on: 2015/09/21
-* Last Edited by: quantumv
+* Last Edited on: 2018/03/15
+* Last Edited by: Felipe "Zoc" Silveira
 *
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -20,9 +20,10 @@
 
 #pragma once
 
-
+#include "CoreMinimal.h"
 #include "BuoyantMesh/BuoyantMeshVertex.h"
 struct FBuoyantMeshSubtriangle;
+
 
 /*
 This class calculates the buoyancy forces on a triangle.

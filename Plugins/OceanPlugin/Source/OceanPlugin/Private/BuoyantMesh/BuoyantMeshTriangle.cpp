@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2015/09/21
 *
-* Last Edited on: 2018/01/30
-* Last Edited by: SaschaElble
+* Last Edited on: 2018/03/15
+* Last Edited by: Felipe "Zoc" Silveira
 *
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -20,6 +20,10 @@
 
 #include "BuoyantMesh/BuoyantMeshTriangle.h"
 #include "BuoyantMesh/BuoyantMeshSubtriangle.h"
+#include "Classes/Engine/World.h"
+#include "DrawDebugHelpers.h"
+#include "Object.h"
+
 
 FBuoyantMeshTriangle FBuoyantMeshTriangle::FromClockwiseVertices(const FBuoyantMeshVertex& A,
                                                                  const FBuoyantMeshVertex& B,

@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2015/03/17
 *
-* Last Edited on: 2015/03/17
-* Last Edited by: Komodoman
+* Last Edited on: 2018/03/15
+* Last Edited by: Felipe "Zoc" Silveira
 * 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -20,7 +20,9 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "Fish/FlockFish.h"
+
 
 class AFlockFish;
 
