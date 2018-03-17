@@ -3,11 +3,11 @@
 *
 * Created by: Burnrate (Justin Beales)
 * Project name: OceanProject
-* Unreal Engine version: 4.18.3
+* Unreal Engine version: 4.19
 * Created on: 2017/01/01
 *
 * Last Edited on: 2018/03/15
-* Last Edited by: Felipe "Zoc" Silveira
+* Last Edited by: Reapazor (Matthew Davey)
 *
 * -------------------------------------------------
 * Created with Misc. Games and Intelligent Procedure for:
@@ -214,19 +214,18 @@ void UAdvancedBuoyancyComponent::DrawDebugStuff(FForceTriangle TriForce, FColor 
 
 void UAdvancedBuoyancyComponent::PopulateTrianglesFromStaticMesh()
 {
-	
 	int32 NumLODs = BuoyantMesh->GetStaticMesh()->RenderData->LODResources.Num();
 	FStaticMeshLODResources& LODResource = BuoyantMesh->GetStaticMesh()->RenderData->LODResources[NumLODs - 1];
 
 	int numIndices = LODResource.IndexBuffer.IndexBufferRHI->GetSize() / sizeof(uint16);
 	uint16* Indices = new uint16[numIndices];
-	int numVertices = LODResource.PositionVertexBuffer.VertexBufferRHI->GetSize() / (sizeof(float) * 3);
+	int numVertices = LODResource.VertexBuffers.PositionVertexBuffer.VertexBufferRHI->GetSize() / (sizeof(float) * 3);
 	float* Vertices = new float[numVertices * 3];
 	ENQUEUE_UNIQUE_RENDER_COMMAND_FOURPARAMETER(
 		GetMyBuffers,
 		FRawStaticIndexBuffer*, IndexBuffer, &LODResource.IndexBuffer,
 		uint16*, Indices, Indices,
-		FPositionVertexBuffer*, PositionVertexBuffer, &LODResource.PositionVertexBuffer,
+		FPositionVertexBuffer*, PositionVertexBuffer, &LODResource.VertexBuffers.PositionVertexBuffer,
 		float*, Vertices, Vertices,
 		{
 			uint16* indices1 = (uint16*)RHILockIndexBuffer(IndexBuffer->IndexBufferRHI, 0, IndexBuffer->IndexBufferRHI->GetSize(), RLM_ReadOnly);
@@ -252,10 +251,10 @@ void UAdvancedBuoyancyComponent::PopulateTrianglesFromStaticMesh()
 
 
 	FPositionVertexBuffer* PosVertexBuffer;
-	PosVertexBuffer = &LODResource.PositionVertexBuffer;
+	PosVertexBuffer = &LODResource.VertexBuffers.PositionVertexBuffer;
 	FIndexArrayView IndexBufferArray;
 	IndexBufferArray = LODResource.IndexBuffer.GetArrayView();
-	uint32 Stride = LODResource.PositionVertexBuffer.GetStride();
+	uint32 Stride = LODResource.VertexBuffers.PositionVertexBuffer.GetStride();
 
 	uint8* VertexBufferContent = (uint8*)Vertices;
 
