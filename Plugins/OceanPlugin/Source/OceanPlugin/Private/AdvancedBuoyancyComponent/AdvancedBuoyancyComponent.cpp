@@ -3,10 +3,10 @@
 *
 * Created by: Burnrate (Justin Beales)
 * Project name: OceanProject
-* Unreal Engine version: 4.17
+* Unreal Engine version: 4.19
 * Created on: 2017/01/01
 *
-* Last Edited on: 2018/01/13
+* Last Edited on: 2018/03/15
 * Last Edited by: Reapazor (Matthew Davey)
 *
 * -------------------------------------------------
@@ -16,18 +16,20 @@
 * http://www.IntelligentProcedure.com 
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
-* Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
+* Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 *
 * Feel free to use this software in any commercial/free game.
 * Selling this as a plugin/item, in whole or part, is not allowed.
 * See "OceanProject\License.md" for full licensing details.
 * =================================================*/
 
-
-#include "OceanPluginPrivatePCH.h"
-#include "StaticMeshResources.h"
-#include "Runtime/RenderCore/Public/RenderingThread.h"
 #include "AdvancedBuoyancyComponent/AdvancedBuoyancyComponent.h"
+#include "Classes/Engine/StaticMesh.h"
+#include "StaticMeshResources.h"
+#include "DrawDebugHelpers.h"
+#include "EngineUtils.h"
+#include "Engine/Engine.h"	// According to UE4's IWYU Reference Guide, this is the correct Engine.h to include
+
 
 // Constructor
 UAdvancedBuoyancyComponent::UAdvancedBuoyancyComponent()
@@ -212,7 +214,6 @@ void UAdvancedBuoyancyComponent::DrawDebugStuff(FForceTriangle TriForce, FColor 
 
 void UAdvancedBuoyancyComponent::PopulateTrianglesFromStaticMesh()
 {
-	
 	int32 NumLODs = BuoyantMesh->GetStaticMesh()->RenderData->LODResources.Num();
 	FStaticMeshLODResources& LODResource = BuoyantMesh->GetStaticMesh()->RenderData->LODResources[NumLODs - 1];
 
@@ -333,12 +334,9 @@ void UAdvancedBuoyancyComponent::ApplySlamForce(FVector SlamForce, FVector TriCe
 
 void UAdvancedBuoyancyComponent::AdvancedBuoyancy()
 {
-
-
 	if (!BuoyantMesh) { BuoyantMesh = Cast<UStaticMeshComponent>(GetAttachParent()); }
 	if (!BuoyantMesh) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Missed"))); return; }
 	if (!BuoyantMesh->GetStaticMesh()) { GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString::Printf(TEXT("Mesh Mesh Missed"))); return; }
-
 
 	// Create the grid for ocean height sampling based on the size of the boat mesh
 	AdvancedGridHeight.Empty();

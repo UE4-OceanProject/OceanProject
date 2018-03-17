@@ -1,28 +1,25 @@
-/*
-* =================================================
+/*=================================================
 * FileName: TimeManager.cpp
 *
 * Created by: DotCam
 * Project name: OceanProject
-* Unreal Engine version: 4.18
+* Unreal Engine version: 4.18.3
 * Created on: 2015/07/12
 *
-* Last Edited on: 2017/10/26
-* Last Edited by: Zoc
+* Last Edited on: 2018/01/30
+* Last Edited by: SaschaElble
 *
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
-* Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
+* Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 *
 * Feel free to use this software in any commercial/free game.
 * Selling this as a plugin/item, in whole or part, is not allowed.
 * See "OceanProject\License.md" for full licensing details.
 * =================================================*/
 
-
-#include "OceanPluginPrivatePCH.h"
-#include "Kismet/KismetMathLibrary.h"
 #include "Sky/TimeManager.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ATimeManager::ATimeManager(const class FObjectInitializer& PCIP) : Super(PCIP)
     {
@@ -182,7 +179,7 @@ void ATimeManager::IncrementTime(float deltaTime)
 		return;
 	    }
 
-	InternalTime += FTimespan::FromSeconds(deltaTime);
+	InternalTime += FTimespan::FromSeconds(deltaTime * TimeScaleMultiplier);
 
 	if (CurrentLocalTime.Day != InternalTime.GetDay())
 	    {
