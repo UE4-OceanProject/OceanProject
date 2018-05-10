@@ -3,7 +3,15 @@ An Ocean Simulation project for Unreal Engine 4.
 
 ---------------------
 
-**4.18 Branch - This is the most up to date branch compatible with UE 4.18.x**
+**MASTER Branch - This is the development branch. Please use this branch for all Pull Requests.**
+
+**PLEASE NOTE**
+
+**This branch is NOT guaranteed to properly compile or be stable at all times. This branch will be updated between major UE4 releases with the latest changes, and periodically will be compiled out to a new branch for each new UE4 release, and when major changes occur.**
+
+**Please use the branch associatd with your UE4 engine version for the best compatability.**
+
+---------------------
 
 ![img_project](ProjectScreenshot.jpg)
 
