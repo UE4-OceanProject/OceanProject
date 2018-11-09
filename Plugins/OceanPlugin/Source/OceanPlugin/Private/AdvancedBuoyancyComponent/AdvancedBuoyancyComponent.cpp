@@ -24,7 +24,7 @@
 * =================================================*/
 
 #include "AdvancedBuoyancyComponent/AdvancedBuoyancyComponent.h"
-#include "Classes/Engine/StaticMesh.h"
+#include "Engine/StaticMesh.h"
 #include "StaticMeshResources.h"
 #include "DrawDebugHelpers.h"
 #include "EngineUtils.h"

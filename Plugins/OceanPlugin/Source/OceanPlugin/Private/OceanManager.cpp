@@ -19,8 +19,8 @@
 * =================================================*/
 
 #include "OceanManager.h"
-#include "Classes/Engine/World.h"
-#include "Classes/Engine/Texture2D.h"
+#include <Engine/World.h>
+#include <Engine/Texture2D.h>
 
 
 AOceanManager::AOceanManager(const class FObjectInitializer& ObjectInitializer)

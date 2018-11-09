@@ -1,25 +1,26 @@
 {
-    "FileVersion" : 3,
-    "FriendlyName" : "Ocean Project Plugin",
-    "Version" : 12,
-    "VersionName": "1.2",
-    "Description" : "Provides the code base classes for the ocean system.",
-    "Category" : "Ocean",
-    "CreatedBy" : "DotCam",
-    "CreatedByURL" : "https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader",
-    "CanContainContent" : "true",
-    "EnabledByDefault" : true,
-
-    "Modules" :
-    [
-        {
-            "Name" : "OceanPlugin",
-            "Type" : "Runtime"
-        } 
-    ],
-	
-	"Plugins":
-	[
+	"FileVersion": 3,
+	"Version": 12,
+	"VersionName": "1.2",
+	"FriendlyName": "Ocean Project Plugin",
+	"Description": "Provides the code base classes for the ocean system.",
+	"Category": "Ocean",
+	"CreatedBy": "DotCam",
+	"CreatedByURL": "https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EngineVersion": "4.20.0",
+	"CanContainContent": false,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "OceanPlugin",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		}
+	],
+	"Plugins": [
 		{
 			"Name": "ApexDestruction",
 			"Enabled": true

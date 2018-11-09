@@ -19,8 +19,8 @@
 * =================================================*/
 
 #include "BuoyancyForceComponent.h"
-#include "Classes/Engine/World.h"
-#include "Classes/PhysicsEngine/PhysicsConstraintComponent.h"
+#include "Engine/World.h"
+#include "PhysicsEngine/PhysicsConstraintComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"

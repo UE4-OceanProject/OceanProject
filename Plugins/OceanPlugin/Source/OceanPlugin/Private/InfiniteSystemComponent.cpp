@@ -20,7 +20,7 @@
 
 #include "InfiniteSystemComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Classes/Engine/World.h"
+#include <Engine/World.h>
 
 
 UInfiniteSystemComponent::UInfiniteSystemComponent(const class FObjectInitializer& ObjectInitializer)

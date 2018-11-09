@@ -24,7 +24,7 @@
 #include "BuoyantMesh/BuoyantMeshTriangle.h"
 #include "BuoyantMesh/BuoyantMeshSubtriangle.h"
 #include "BuoyantMesh/WaterHeightmapComponent.h"
-#include "Classes/Engine/World.h"
+#include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 #include "EngineUtils.h"
 #include "PhysXPublic.h"

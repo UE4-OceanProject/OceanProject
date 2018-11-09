@@ -20,8 +20,8 @@
 
 #include "Fish/FishManager.h"
 #include "Fish/FlockFish.h"
-#include "Classes/Kismet/GameplayStatics.h"
-#include "Classes/Engine/World.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
 
 
 AFishManager::AFishManager(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)

@@ -20,9 +20,9 @@
 
 #include "BuoyantMesh/BuoyantMeshTriangle.h"
 #include "BuoyantMesh/BuoyantMeshSubtriangle.h"
-#include "Classes/Engine/World.h"
+#include "Engine/World.h"
 #include "DrawDebugHelpers.h"
-#include "Object.h"
+#include "CoreUObject.h"
 
 
 FBuoyantMeshTriangle FBuoyantMeshTriangle::FromClockwiseVertices(const FBuoyantMeshVertex& A,

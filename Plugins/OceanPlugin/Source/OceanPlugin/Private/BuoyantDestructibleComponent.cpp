@@ -19,7 +19,7 @@
 * =================================================*/
 
 #include "BuoyantDestructibleComponent.h"
-#include "Classes/GameFramework/PhysicsVolume.h"
+#include "GameFramework/PhysicsVolume.h"
 #include "DrawDebugHelpers.h"
 #include "EngineUtils.h"
 #include "PhysXIncludes.h" 

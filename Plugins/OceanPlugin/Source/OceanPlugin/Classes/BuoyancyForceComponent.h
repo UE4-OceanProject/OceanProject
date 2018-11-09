@@ -22,7 +22,7 @@
 
 #include "CoreMinimal.h"
 #include "OceanManager.h"
-#include "Classes/Components/SceneComponent.h"
+#include <Components/SceneComponent.h>
 #include "BuoyancyForceComponent.generated.h"
 
 
