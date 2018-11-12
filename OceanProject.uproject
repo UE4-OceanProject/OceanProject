@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "4.19",
+	"EngineAssociation": "4.20",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -8,6 +8,12 @@
 			"Name": "OceanProject",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "OceanPlugin",
+			"Enabled": true
 		}
 	]
 }

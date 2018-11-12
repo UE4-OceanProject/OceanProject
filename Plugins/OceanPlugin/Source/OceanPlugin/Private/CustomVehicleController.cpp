@@ -20,8 +20,8 @@
 
 #include "CustomVehicleController.h"
 #include "UObject/UObjectIterator.h"
-#include "Classes/GameFramework/Pawn.h"
-#include "UnrealNetwork.h"
+#include "GameFramework/Pawn.h"
+#include "Net/UnrealNetwork.h"
 
 
 #include "BuoyancyForceComponent.h"

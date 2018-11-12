@@ -21,7 +21,7 @@
 #pragma once
  
 #include "CoreMinimal.h"
-#include "ModuleManager.h"
+#include <Modules/ModuleManager.h>
 
 
 class OceanPluginImpl : public IModuleInterface

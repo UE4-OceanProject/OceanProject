@@ -21,7 +21,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/SceneComponent.h"
+#include <Components/SceneComponent.h>
 #include "InfiniteSystemComponent.generated.h"
 
 
