@@ -240,7 +240,7 @@ void UAdvancedBuoyancyComponent::PopulateTrianglesFromStaticMesh()
 			RHIUnlockIndexBuffer(IndexBuffer->IndexBufferRHI);
 			RHIUnlockVertexBuffer(PositionVertexBuffer->VertexBufferRHI);
 		});
-
+	
 	FlushRenderingCommands();
 
 	int32 NumVerts;

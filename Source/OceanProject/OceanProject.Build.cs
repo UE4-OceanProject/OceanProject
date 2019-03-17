@@ -9,5 +9,7 @@ public class OceanProject : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	}
 }
