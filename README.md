@@ -4,14 +4,18 @@ In an effort to re-start this project and hopefully get more people interested i
 As of now (4.22+) this project is going to be stripped down.
 There are a few reasons for this, one of them being large download size, long compile/load times, and feature bloat.
 
-I'd like to split these features into separate plugins: (Index spaced features will require the parent feature above it)
+I'd like to split these features into separate plugins: (Features with arrows will require the parent feature above it)
 
 Water shaders
+
   ^--Buoyancy
+
   ^--School of fish (not sure if I will keep this)
 
 Time of day
+
   ^--Weather
+
   ^--Solar position system (sun and moon)
 
 
