@@ -224,22 +224,27 @@ void UAdvancedBuoyancyComponent::PopulateTrianglesFromStaticMesh()
 	uint16* Indices = new uint16[numIndices];
 	int numVertices = LODResource.VertexBuffers.PositionVertexBuffer.VertexBufferRHI->GetSize() / (sizeof(float) * 3);
 	float* Vertices = new float[numVertices * 3];
-	ENQUEUE_UNIQUE_RENDER_COMMAND_FOURPARAMETER(
-		GetMyBuffers,
-		FRawStaticIndexBuffer*, IndexBuffer, &LODResource.IndexBuffer,
-		uint16*, Indices, Indices,
-		FPositionVertexBuffer*, PositionVertexBuffer, &LODResource.VertexBuffers.PositionVertexBuffer,
-		float*, Vertices, Vertices,
+
+
+	FRawStaticIndexBuffer* IndexBuffer = &LODResource.IndexBuffer;
+	uint16* Indices0 = Indices;
+	FPositionVertexBuffer*  PositionVertexBuffer = &LODResource.VertexBuffers.PositionVertexBuffer;
+	float* Vertices0 = Vertices;
+	ENQUEUE_RENDER_COMMAND(GetMyBuffers)
+		(
+		[IndexBuffer, Indices0, PositionVertexBuffer, Vertices0](FRHICommandListImmediate& RHICmdList)
+
 		{
 			uint16* indices1 = (uint16*)RHILockIndexBuffer(IndexBuffer->IndexBufferRHI, 0, IndexBuffer->IndexBufferRHI->GetSize(), RLM_ReadOnly);
 			float* indices2 = (float*)RHILockVertexBuffer(PositionVertexBuffer->VertexBufferRHI, 0, PositionVertexBuffer->VertexBufferRHI->GetSize(), RLM_ReadOnly);
 
-			memcpy(Indices, indices1, IndexBuffer->IndexBufferRHI->GetSize());
-			memcpy(Vertices, indices2, PositionVertexBuffer->VertexBufferRHI->GetSize());
+			memcpy(Indices0, indices1, IndexBuffer->IndexBufferRHI->GetSize());
+			memcpy(Vertices0, indices2, PositionVertexBuffer->VertexBufferRHI->GetSize());
 
 			RHIUnlockIndexBuffer(IndexBuffer->IndexBufferRHI);
 			RHIUnlockVertexBuffer(PositionVertexBuffer->VertexBufferRHI);
-		});
+		}
+	);
 	
 	FlushRenderingCommands();
 
