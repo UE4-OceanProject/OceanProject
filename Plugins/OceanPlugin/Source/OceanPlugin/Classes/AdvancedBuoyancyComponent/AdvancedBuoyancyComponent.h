@@ -179,7 +179,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Buoyancy|Coefficients")
 		FVector SuctionCoefficient = FVector(15.f, 15.f, 1.f);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Buoyancy|Coefficients")
-		float ViscousDragCoefficient = .009f;
+		float ViscousDragCoefficient = .09f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Buoyancy|Coefficients")
 		float MaxSlamAcceleration = 3000.f;
 
