@@ -121,7 +121,7 @@ public:
 	
 	// use drag when using advanced buoyancy (most likely will always be yes)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Options")
-		bool bUseDrag = false;
+		bool bUseDrag = true;
 	// will draw force arrows and buoyancy traingles/points
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Options")
 		bool bDebugOn = false;
@@ -134,7 +134,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "World Data")
 		float Gravity;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
-		float MeshDensity = 600.f;
+		float MeshDensity = 800.f;
 	UFUNCTION(BlueprintCallable, Category = "World Data")
 		void GetOcean();
 
@@ -169,19 +169,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Buoyancy|Coefficients")
 		float DensityCorrection = 1.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Buoyancy|Coefficients")
-		float DensityCorrectionModifier = .2f;
+		float DensityCorrectionModifier = .1f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Buoyancy|Coefficients")
 		float SubmergedVolume = 0.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Buoyancy|Coefficients")
-		float ImpactCoefficient = 1.f;
+		float ImpactCoefficient = 20.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Buoyancy|Coefficients")
-		FVector DragCoefficient = FVector(10.f, 1.f, .25f);
+		FVector DragCoefficient = FVector(15.f, 15.f, 1.f);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Buoyancy|Coefficients")
-		FVector SuctionCoefficient = FVector(1.f, .1f, .25f);
+		FVector SuctionCoefficient = FVector(15.f, 15.f, 1.f);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Buoyancy|Coefficients")
-		float ViscousDragCoefficient = .005f;
+		float ViscousDragCoefficient = .009f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Buoyancy|Coefficients")
-		float MaxSlamAcceleration = 30000.f;
+		float MaxSlamAcceleration = 3000.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Buoyancy|Optimization")
 		TArray<FVector> AdvancedGridHeight;
