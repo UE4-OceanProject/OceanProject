@@ -149,6 +149,18 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
 	float PartF = 0.0f;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
+		float LunarPhase_Fraction = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
+		float LunarPhase_Phase = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
+		float LunarPhase_Angle = 0.0f;
+
+	double TEMP_solarRA = 0.0f;
+	double TEMP_solarDec = 0.0f;
 
 	// -------------------
 	// PUBLIC FUNCTIONS
@@ -257,23 +269,13 @@ public:
 
 
 	/**
-	* @Name: CalculateSunAngle
-	* @Description: Calculates the sun angle rotator from the current time.
-	*
-	* @return: FRotator - The sun rotation value for the current time.
-	*/
-	UFUNCTION(BlueprintCallable, Category = "TimeManager")
-	FRotator CalculateSunAngle();
-
-
-	/**
 	* @Name: CalculateMoonAngle
 	* @Description: Calculates the moon angle rotator from the current time.
 	*
 	* @return: FRotator - The moon rotation value for the current time.
 	*/
 	UFUNCTION(BlueprintCallable, Category = "TimeManager")
-	FRotator CalculateMoonAngle();
+	FRotator CalculateMoonAngle(float Latitude2, float Longitude2, float TimeZone, bool bIsDaylightSavingTime, int32 Year, int32 Month, int32 Day, int32 Hours, int32 Minutes, int32 Seconds);
 
 
 	/**
@@ -283,7 +285,7 @@ public:
 	* @return: FRotator - The moon rotation value for the current time.
 	*/
 	UFUNCTION(BlueprintCallable, Category = "TimeManager")
-	float CalculateMoonPhase();
+		FRotator CalculateMoonPhase();
 
 
 private:

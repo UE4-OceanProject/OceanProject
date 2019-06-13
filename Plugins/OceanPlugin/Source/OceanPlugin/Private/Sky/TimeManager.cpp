@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2015/07/12
 *
-* Last Edited on: 2019/12/27
-* Last Edited by: iliags
+* Last Edited on: 2018/01/30
+* Last Edited by: SaschaElble
 *
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -256,55 +256,30 @@ bool ATimeManager::IsLeapYear(int32 year)
 		isLeap = (year % 100) == 0 ? (year % 400) == 0 : true;
 	}
 	return isLeap;
-}
+    }
 
 
 
-FRotator ATimeManager::CalculateSunAngle()
-{
-	if (!bIsCalendarInitialized)
-	{
-		return FRotator();
-	}
 
-	DayOfYear = InternalTime.GetDayOfYear() - 1;
-	LSTM -= bAllowDaylightSavings && bDaylightSavingsActive ? 1 : 0;
-	double lct = InternalTime.GetTimeOfDay().GetTotalHours();
-
-	double eotBase = (DayOfYear - 81) * (360.0 / 365.242);
-	double eot = (9.87 * SinD(eotBase * 2)) - (7.53 * CosD(eotBase)) - (1.5 * SinD(eotBase));
-
-	double tcf = ((Longitude - LSTM) * 4) + eot;
-	double solTime = lct + (tcf / 60);
-
-	double hra = (solTime - 12) * 15;
-	double decl = 23.452294 * SinD((360.0 / 365.242) * (DayOfYear - 81));
-
-	double lat = (double)Latitude;
-	double saa = ASinD((SinD(decl) * SinD(lat)) + (CosD(decl) * CosD(lat) * CosD(hra)));
-	double saz = ACosD(((SinD(decl) * CosD(lat)) - (CosD(decl) * SinD(lat) * CosD(hra))) / CosD(saa));
-
-	if (hra >= 0.0)
-	{
-		saz = saz * -1;
-	}
-
-	// TEMPORARY - For debug only
-	LocalClockTime = (float)lct;
-	EoT = (float)eot;
-	TimeCorrection = (float)tcf;
-	SolarTime = (float)solTime;
-	SolarHRA = (float)hra;
-	SolarDeclination = (float)decl;
-	SolarAltAngle = (float)saa;
-	SolarAzimuth = (float)saz;
-
-	return FRotator(SolarAltAngle - 180, SolarAzimuth, 0);
-}
+// Moons mean longitude L'
+//var LP = 218.3164477 + 481267.88123421*T - 0.0015786*T2 + T3 / 538841.0 - T4 / 65194000.0;
+// Moons mean elongation
+//var D = 297.8501921 + 445267.1114034*T - 0.0018819*T2 + T3 / 545868.0 - T4 / 113065000.0;
+// Suns mean anomaly
+//var M = 357.5291092 + 35999.0502909*T - 0.0001536*T2 + T3 / 24490000.0;
+// Moons mean anomaly M'
+//var MP = 134.9633964 + 477198.8675055*T + 0.0087414*T2 + T3 / 69699.0 - T4 / 14712000.0;
+// phase angle
+//var pa = 180.0 - D - 6.289*this._sind(MP) + 2.1*this._sind(M) - 1.274*this._sind(2 * D - MP)
+//- 0.658*this._sind(2 * D) - 0.214*this._sind(2 * MP) - 0.11*this._sind(D);
 
 
 
-FRotator ATimeManager::CalculateMoonAngle()
+
+
+
+
+FRotator ATimeManager::CalculateMoonAngle(float Latitude2, float Longitude2, float TimeZone, bool bIsDaylightSavingTime, int32 Year, int32 Month, int32 Day, int32 Hours, int32 Minutes, int32 Seconds)
 {
 	if (!bIsCalendarInitialized)
 	{
@@ -334,8 +309,8 @@ FRotator ATimeManager::CalculateMoonAngle()
 	// ~ 2.57deg total deviation on Ecliptic Longitude (standard deviation 1.04deg)
 	// ~ 0.81deg total deviation on Ecliptic Latitude (standard deviation 0.31deg)
 	// ~ 7645km total deviation on Ecliptic Longitude (standard deviation 3388km)
-	double partL = fmod(218.316 + (13.176396 * elapsed), 360.0);
-	double partM = fmod(134.963 + (13.064993 * elapsed), 360.0);
+	double partL = fmod(218.3164477 + (13.176396 * elapsed), 360.0);
+	double partM = fmod(134.9633964 + (13.064993 * elapsed), 360.0);
 	double partF = fmod(93.272 + (13.229350 * elapsed), 360.0);
 
 	// Using the above approximations, calculate the Geocentric Ecliptic Coordinates (lambda, beta, large delta)
@@ -358,6 +333,19 @@ FRotator ATimeManager::CalculateMoonAngle()
 
 	lunarAA = lunarAA * -1;
 
+	//This is put here because we need the data above. 
+//"CalculateMoonPhase" doesn't actually do anything but return the calculated variable here...
+	double sdist = 149598000; // distance from Earth to Sun in km
+	double phi = acos(sin(TEMP_solarDec) * sin(lunarDec) + cos(TEMP_solarDec) * cos(lunarDec) * cos(TEMP_solarRA - lunarRA));
+	double inc = atan2(sdist * sin(phi), ecDist - sdist * cos(phi));
+	double angle = atan2(cos(TEMP_solarDec) * sin(TEMP_solarRA - lunarRA), sin(TEMP_solarDec) * cos(lunarDec) - cos(TEMP_solarDec) * sin(lunarDec) * cos(TEMP_solarRA - lunarRA));
+
+	//Fraction, phase, angle
+	LunarPhase_Fraction = (1 + cos(inc)) / 2;
+	LunarPhase_Phase = 0.5 + 0.5 * inc * (angle < 0 ? -1 : 1) / PI;
+	LunarPhase_Angle = angle;
+	//END MoonPhase
+
 
 	//for debug only:
 	PartL = (float)partL;
@@ -372,344 +360,18 @@ FRotator ATimeManager::CalculateMoonAngle()
 	LunarAltAngle = (float)lunarAA;
 	LunarAzimuth = (float)lunarAz;
 
+	SiderealTime = (float)lunarST;
+	LunarHRA = (float)lunarHRA;
+	LunarDeclination = (float)lunarDec;
+	LunarRightAsc = (float)lunarRA;
+
 
 	return FRotator(LunarAltAngle, LunarAzimuth, 0);
 }
 
-
-float ATimeManager::CalculateMoonPhase()
+//Returned as Fraction, phase, angle. YOU MUST CALL CALC SUN AND MOON POSITION BEFORE THIS DUE TO CHEATING!!!
+FRotator ATimeManager::CalculateMoonPhase()
 {
-	// Last time Lunar year start = solar year start:
-	double elapsed = InternalTime.GetJulianDay() - JD1900;
-
-	double cycles = elapsed / 29.530588853;
-	int32 count = FPlatformMath::FloorToInt(cycles);
-	cycles -= count;
-	return cycles;
+	//Fraction, phase, angle
+	return FRotator(LunarPhase_Fraction, LunarPhase_Phase, LunarPhase_Angle);
 }
-
-
-
-/* ------------------------------------------------------- */
-/* --- Variations of the Lunar Calculations - Not used --- */
-/* ------------------------------------------------------- */
-
-
-// FRotator ATimeManager::CalculateMoonAngle()
-// {
-// 	double lct = (InternalTime + SpanUTC).GetTimeOfDay().GetTotalHours();
-// 	double elapsedDays = InternalTime.GetJulianDay() - JD2000;  // T
-// 	
-// 	double sunPH = fmod(282.9404 + (4.70935E-5 * elapsedDays), 360.0);
-// 	double sunMA = fmod(356.0470 + (0.9856002585 * elapsedDays), 360.0);
-// 	double sunML = sunPH + sunMA;
-// 
-// 	// lunar orbital elements
-// 	double ascNodeLong = fmod(125.1228 - (0.0529538083 * elapsedDays), 360.0);   // N
-// 	double inclination = 5.1454;                                                 // i
-// 	double argOfPerigee = fmod(318.0634 + (0.1643573223 * elapsedDays), 360.0);  // w
-// 	double meanDistance = 60.2666;  // Earth equatorial radii                    // a
-// 	double eccentricity = 0.054900;                                              // e
-// 	double meanAnomaly = fmod(115.3654 + (13.0649929509 * elapsedDays), 360.0);  // M
-// 
-// 	//EcObliquity =
-// 
-// 	// Eccentric anomaly (E)
-// 	//  - First iteration e0
-// 	double e0 = meanAnomaly + (180.0 / PI) * eccentricity * SinD(meanAnomaly) * (1 + (eccentricity * CosD(meanAnomaly)));
-// 	//  - Second iteration e1 (set e0 = e1 then repeat e1 calculation multiple times for greater accuracy, once is enough for now)
-// 	double e1 = e0 - ((e0 - (180.0 / PI) * eccentricity * SinD(e0) - meanAnomaly) / (1 - (eccentricity * CosD(e0))));
-// 
-// 	// Compute x/y coordinates in the plane of the lunar orbit
-// 	double loX = meanDistance * (CosD(e1) - eccentricity);
-// 	double loY = meanDistance * sqrt(1 - (eccentricity * eccentricity)) * SinD(e1);
-// 
-// 	// distance and true anomaly
-// 	double distance = sqrt((loX * loX) + (loY * loY));  // r
-// 	double trueAnom = ATan2D(loY, loX);                 // v
-// 	
-// 	// need a positive result for v
-// 	if (trueAnom < 0)
-// 		trueAnom += 360.0;
-// 	
-// 	// convert to ecliptic coordinates
-// 	double ecX = distance * ((CosD(ascNodeLong) * CosD(trueAnom + argOfPerigee))
-// 		- (SinD(ascNodeLong) * SinD(trueAnom + argOfPerigee) * CosD(inclination)));
-// 	double ecY = distance * ((SinD(ascNodeLong) * CosD(trueAnom + argOfPerigee))
-// 		+ (CosD(ascNodeLong) * SinD(trueAnom + argOfPerigee) * CosD(inclination)));
-// 	double ecZ = distance * SinD(trueAnom + argOfPerigee) * SinD(inclination);
-// 
-// 	// rotate to equatorial coordinates to account for earths tilt (x axis remains the same)
-// 	double rotY = (ecY * CosD(EcObliquity)) - (ecZ * SinD(EcObliquity));
-// 	double rotZ = (ecY * SinD(EcObliquity)) + (ecZ * CosD(EcObliquity));
-// 	
-// 	// convert to ecliptic latitude & longitude
-// 	//double ecLat = 
-// 	//double ecLon = ;
-// 
-// 	// convert to ecliptic coordinates
-// 	//double  = x;
-// 	//double  = (y * CosD(EcObliquity * -1)) - (z * SinD(EcObliquity * -1));
-// 	//double  = (y * SinD(EcObliquity * -1)) + (z * CosD(EcObliquity * -1));
-// 
-// 	// convert to Right Ascension and Declination
-// 	double ra = ATan2D(rotY, ecX);
-// 	double decl = ASinD(rotY / distance);
-// 
-// 	double meanLong = fmod(argOfPerigee + meanAnomaly, 360.0);
-// 
-// 	// calculate Sidereal time
-// // 	double gmst0 = (sunML / 15) + 12;
-// // 	double sidereal = gmst0 + lct + (Longitude / 15);
-// 	double moEarth = 357.529 + (0.985608 * (elapsedDays + (lct / 24)));
-// 	double sidereal = fmod(moEarth + 102.937 - Longitude, 360.0);
-// 	double hra = fmod(sidereal - (15 * ra), 360.0);
-// 
-// 	// force the following equations to use the double overloaded function
-// 	double lat = (double)Latitude;
-// 
-// 	// convert to topocentric
-// // 	double mpar = ASinD(1 / distance);
-// // 	double rho = 0.99833 + (0.00167 * CosD(2 * lat));
-// // 	double gcLat = lat - (0.1924 * SinD(2 * lat));
-// // 	double geoHRA = sidereal - ra;
-// // 	double auxG = ATanD(TanD(gcLat) / CosD(geoHRA));
-// // 	double tRA = ra - (mpar * rho * CosD(gcLat) * SinD(geoHRA) / CosD(decl));
-// // 	double tDecl = decl - ((mpar * rho * SinD(gcLat) * SinD(auxG - decl)) / (SinD(auxG)));
-// // 	//double tHRA = 
-// // 
-// 	// convert HRA and Declination to x/y/z (celestial)
-// 	double cX = CosD(hra) * CosD(decl);
-// 	double cY = SinD(hra) * CosD(decl);
-// 	double cZ = SinD(decl);
-// 	
-// 	// rotate to east -> west orientation, while keeping the direction & celestial zenith
-// 	double xhor = (cX * SinD(lat)) - (cZ * CosD(lat));
-// 	double yhor = cY;
-// 	double zhor = (cX * CosD(lat)) + ((cZ * SinD(lat)));
-// 	
-// 	// Altitude Angle and Azimuth
-// 
-// 	double altitude = ASinD(zhor);
-// 	double azimuth = ATan2D(yhor, xhor) + 180.0;
-// 
-// 	// TEMP - for debug only:
-// 	LocalClockTime = (float)lct;	
-// 	LunarElapsedDays = (float)elapsedDays;
-// 	LunarDeclination = (float)decl;
-// 	LunarRightAsc = (float)ra;
-// 	SiderealTime = (float)sidereal;
-// 	LunarHRA = (float)hra;
-// 	LunarAltAngle = (float)altitude;
-// 	LunarAzimuth = (float)azimuth;
-// 
-// 	return FRotator(LunarAltAngle, LunarAzimuth, 0);
-// }
-
-
-
-
-
-// FRotator ATimeManager::CalculateMoonAngle()
-// {
-// 	double lct = InternalTime.GetTimeOfDay().GetTotalMinutes();
-// 	double elapsed = InternalTime.GetJulianDay() + (lct / 1440) - JD2000; // -0.5) -1;
-// 	double ejc = elapsed / 36525.0;
-// 	//double eps = 23.43929 + ((46.8150 * ejc) + ((0.00059 * ejc) * ejc)) - ((((0.001813 * ejc) * ejc) * ejc) / 3600);
-// 	//double eps = 23.43929 - ((46.8150 * ejc) + (0.00059 * pow(ejc, 2)) - (0.001813 * pow(ejc, 3)));
-// 	double eps = 23.43929 - ((46.8150 * ejc) + (0.00059 * pow(ejc, 2)) - (0.001813 * pow(ejc, 3)) / 3600.0);
-// 
-// 	// for debug only:
-// 	LunarElapsedDays = (float)elapsed;
-// 	//LocalClockTime = (float)lct;
-// 
-// 	// Approximations for Mean Ecliptic Longitude (L), Mean Anomaly (M), and Mean Distance (F)
-// 	// c0 + c1 are charted values * (d - d0) which is the value of elapsed (days since JD2000 - JD2000)
-// 	// values are modulated to 360, we only care about the remainder, container doubles can be discarded
-// 	// The approximations for years 1950 to 2050 provide accuracy of: 
-// 	// ~ 2.57deg total deviation on Ecliptic Longitude (standard deviation 1.04deg)
-// 	// ~ 0.81deg total deviation on Ecliptic Latitude (standard deviation 0.31deg)
-// 	// ~ 7645km total deviation on Ecliptic Longitude (standard deviation 3388km)
-// 	double partL = fmod(218.316 + (13.176396 * elapsed), 360.0);
-// 	double partM = fmod(134.963 + (13.064993 * elapsed), 360.0);
-// 	double partF = fmod(93.272 + (13.229350 * elapsed), 360.0);
-// 
-// 	// TEMP - for debug only:
-// 	PartL = (float)partL;
-// 	PartM = (float)partM;
-// 	PartF = (float)partF;
-// 
-// 	// Using the above approximations, calculate the Geocentric Ecliptic Coordinates (lambda, beta, large delta)
-// 	double ecLong = partL + (6.289 * SinD(partM));
-// 	double ecLat = 5.128 * SinD(partF);
-// 	double ecDist = 385001 - (20905 * CosD(partM));
-// 
-// 	// TEMP - for debug only:
-// 	EcLongitude = (float)ecLong;
-// 	EcLatitude = (float)ecLat;
-// 	EcDistance = (float)ecDist;
-// 
-// 	double partX = CosD(ecLat) * CosD(ecLong);
-// 	double partY = (CosD(eps) * CosD(ecLat) * SinD(ecLong)) - (SinD(eps) * SinD(ecLat));
-// 	double partZ = (SinD(eps) * CosD(ecLat) * SinD(ecLong)) - (CosD(eps) * SinD(ecLat));
-// 	double partR = sqrt(1.0 - (partZ * partZ));
-// 
-// 	// Convert to Observer->Sky coordinates (delta, alpha) using the obliquity of the ecliptic (eps)
-// 	double lunarDec = fmod((180.0 / PI) * ATanD(partZ / partR), 360);
-// 	double lunarRA = fmod((24.0 / PI) * ATanD(partY / (partX + partR)), 360);
-// 
-// 	double theta0 = fmod(280.46061837 + (360.98564736629 * elapsed) + (0.000387933 * pow(ejc, 2)) - (pow(ejc, 3) / 38710000.0), 360);
-// 
-// 	double lunarST = theta0 + Longitude;
-// 	//double lunarST = (357.529 + 102.937) (134.963 + 13.064993)
-// 	double lunarHRA = lunarST - lunarRA;
-// 
-// 	// TEMP - for debug only:
-// 	LunarDeclination = (float)lunarDec;
-// 	LunarRightAsc = (float)lunarRA;
-// 	SiderealTime = (float)lunarST;
-// 	LunarHRA = (float)lunarHRA;
-// 
-// 
-// 	double lat = (double)Latitude;
-// 	double lunarAA = SinD((SinD(lat) * SinD(lunarDec)) + (CosD(lat) * CosD(lunarDec) * CosD(lunarHRA)));
-// 	double lunarAz = TanD(SinD(lunarHRA) / ((CosD(lat) * TanD(lunarDec)) - (SinD(lat) * CosD(LunarHRA))));
-// 
-// 	LunarAltAngle = (float)lunarAA;
-// 	LunarAzimuth = (float)lunarAz;
-// 
-// 	return FRotator(LunarAltAngle, LunarAzimuth, 0);
-// }
-
-
-// FRotator ATimeManager::CalculateMoonAngle()
-// {
-// 	ElapsedJD1900 = (InternalTime.GetJulianDay() - JD1900) / 36525;
-// 	double actualEcObl = EcObliquity - (0.0130125 * ElapsedJD1900) - (0.00000164 * pow(ElapsedJD1900, 2)) - (0.000000503 * pow(ElapsedJD1900, 3));
-// 
-// 	double lonMoon = fmod(270.434164 + (481267.8831 * ElapsedJD1900), 360.0);
-// 	double anomSun = fmod(358.475833 + (35999.0498 * ElapsedJD1900), 360.0);
-// 	double anomMoon = fmod(296.104608 + (477198.8491 * ElapsedJD1900), 360.0);
-// 	double elonMoon = fmod(350.737486 + (445267.1142 * ElapsedJD1900), 360.0);
-// 	double distMoon = 11.250889 + (483202.0251 * ElapsedJD1900);  //fmod( , 360.0);
-// 
-// 	double ecLon = lonMoon + (6.288750 * SinD(anomMoon)) + (1.274018 * SinD((2 * elonMoon) - anomSun))
-// 		+ (0.658309 * SinD(2 * elonMoon)) + (0.211316 * SinD(2 * anomMoon))
-// 		- (0.185596 * SinD(anomSun)) - (0.114336 * SinD(2 * distMoon));
-// 
-// 	double ecLat = (5.128189 * SinD(distMoon)) + (0.280606 * SinD(lonMoon + distMoon))
-// 		+ (0.277693 * SinD(anomMoon - distMoon)) + (0.173238 * SinD((2 * elonMoon) - distMoon))
-// 		+ (0.055413 * SinD((2 * elonMoon) + distMoon - anomMoon))
-// 		+ (0.046272 * SinD((2 * elonMoon) - distMoon - anomMoon));
-// 
-// 	double ecHorizPara = 0.950724 + (0.051818 * CosD(anomMoon)) + (0.009531 * CosD((2 * elonMoon) - anomMoon))
-// 		+ (0.007843 * CosD(2 * elonMoon)) + (0.002824 * CosD(2 * anomMoon)) + (0.000857 * CosD((2 * elonMoon) + anomMoon));
-// 
-// 
-// 	double lct = InternalTime.GetTimeOfDay().GetTotalMinutes();
-// 	double elapsed = ((InternalTime.GetJulianDay() - 1) + (lct / 1440)) - (JD2000 - 0.5);
-// 
-// 	LocalClockTime = (float)lct;
-// 	// for debug only:
-// 	LunarElapsedDays = (float)ElapsedJD1900;
-// 
-// 	// TEMP - for debug only:
-// 	PartL = (float)lonMoon;
-// 	PartM = (float)anomMoon;
-// 	PartF = (float)distMoon;
-// 
-// 	// TEMP - for debug only:
-// 	EcLongitude = (float)ecLon;
-// 	EcLatitude = (float)ecLat;
-// 	EcDistance = (float)distMoon;
-// 
-// 	// Convert to Observer->Sky coordinates (delta, alpha) using the obliquity of the ecliptic (epsilon = 23.4397)
-// 	double lunarDec = SinD((SinD(ecLat) * CosD(actualEcObl)) + (CosD(ecLat) * SinD(actualEcObl) * SinD(ecLon)));
-// 	double lunarRA = TanD(((SinD(ecLon) * CosD(actualEcObl)) - (TanD(ecLat) * SinD(actualEcObl))) / CosD(ecLon));
-// 
-// 	double lunarST = fmod((357.529 + 102.937) + (15 * ((LocalClockTime / 60) + OffsetUTC)) - Longitude, 360.0);
-// 	//double lunarST = fmod((134.963 + 13.064993) + (15 * ((LocalClockTime / 60) + OffsetUTC)) - Longitude, 360.0);
-// 	double lunarHRA = lunarST - lunarRA;
-// 
-// 	// TEMP - for debug only:
-// 	LunarDeclination = (float)lunarDec;
-// 	LunarRightAsc = (float)lunarRA;
-// 	SiderealTime = (float)lunarST;
-// 	LunarHRA = (float)lunarHRA;
-// 
-// 	double lunarAA = ASinD((SinD(Latitude) * SinD(lunarDec)) + (CosD(Latitude) * CosD(lunarDec) * CosD(lunarHRA)));
-// 	double lunarAz = ATan2D(SinD(lunarHRA), ((CosD(lunarHRA) * SinD(Latitude)) - (TanD(lunarDec) * CosD(Latitude))));
-// 
-// 	LunarAltAngle = (float)lunarAA;
-// 	LunarAzimuth = (float)lunarAz;
-// 
-// 	return FRotator(LunarAltAngle, LunarAzimuth - 180, 0);
-// }
-
-
-
-
-// UN-Modified Original
-
-// 	FRotator ATimeManager::CalculateMoonAngle()
-// 	{
-// 		double lct = InternalTime.GetTimeOfDay().GetTotalMinutes();
-// 		double elapsed = ((InternalTime.GetJulianDay() - 1) + (lct / 1440)) - (JD2000 - 0.5);
-// 
-// 		LocalClockTime = (float)lct;
-// 		// for debug only:
-// 		LunarElapsedDays = (float)elapsed;
-// 
-// 		// Approximations for Mean Ecliptic Longitude (L), Mean Anomaly (M), and Mean Distance (F)
-// 		// c0 + c1 are charted values * (d - d0) which is the value of elapsed (days since JD2000 - JD2000)
-// 		// values are modulated to 360, we only care about the remainder, container doubles can be discarded
-// 		// The approximations for years 1950 to 2050 provide accuracy of: 
-// 		// ~ 2.57deg total deviation on Ecliptic Longitude (standard deviation 1.04deg)
-// 		// ~ 0.81deg total deviation on Ecliptic Latitude (standard deviation 0.31deg)
-// 		// ~ 7645km total deviation on Ecliptic Longitude (standard deviation 3388km)
-// 		double partL = fmod(218.316 + (13.176396 * elapsed), 360.0);
-// 		double partM = fmod(134.963 + (13.064993 * elapsed), 360.0);
-// 		double partF = fmod(93.272 + (13.229350 * elapsed), 360.0);
-// 
-// 		// TEMP - for debug only:
-// 		PartL = (float)partL;
-// 		PartM = (float)partM;
-// 		PartF = (float)partF;
-// 
-// 		// Using the above approximations, calculate the Geocentric Ecliptic Coordinates (lambda, beta, large delta)
-// 		double ecLong = partL + (6.289 * SinD(partM));
-// 		double ecLat = 5.128 * SinD(partF);
-// 		double ecDist = 385001 - (20905 * CosD(partM));
-// 
-// 		// TEMP - for debug only:
-// 		EcLongitude = (float)ecLong;
-// 		EcLatitude = (float)ecLat;
-// 		EcDistance = (float)ecDist;
-// 
-// 		// Convert to Observer->Sky coordinates (delta, alpha) using the obliquity of the ecliptic (epsilon = 23.4397)
-// 		double lunarDec = ASinD((SinD(ecLat) * CosD(23.4397)) + (CosD(ecLat) * SinD(23.4397) * SinD(ecLong)));
-// 		double lunarRA = 15 * ATan2D((SinD(ecLong) * CosD(23.4397)) - (TanD(ecLat) * SinD(23.4397)), CosD(ecLong));
-// 
-// 		//double lunarDec = SinD((SinD(ecLat) * CosD(actualEcObl)) + (CosD(ecLat) * SinD(actualEcObl) * SinD(ecLon)));
-// 		//double lunarRA = TanD(((SinD(ecLon) * CosD(actualEcObl)) - (TanD(ecLat) * SinD(actualEcObl))) / CosD(ecLon));
-// 
-// 		double lunarST = fmod((357.529 + 102.937) + (15 * ((LocalClockTime / 60) + OffsetUTC)) - Longitude, 360.0);
-// 		//double lunarST = fmod((134.963 + 13.064993) + (15 * ((LocalClockTime / 60) + OffsetUTC)) - Longitude, 360.0);
-// 		double lunarHRA = lunarST - lunarRA;
-// 
-// 		// TEMP - for debug only:
-// 		LunarDeclination = (float)lunarDec;
-// 		LunarRightAsc = (float)lunarRA;
-// 		SiderealTime = (float)lunarST;
-// 		LunarHRA = (float)lunarHRA;
-// 
-// 
-// 		double lunarAA = ASinD((SinD(Latitude) * SinD(lunarDec)) + (CosD(Latitude) * CosD(lunarDec) * CosD(lunarHRA)));
-// 		double lunarAz = ATan2D(SinD(lunarHRA), ((CosD(lunarHRA) * SinD(Latitude)) - (TanD(lunarDec) * CosD(Latitude))));
-// 
-// 		LunarAltAngle = (float)lunarAA;
-// 		LunarAzimuth = (float)lunarAz;
-// 
-// 		return FRotator(LunarAltAngle, LunarAzimuth - 180, 0);
-// 	}
-
