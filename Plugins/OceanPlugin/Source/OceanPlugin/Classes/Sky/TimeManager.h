@@ -34,6 +34,53 @@ class ATimeManager : public AActor
 
 public:
 
+	/** The set of twilights to calculate (types of rise/set events). */
+	enum TWILIGHT {
+		/**
+		 * Event ID for calculation of rising and setting times for astronomical
+		 * twilight. In this case, the calculated time will be the time when the
+		 * center of the object is at -18 degrees of geometrical elevation below the
+		 * astronomical horizon. At this time astronomical observations are possible
+		 * because the sky is dark enough.
+		 */
+		TWILIGHT_ASTRONOMICAL,
+		/**
+		 * Event ID for calculation of rising and setting times for nautical
+		 * twilight. In this case, the calculated time will be the time when the
+		 * center of the object is at -12 degrees of geometric elevation below the
+		 * astronomical horizon.
+		 */
+		TWILIGHT_NAUTICAL,
+		/**
+		 * Event ID for calculation of rising and setting times for civil twilight.
+		 * In this case, the calculated time will be the time when the center of the
+		 * object is at -6 degrees of geometric elevation below the astronomical
+		 * horizon.
+		 */
+		TWILIGHT_CIVIL,
+		/**
+		 * The standard value of 34' for the refraction at the local horizon.
+		 */
+		HORIZON_34arcmin
+	};
+
+	/** The set of events to calculate (rise/set/transit events). */
+	enum EVENT {
+		/** Rise. */
+		RISE,
+		/** Set. */
+		SET,
+		/** Transit. */
+		TRANSIT
+	};
+
+
+
+
+
+
+	TWILIGHT twilight = HORIZON_34arcmin;
+
 	// Current Local Clock Time (LCT)
 	UPROPERTY(BlueprintReadOnly, Category = "TimeManager")
 	FTimeDate CurrentLocalTime;
@@ -133,6 +180,9 @@ public:
 	float LunarElapsedDays = 0.0f;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
+	float JulianDateonTTscale = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
 	float EcLongitude = 0.0f;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
@@ -140,6 +190,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
 	float EcDistance = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
+	float EcDistanceRadii = 0.0f;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
 	float PartL = 0.0f;
@@ -158,6 +211,15 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
 		float LunarPhase_Angle = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
+	float LunarParallax = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
+	float LunarAngularRadius = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Lunar Debug")
+	float LunarAdjustedAngularRadious = 0.0f;
 
 	double TEMP_solarRA = 0.0f;
 	double TEMP_solarDec = 0.0f;
@@ -274,21 +336,37 @@ public:
 	*
 	* @return: FRotator - The moon rotation value for the current time.
 	*/
-	UFUNCTION(BlueprintCallable, Category = "TimeManager")
-	FRotator CalculateMoonAngle(float Latitude2, float Longitude2, float TimeZone, bool bIsDaylightSavingTime, int32 Year, int32 Month, int32 Day, int32 Hours, int32 Minutes, int32 Seconds);
 
+	double datan2(double y, double x);
+	double ipart(double x);
+	double range(double x);
+
+
+	double normalizeRadians(double r);
+	double calculateTwilightAdjustment(double moonangularRadius) const;
 
 	/**
-	* @Name: CalculateMoonPhase
-	* @Description: Calculates the moon phase for the current time and date.
-	*
-	* @return: FRotator - The moon rotation value for the current time.
-	*/
+* @Name: CalculateMoonPhase
+* @Description: Calculates the moon phase for the current time and date.
+*
+* @return: FRotator - The moon rotation value for the current time.
+*/
 	UFUNCTION(BlueprintCallable, Category = "TimeManager")
-		FRotator CalculateMoonPhase();
+	FRotator CalculateMoonAnglefINAL(float Latitude2, float Longitude2, float TimeZone, bool bIsDaylightSavingTime, int32 Year, int32 Month, int32 Day, int32 Hours, int32 Minutes, int32 Seconds);
+	
+	/**
+* @Name: CalculateMoonPhase
+* @Description: Calculates the moon phase for the current time and date.
+*
+* @return: FRotator - The moon rotation value for the current time.
+*/
+	UFUNCTION(BlueprintCallable, Category = "TimeManager")
+	FRotator CalculateMoonPhase(float Latitude2, float Longitude2, float TimeZone, bool bIsDaylightSavingTime, int32 Year, int32 Month, int32 Day, int32 Hours, int32 Minutes, int32 Seconds);
+
 
 
 private:
+	private:
 
 	bool bIsCalendarInitialized = false;
 
@@ -370,4 +448,7 @@ private:
 	//bool UsingCustomCaledar;
 
     };
+
+
+
 
