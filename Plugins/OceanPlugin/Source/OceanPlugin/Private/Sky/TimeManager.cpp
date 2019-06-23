@@ -756,7 +756,6 @@ double  ATimeManager::obtainAccurateRiseSetTransit(double riseSetJD, EVENT index
 TArray<double> ATimeManager::getMoonDiskOrientationAngles()
 {
 	sun = doCalc(getSun(), false);
-	sun = doCalc(getSun(), false);
 	TArray<double> moonPos = getMoon();
 	moon = doCalc(moonPos, false);
 	double moonLon = moonPos[0], moonLat = moonPos[1],
