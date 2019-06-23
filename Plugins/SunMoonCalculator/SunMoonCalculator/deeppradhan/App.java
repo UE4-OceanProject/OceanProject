@@ -580,68 +580,68 @@ public class App {
 						Math.toDegrees(sunMoonCalculator.moonBL),
 						Math.toDegrees(sunMoonCalculator.moonPar)));
 
-				// Get values for current day
-				double moonRise = sunMoonCalculator.moonRise,
-					moonTransit = sunMoonCalculator.moonTransit,
-					moonSet = sunMoonCalculator.moonSet,
-					moonTransitElevation = sunMoonCalculator.moonTransitElev;
-
-				// Get values for prev day
-				calendarSunMoon.add(Calendar.DATE, -1);
-				sunMoonCalculator = new SunMoonCalculator(calendarSunMoon,
-						Math.toRadians(longitude), Math.toRadians(latitude));
-				sunMoonCalculator.calcSunAndMoon();
-				double moonRisePrev = sunMoonCalculator.moonRise,
-						moonTransitPrev = sunMoonCalculator.moonTransit,
-						moonSetPrev = sunMoonCalculator.moonSet,
-						moonTransitElevationPrev = sunMoonCalculator.moonTransitElev;
-
-				// Get values for next day
-				calendarSunMoon.add(Calendar.DATE, 2);
-				sunMoonCalculator = new SunMoonCalculator(calendarSunMoon,
-						Math.toRadians(longitude), Math.toRadians(latitude));
-				sunMoonCalculator.calcSunAndMoon();
-				double moonRiseNext = sunMoonCalculator.moonRise,
-						moonTransitNext = sunMoonCalculator.moonTransit,
-						moonSetNext = sunMoonCalculator.moonSet,
-						moonTransitElevationNext = sunMoonCalculator.moonTransitElev;
-
-				// Reset to current day
-				calendarSunMoon.add(Calendar.DATE, -1);
-
-				// Set relevant Moon rise time
-				if (App.getCalendar(moonRiseNext, timeZoneSunMoonTimes).get(Calendar.DATE) == calendarSunMoon.get(Calendar.DATE))
-					moonRise = moonRiseNext;
-				if (App.getCalendar(moonRisePrev, timeZoneSunMoonTimes).get(Calendar.DATE) == calendarSunMoon.get(Calendar.DATE))
-					moonRise = moonRisePrev;
-				if (App.getCalendar(moonRise, timeZoneSunMoonTimes).get(Calendar.DATE) != calendarSunMoon.get(Calendar.DATE))
-					moonRise = Double.NaN;
-
-				// Set relevant Moon transit time & elevation
-				if (App.getCalendar(moonTransitNext, timeZoneSunMoonTimes).get(Calendar.DATE) == calendarSunMoon.get(Calendar.DATE)) {
-					moonTransit = moonTransitNext;
-					moonTransitElevation = moonTransitElevationNext;
-				}
-				if (App.getCalendar(moonTransitPrev, timeZoneSunMoonTimes).get(Calendar.DATE) == calendarSunMoon.get(Calendar.DATE)) {
-					moonTransit = moonTransitPrev;
-					moonTransitElevation = moonTransitElevationPrev;
-				}
-				if (App.getCalendar(moonTransit, timeZoneSunMoonTimes).get(Calendar.DATE) != calendarSunMoon.get(Calendar.DATE))
-					moonTransit = moonTransitElevation = Double.NaN;
-
-				// Set relevant Moon rise time
-				if (App.getCalendar(moonSetNext, timeZoneSunMoonTimes).get(Calendar.DATE) == calendarSunMoon.get(Calendar.DATE))
-					moonSet = moonSetNext;
-				if (App.getCalendar(moonSetPrev, timeZoneSunMoonTimes).get(Calendar.DATE) == calendarSunMoon.get(Calendar.DATE))
-					moonSet = moonSetPrev;
-				if (App.getCalendar(moonSet, timeZoneSunMoonTimes).get(Calendar.DATE) != calendarSunMoon.get(Calendar.DATE))
-					moonSet = Double.NaN;
-
-				labelMoonRise.setText(App.getTimeAsString(moonRise, timeZoneSunMoonTimes));
-				labelMoonTransit.setText(App.getTimeAsString(moonTransit, timeZoneSunMoonTimes));
-				labelMoonTransit.setToolTipText(Double.isNaN(moonTransitElevation) ?
-						null : String.format("Elevation: " + FORMAT_ANGLES, Math.toDegrees(moonTransitElevation)));
-				labelMoonSet.setText(App.getTimeAsString(moonSet, timeZoneSunMoonTimes));
+//				// Get values for current day
+//				double moonRise = sunMoonCalculator.moonRise,
+//					moonTransit = sunMoonCalculator.moonTransit,
+//					moonSet = sunMoonCalculator.moonSet,
+//					moonTransitElevation = sunMoonCalculator.moonTransitElev;
+//
+//				// Get values for prev day
+//				calendarSunMoon.add(Calendar.DATE, -1);
+//				sunMoonCalculator = new SunMoonCalculator(calendarSunMoon,
+//						Math.toRadians(longitude), Math.toRadians(latitude));
+//				sunMoonCalculator.calcSunAndMoon();
+//				double moonRisePrev = sunMoonCalculator.moonRise,
+//						moonTransitPrev = sunMoonCalculator.moonTransit,
+//						moonSetPrev = sunMoonCalculator.moonSet,
+//						moonTransitElevationPrev = sunMoonCalculator.moonTransitElev;
+//
+//				// Get values for next day
+//				calendarSunMoon.add(Calendar.DATE, 2);
+//				sunMoonCalculator = new SunMoonCalculator(calendarSunMoon,
+//						Math.toRadians(longitude), Math.toRadians(latitude));
+//				sunMoonCalculator.calcSunAndMoon();
+//				double moonRiseNext = sunMoonCalculator.moonRise,
+//						moonTransitNext = sunMoonCalculator.moonTransit,
+//						moonSetNext = sunMoonCalculator.moonSet,
+//						moonTransitElevationNext = sunMoonCalculator.moonTransitElev;
+//
+//				// Reset to current day
+//				calendarSunMoon.add(Calendar.DATE, -1);
+//
+//				// Set relevant Moon rise time
+//				if (App.getCalendar(moonRiseNext, timeZoneSunMoonTimes).get(Calendar.DATE) == calendarSunMoon.get(Calendar.DATE))
+//					moonRise = moonRiseNext;
+//				if (App.getCalendar(moonRisePrev, timeZoneSunMoonTimes).get(Calendar.DATE) == calendarSunMoon.get(Calendar.DATE))
+//					moonRise = moonRisePrev;
+//				if (App.getCalendar(moonRise, timeZoneSunMoonTimes).get(Calendar.DATE) != calendarSunMoon.get(Calendar.DATE))
+//					moonRise = Double.NaN;
+//
+//				// Set relevant Moon transit time & elevation
+//				if (App.getCalendar(moonTransitNext, timeZoneSunMoonTimes).get(Calendar.DATE) == calendarSunMoon.get(Calendar.DATE)) {
+//					moonTransit = moonTransitNext;
+//					moonTransitElevation = moonTransitElevationNext;
+//				}
+//				if (App.getCalendar(moonTransitPrev, timeZoneSunMoonTimes).get(Calendar.DATE) == calendarSunMoon.get(Calendar.DATE)) {
+//					moonTransit = moonTransitPrev;
+//					moonTransitElevation = moonTransitElevationPrev;
+//				}
+//				if (App.getCalendar(moonTransit, timeZoneSunMoonTimes).get(Calendar.DATE) != calendarSunMoon.get(Calendar.DATE))
+//					moonTransit = moonTransitElevation = Double.NaN;
+//
+//				// Set relevant Moon rise time
+//				if (App.getCalendar(moonSetNext, timeZoneSunMoonTimes).get(Calendar.DATE) == calendarSunMoon.get(Calendar.DATE))
+//					moonSet = moonSetNext;
+//				if (App.getCalendar(moonSetPrev, timeZoneSunMoonTimes).get(Calendar.DATE) == calendarSunMoon.get(Calendar.DATE))
+//					moonSet = moonSetPrev;
+//				if (App.getCalendar(moonSet, timeZoneSunMoonTimes).get(Calendar.DATE) != calendarSunMoon.get(Calendar.DATE))
+//					moonSet = Double.NaN;
+//
+//				labelMoonRise.setText(App.getTimeAsString(moonRise, timeZoneSunMoonTimes));
+//				labelMoonTransit.setText(App.getTimeAsString(moonTransit, timeZoneSunMoonTimes));
+//				labelMoonTransit.setToolTipText(Double.isNaN(moonTransitElevation) ?
+//						null : String.format("Elevation: " + FORMAT_ANGLES, Math.toDegrees(moonTransitElevation)));
+//				labelMoonSet.setText(App.getTimeAsString(moonSet, timeZoneSunMoonTimes));
 				
 				frameSunMoonInfo.pack();
 			} catch (Exception e) {

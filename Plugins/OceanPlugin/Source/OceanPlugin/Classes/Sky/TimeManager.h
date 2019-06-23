@@ -232,6 +232,23 @@ class ATimeManager : public AActor
 		/** Moon's age in days as an independent variable. */
 		double moonAge;
 
+		//XXX Added new fields for moon
+/** Moon illumination percentage (0-1), Position angle of axis, Bright Limb angle, Paralactic angle*/
+
+		double moonIll, moonP, moonBL, moonPar;
+		UPROPERTY(BlueprintReadOnly, Category = "TimeManager")
+			float moonIll_out;
+		UPROPERTY(BlueprintReadOnly, Category = "TimeManager")
+			float moonP_out;
+		UPROPERTY(BlueprintReadOnly, Category = "TimeManager")
+			float moonBL_out;
+		UPROPERTY(BlueprintReadOnly, Category = "TimeManager")
+			float moonPar_out;
+
+		//XXX Added constant as is used at multiple places
+		/** Lunar cycle length in days*/
+		double LUNAR_CYCLE_DAYS = 29.530588853;
+
 
 		// Formulae here is a simplification of the expansion from 
 		// "Planetary Programs and Tables" by Pierre Bretagnon and
@@ -524,9 +541,11 @@ public:
 */
 	UFUNCTION(BlueprintCallable, Category = "TimeManager")
 		FRotator CalculateSunMoonAngle(float Latitude2, float Longitude2, float TimeZone, bool bIsDaylightSavingTime, int32 Year, int32 Month, int32 Day, int32 Hours, int32 Minutes, int32 Seconds);
-	
+
 	UFUNCTION(BlueprintCallable, Category = "TimeManager")
-		FEphemeris CalculateMoonAngle(float Latitude2, float Longitude2, float TimeZone, bool bIsDaylightSavingTime, int32 Year, int32 Month, int32 Day, int32 Hours, int32 Minutes, int32 Seconds);
+		FEphemeris CalculateMoonAngle(float Latitude2, float Longitude2, float TimeZone, bool bIsDaylightSavingTime, 
+			int32 Year, int32 Month, int32 Day, int32 Hours, int32 Minutes, int32 Seconds,
+			float &moonIll2, float &moonAngle, float &moonPhaseAngle, float &moonPhaseShadowAngle, float &moonBL2, float &moonPar2, float &SiderealTime2);
 	UFUNCTION(BlueprintCallable, Category = "TimeManager")
 		FEphemeris CalculateSunAngle(float Latitude2, float Longitude2, float TimeZone, bool bIsDaylightSavingTime, int32 Year, int32 Month, int32 Day, int32 Hours, int32 Minutes, int32 Seconds);
 

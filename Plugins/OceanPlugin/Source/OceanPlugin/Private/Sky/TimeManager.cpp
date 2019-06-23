@@ -200,12 +200,13 @@ FRotator ATimeManager::CalculateSunMoonAngle(float Latitude2, float Longitude2, 
 	LunarAzimuth = moon->azimuth * RAD_TO_DEG;
 
 	LunarHRA = 0;
-	TArray<double> Test = getMoonDiskOrientationAngles();
-	//return TArray<double> {lp, bp, p, bl, par, lst};
-	SiderealTime = Test[5];
-	return FRotator(moon->azimuth * RAD_TO_DEG, moon->elevation * RAD_TO_DEG, Test[0]);
+
+
+	return FRotator(moon->azimuth * RAD_TO_DEG, moon->elevation * RAD_TO_DEG, moonIll);
 };
-FEphemeris ATimeManager::CalculateMoonAngle(float Latitude2, float Longitude2, float TimeZone, bool bIsDaylightSavingTime, int32 Year, int32 Month, int32 Day, int32 Hours, int32 Minutes, int32 Seconds)
+FEphemeris ATimeManager::CalculateMoonAngle(float Latitude2, float Longitude2, float TimeZone, bool bIsDaylightSavingTime, 
+	int32 Year, int32 Month, int32 Day, int32 Hours, int32 Minutes, int32 Seconds,
+	float &moonIll2, float &moonAngle, float &moonPhaseAngle, float &moonPhaseShadowAngle, float &moonBL2, float &moonPar2, float &SiderealTime2)
 {
 	if (Year == 0 || Month == 0 || Day == 0)
 	{
@@ -213,6 +214,18 @@ FEphemeris ATimeManager::CalculateMoonAngle(float Latitude2, float Longitude2, f
 	}
 	InitSunMoonCalculator(Year, Month, Day, Hours, Minutes, Seconds, Longitude * DEG_TO_RAD, Latitude * DEG_TO_RAD, TimeZone);
 	calcSunAndMoon();
+	//return TArray<double> {lp, bp, p, bl, par, lst};
+	TArray<double> Test = getMoonDiskOrientationAngles();
+
+
+	moonIll2= (1 - FMath::Cos(moonAge / LUNAR_CYCLE_DAYS * 2 * PI)) / 2;
+	moonP = Test[2];
+	moonBL2 = Test[3];
+	moonPar2 = Test[4];
+	SiderealTime2 = Test[5];
+	moonPhaseAngle = ((FMath::Acos(-FMath::Cos(moonAge	/ LUNAR_CYCLE_DAYS * 2 * PI))));
+	moonAngle = (-(moonP - moonPar2));
+	moonPhaseShadowAngle = (-(moonBL2 - moonPar2));
 
 	return *moon;
 };
@@ -461,7 +474,7 @@ TArray<double> ATimeManager::getMoon() {
 	double longitude = l;
 
 	// Get accurate Moon age
-	double Psin = 29.530588853;
+	double Psin = LUNAR_CYCLE_DAYS; //XXX Using constant
 	moonAge = normalizeRadians(longitude * DEG_TO_RAD - sun->eclipticLongitude) * Psin / TWO_PI;
 
 	// Now Moon parallax
