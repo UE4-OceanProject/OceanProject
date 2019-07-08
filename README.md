@@ -1,9 +1,34 @@
+6/23/2019:
+SaschaElble:
+In an effort to re-start this project and hopefully get more people interested in it again, and since DotCam has been missing for about a year now, a few things are going to change...
+
+As of now (4.22+) this project is going to be stripped down.
+There are a few reasons for this, one of them being large download size, long compile/load times, and feature bloat.
+
+I'd like to split these features into separate plugins: (Features with arrows will require the parent feature above it)
+
+Water shaders
+
+  ^--Buoyancy
+
+  ^--School of fish (not sure if I will keep this)
+
+Time of day
+
+  ^--Weather
+
+  ^--Solar position system (sun and moon)
+
+Also, for hiding the ocean in certain parts so your (below ocean level) beautiful city does not "flood" look at the masking example map. 
+
+
 # OceanProject
 An Ocean Simulation project for Unreal Engine 4.
 
 ---------------------
 
 **MASTER Branch - This is the development branch. Please use this branch for all Pull Requests.**
+**MASTER_FULL Branch - This is the "final" version of this project as of 4.22, before it was stripped down
 
 **PLEASE NOTE**
 
@@ -16,6 +41,8 @@ An Ocean Simulation project for Unreal Engine 4.
 ![img_project](ProjectScreenshot.jpg)
 
 **Changelog:**
+Changes in 4.22:
+Apart from all the other commits, this was future proofed (I hope) to 4.23 (i.e all warning were fixed).
 
 Changes in 4.18:
 * Minor fixes
@@ -73,9 +100,14 @@ Added in 4.7:
 
 ===================================================================
 
+Discord channel:
+https://discord.gg/ewadNBG
 
+(DotCam is MIA, no access, don't use)
 Vote for upcoming features on our [Trello](https://trello.com/b/7dzOdkvw/ue4-ocean-weather-project)
 
+(This was re-routed, please see last post on this thread)
 UE4 Forums thread with more info: [[Community Project] WIP Weather & Ocean Water Shader](https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader)
 
+(Again, DotCam is MIA, contact one of the other project admins)
 If you would like to contribute to this project, please PM me on the UE4 forums with your GitHub user name and contact info.
