@@ -1,3 +1,4 @@
+6/23/2019:
 SaschaElble:
 In an effort to re-start this project and hopefully get more people interested in it again, and since DotCam has been missing for about a year now, a few things are going to change...
 
@@ -17,6 +18,8 @@ Time of day
   ^--Weather
 
   ^--Solar position system (sun and moon)
+
+Also, for hiding the ocean in certain parts so your (below ocean level) beautiful city does not "flood" look at the masking example map. 
 
 
 # OceanProject
