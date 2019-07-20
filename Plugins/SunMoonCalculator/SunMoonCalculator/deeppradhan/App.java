@@ -206,7 +206,7 @@ public class App {
 		gbcLabelSun.gridx = 0;
 		gbcLabelSun.gridy = 0;
 		panelSun.add(new JLabel("Rise:"), gbcLabelSun);
-		
+				
 		labelSunRise = new JLabel(BLANK_TIME);
 		GridBagConstraints gbcLabelSunRise = new GridBagConstraints();
 		gbcLabelSunRise.insets = new Insets(2, 2, 2, 2);
@@ -396,6 +396,7 @@ public class App {
 		gbcLabelMoonIllumination2.gridx = 1;
 		gbcLabelMoonIllumination2.gridy = 7;
 		panelMoon.add(labelMoonIllumination, gbcLabelMoonIllumination2);
+		
 		GridBagConstraints gbcLabelMoonPhase = new GridBagConstraints();
 		gbcLabelMoonPhase.fill = GridBagConstraints.HORIZONTAL;
 		gbcLabelMoonPhase.insets = new Insets(2, 2, 2, 2);
@@ -410,14 +411,66 @@ public class App {
 		gbcLabelMoonPhase2.gridy = 8;
 		panelMoon.add(labelMoonPhase, gbcLabelMoonPhase2);
 		
+	
+	
+
+		
+		
+		GridBagConstraints gbclabelPhaseAngle = new GridBagConstraints();
+		gbclabelPhaseAngle.fill = GridBagConstraints.HORIZONTAL;
+		gbclabelPhaseAngle.insets = new Insets(2, 2, 2, 2);
+		gbclabelPhaseAngle.gridx = 0;
+		gbclabelPhaseAngle.gridy = 9;
+		panelMoon.add(new JLabel("PhaseAngle:"), gbclabelPhaseAngle);
+		labelPhaseAngle = new JLabel(BLANK);
+		
+		GridBagConstraints gbclabelPhaseAngle2 = new GridBagConstraints();
+		gbclabelPhaseAngle2.insets = new Insets(2, 2, 2, 0);
+		gbclabelPhaseAngle2.gridx = 1;
+		gbclabelPhaseAngle2.gridy = 9;
+		panelMoon.add(labelPhaseAngle, gbclabelPhaseAngle2);
+		
+
+		GridBagConstraints gbclabelAngleMoon = new GridBagConstraints();
+		gbclabelAngleMoon.fill = GridBagConstraints.HORIZONTAL;
+		gbclabelAngleMoon.insets = new Insets(2, 2, 2, 2);
+		gbclabelAngleMoon.gridx = 0;
+		gbclabelAngleMoon.gridy = 10;
+		panelMoon.add(new JLabel("AngleMoon:"), gbclabelAngleMoon);
+		labelAngleMoon = new JLabel(BLANK);
+		
+		GridBagConstraints gbclabelAngleMoon2 = new GridBagConstraints();
+		gbclabelAngleMoon2.insets = new Insets(2, 2, 2, 0);
+		gbclabelAngleMoon2.gridx = 1;
+		gbclabelAngleMoon2.gridy = 10;
+		panelMoon.add(labelAngleMoon, gbclabelAngleMoon2);
+		
+		
+		GridBagConstraints gbclabelAngleShadow = new GridBagConstraints();
+		gbclabelAngleShadow.fill = GridBagConstraints.HORIZONTAL;
+		gbclabelAngleShadow.insets = new Insets(2, 2, 2, 2);
+		gbclabelAngleShadow.gridx = 0;
+		gbclabelAngleShadow.gridy = 11;
+		panelMoon.add(new JLabel("AngleShadow:"), gbclabelAngleShadow);
+		labelAngleShadow = new JLabel(BLANK);
+		
+		GridBagConstraints gbcLabelMooBL2 = new GridBagConstraints();
+		gbcLabelMooBL2.insets = new Insets(2, 2, 2, 0);
+		gbcLabelMooBL2.gridx = 1;
+		gbcLabelMooBL2.gridy = 11;
+		panelMoon.add(labelAngleShadow, gbcLabelMooBL2);
+		
+		
 		moonImage = new MoonImage();
 		GridBagConstraints gbcPanelMoonImage = new GridBagConstraints();
 		gbcPanelMoonImage.fill = GridBagConstraints.BOTH;
 		gbcPanelMoonImage.gridwidth = 2;
 		gbcPanelMoonImage.insets = new Insets(0, 0, 0, 2);
 		gbcPanelMoonImage.gridx = 0;
-		gbcPanelMoonImage.gridy = 9;
+		gbcPanelMoonImage.gridy = 12;
 		panelMoon.add(moonImage, gbcPanelMoonImage);
+		
+		
 
 		spinnerDateTime.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -564,6 +617,11 @@ public class App {
 				labelMoonAge.setText(String.format("%03.1f days", sunMoonCalculator.moonAge));
 				labelMoonIllumination.setText(String.format("%03.1f%%", sunMoonCalculator.moonIll * 100));
 				labelMoonPhase.setText(SunMoonCalculator.getMoonPhaseName(sunMoonCalculator.moonAge));
+				
+				labelPhaseAngle.setText(String.format(FORMAT_ANGLES, Math.toDegrees(Math.acos(-Math.cos(sunMoonCalculator.moonAge
+						/ SunMoonCalculator.LUNAR_CYCLE_DAYS * 2 * Math.PI)))));
+				labelAngleMoon.setText(String.format(FORMAT_ANGLES, Math.toDegrees(-(sunMoonCalculator.moonP - sunMoonCalculator.moonPar))));
+				labelAngleShadow.setText(String.format(FORMAT_ANGLES, Math.toDegrees(-(sunMoonCalculator.moonBL - sunMoonCalculator.moonPar))));
 
 				// Update Moon Image panel
 				moonImage.update(Math.toDegrees(Math.acos(-Math.cos(sunMoonCalculator.moonAge
@@ -673,6 +731,9 @@ public class App {
 		labelMoonAge.setText(BLANK);
 		labelMoonIllumination.setText(BLANK);
 		labelMoonPhase.setText(BLANK);
+		labelPhaseAngle.setText(BLANK);
+		labelAngleMoon.setText(BLANK);
+		labelAngleShadow.setText(BLANK);
 
 		moonImage.update(0, 0, 0);
 		frameSunMoonInfo.pack();
@@ -749,7 +810,10 @@ public class App {
 			labelMoonDistance,
 			labelMoonAge,
 			labelMoonIllumination,
-			labelMoonPhase;
+			labelMoonPhase,
+			labelPhaseAngle,
+			labelAngleMoon,
+			labelAngleShadow;
 
 	private JPanel panelObserver, panelSun, panelMoon;
 

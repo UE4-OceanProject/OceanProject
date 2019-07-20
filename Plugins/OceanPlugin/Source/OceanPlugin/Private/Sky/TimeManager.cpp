@@ -222,10 +222,13 @@ FEphemeris ATimeManager::CalculateMoonAngle(float Latitude2, float Longitude2, f
 	moonP = Test[2];
 	moonBL2 = Test[3];
 	moonPar2 = Test[4];
-	SiderealTime2 = Test[5];
-	moonPhaseAngle = ((FMath::Acos(-FMath::Cos(moonAge	/ LUNAR_CYCLE_DAYS * 2 * PI))));
-	moonAngle = (-(moonP - moonPar2));
-	moonPhaseShadowAngle = (-(moonBL2 - moonPar2));
+	SiderealTime2 = FMath::RadiansToDegrees(Test[5]);
+	moonPhaseAngle = FMath::RadiansToDegrees(((FMath::Acos(-FMath::Cos(moonAge / LUNAR_CYCLE_DAYS * 2 * PI)))));
+	moonAngle = FMath::RadiansToDegrees((-(moonP - moonPar2)));
+	moonPhaseShadowAngle = FMath::RadiansToDegrees((-(moonBL2 - moonPar2)));
+	moonP = FMath::RadiansToDegrees(Test[2]);
+	moonBL2 = FMath::RadiansToDegrees(Test[3]);
+	moonPar2 = FMath::RadiansToDegrees(Test[4]);
 
 	return *moon;
 };
@@ -771,8 +774,10 @@ TArray<double> ATimeManager::getMoonDiskOrientationAngles()
 	sun = doCalc(getSun(), false);
 	TArray<double> moonPos = getMoon();
 	moon = doCalc(moonPos, false);
-	double moonLon = moonPos[0], moonLat = moonPos[1],
-		moonRA = moon->rightAscension, moonDEC = moon->declination;
+	double moonLon = FMath::DegreesToRadians(moonPos[0]), 
+		moonLat = FMath::DegreesToRadians(moonPos[1]),
+		moonRA = moon->rightAscension,
+		moonDEC = moon->declination;
 	double sunRA = sun->rightAscension, sunDEC = sun->declination;
 
 	// Moon's argument of latitude
@@ -824,7 +829,7 @@ TArray<double> ATimeManager::getMoonDiskOrientationAngles()
 		par = (y / FMath::Abs(y)) * PI_OVER_TWO;
 	}
 	//return TArray<double> {lp, bp, p, bl, par, lst};
-	return TArray<double> {lp * RAD_TO_DEG, bp * RAD_TO_DEG, p * RAD_TO_DEG, bl * RAD_TO_DEG, par * RAD_TO_DEG, lst};
+	return TArray<double> {lp, bp, p, bl, par, lst};
 }
 
 
