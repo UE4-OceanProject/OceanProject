@@ -286,7 +286,7 @@ class ATimeManager : public AActor
 
 public:
 	// Current Local Clock Time (LCT)
-	UPROPERTY(BlueprintReadOnly, Category = "TimeManager")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Default")
 	FTimeDate CurrentLocalTime;
 
 	// The Latitude of the local location (-90 to +90 in degrees)
