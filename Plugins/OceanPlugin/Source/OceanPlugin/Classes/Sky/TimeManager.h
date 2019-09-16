@@ -104,7 +104,7 @@ struct FEphemeris
 			rightAscension = 0;
 			declination = 0;
 			distance = 0;
-			illuminationPhase = 0;
+			illuminationPhase = 100;
 			eclipticLongitude = 0;
 			eclipticLatitude = 0;
 			angularRadius = 0;
@@ -563,7 +563,7 @@ public:
 
 
 	private:
-	double toJulianDay(int year, int month, int day, int h, int m, int s);
+	//double toJulianDay(int year, int month, int day, int h, int m, int s);
 	void setUTDate(double jd);
 	TArray<double> getSun();
 	TArray<double> getMoon();

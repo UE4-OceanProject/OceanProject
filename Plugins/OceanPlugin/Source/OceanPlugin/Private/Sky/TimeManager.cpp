@@ -271,11 +271,8 @@ void ATimeManager::InitSunMoonCalculator(int year, int month, int day, int h, in
 	//}
 	//int A = Y / 100;
 	//int B = julian ? 0 : 2 - A + A / 4;
-
 	//double dayFraction = (h + (m + (s / 60.0)) / 60.0) / 24.0;
-
 	//double jd = dayFraction + (int)(365.25 * (Y + 4716)) + (int)(30.6001 * (M + 1)) + D + B - 1524.5;
-
 	//if (jd < 2299160.0 && jd >= 2299150.0)
 	//{
 	//	return;
@@ -288,7 +285,6 @@ void ATimeManager::InitSunMoonCalculator(int year, int month, int day, int h, in
 	//FDateTime CalcTime;
 	////Here we adjust for timezone to convert to UTC time
 	////YYYY - mm - ddTHH:MM:SS(.ssss)(Z | +th:tm | -th : tm)
-
 	//FString Iso8601Time =
 	//	FString::FromInt(year) + " " + FString::FromInt(month) + " " + FString::FromInt(day) +
 	//	"T" + FString::FromInt(h) + " " + FString::FromInt(m) + " " + FString::FromInt(s) +
@@ -326,29 +322,29 @@ void ATimeManager::InitSunMoonCalculator(int year, int month, int day, int h, in
 	setUTDate(jd);
 }
 
-double  ATimeManager::toJulianDay(int year, int month, int day, int h, int m, int s) {
-	// The conversion formulas are from Meeus, chapter 7.
-	bool julian = false; // Use Gregorian calendar
-	if (year < 1582 || (year == 1582 && month <= 10) || (year == 1582 && month == 10 && day < 15)) julian = true;
-	int D = day;
-	int M = month;
-	int Y = year;
-	if (M < 3) {
-		Y--;
-		M += 12;
-	}
-	int A = Y / 100;
-	int B = julian ? 0 : 2 - A + A / 4;
-
-	double dayFraction = (h + (m + (s / 60.0)) / 60.0) / 24.0;
-	double jd = dayFraction + (int)(365.25 * (Y + 4716)) + (int)(30.6001 * (M + 1)) + D + B - 1524.5;
-
-	if (jd < 2299160.0 && jd >= 2299150.0)
-		//need to make this better somehow
-		return 0.0;
-
-	return jd;
-}
+//double  ATimeManager::toJulianDay(int year, int month, int day, int h, int m, int s) {
+//	// The conversion formulas are from Meeus, chapter 7.
+//	bool julian = false; // Use Gregorian calendar
+//	if (year < 1582 || (year == 1582 && month <= 10) || (year == 1582 && month == 10 && day < 15)) julian = true;
+//	int D = day;
+//	int M = month;
+//	int Y = year;
+//	if (M < 3) {
+//		Y--;
+//		M += 12;
+//	}
+//	int A = Y / 100;
+//	int B = julian ? 0 : 2 - A + A / 4;
+//
+//	double dayFraction = (h + (m + (s / 60.0)) / 60.0) / 24.0;
+//	double jd = dayFraction + (int)(365.25 * (Y + 4716)) + (int)(30.6001 * (M + 1)) + D + B - 1524.5;
+//
+//	if (jd < 2299160.0 && jd >= 2299150.0)
+//		//need to make this better somehow
+//		return 0.0;
+//
+//	return jd;
+//}
 
 /**
  * Sets the rise/set times to return. Default is for the local horizon.
