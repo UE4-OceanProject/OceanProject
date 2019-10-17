@@ -1,5 +1,11 @@
-6/23/2019:
+10/17/19:
 SaschaElble:
+For now user the MASTER_FINAL_4.22 branch <-Changes are will be limited to maintance only
+This branch is already compatable with 4.23, you just need to recompile it once it asks you too.
+(Make sure you are putting this into your project plugin folder, not the engine unless you are building the engine by source)
+
+6/23/2019:
+SaschaElble: (For a tiny preview of the sun/moon stuff, visit the diftow branch, while there is a very minor bug, its the only thing keeping me from pushing this and continuing my work, I've pinned it under issues, if you want to help)
 In an effort to re-start this project and hopefully get more people interested in it again, and since DotCam has been missing for about a year now, a few things are going to change...
 
 As of now (4.22+) this project is going to be stripped down.
