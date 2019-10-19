@@ -1,13 +1,13 @@
 /*=================================================
-* FileName: TimeData.h
+* FileName: TimeDate.h
 *
 * Created by: DotCam
 * Project name: OceanProject
 * Unreal Engine version: 4.18.3
 * Created on: 2015/07/29
 *
-* Last Edited on: 2018/03/15
-* Last Edited by: Felipe "Zoc" Silveira
+* Last Edited on: 2019/10/19
+* Last Edited by: KamikazeXeX
 *
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -26,23 +26,8 @@
 
 USTRUCT(BlueprintType)
 struct FTimeDate
-    {
+{
 	GENERATED_USTRUCT_BODY()
-
-		// Default constructor
-	FTimeDate() { FTimeDate(0, 0, 0, 0, 0, 0, 0); }
-
-	// Copy Constructor
-	//FTimeDate(FTimeDate& time) { FTimeDate(time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second, time.Millisecond); }
-
-	// Date values only constructor
-	FTimeDate(int32 year, int32 month, int32 day) { FDateTime(year, month, day, 0, 0, 0, 0); }
-
-	// Fully initialized constructor
-	FTimeDate(int32 year, int32 month, int32 day, int32 hour, int32 minute, int32 second, int32 millisecond)
-	    {
-		Year = year; Month = month; Day = day; Hour = hour; Minute = minute; Second = second; Millisecond = millisecond;
-	    }
 
 	// The millisecond value for this time and date.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Time")
@@ -72,51 +57,71 @@ struct FTimeDate
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Time")
 	int32 Year;
 
+	// Default constructor
+	FTimeDate()
+	{
+		Year = Month = Day = Hour = Minute = Second = Millisecond = 0;
+	}
+
+	// Date values only constructor
+	FTimeDate(int32 InYear, int32 InMonth, int32 InDay)
+	{
+		Year = InYear;
+		Month = InMonth;
+		Day = InDay;
+		Hour = Minute = Second = Millisecond = 0;
+	}
+
+	// Fully initialized constructor
+	FTimeDate(int32 InYear, int32 InMonth, int32 InDay, int32 InHour, int32 InMinute, int32 InSecond, int32 InMillisecond)
+	{
+		Year = InYear;
+		Month = InMonth;
+		Day = InDay;
+		Hour = InHour;
+		Minute = InMinute;
+		Second = InSecond;
+		Millisecond = InMillisecond;
+	}
 
 	// The following functions are only used in code.
+	//bool IsEqual(const FTimeDate& Other) const
+	//{
+	//	return (Year == Other.Year) && (Month == Other.Month) && (Day == Other.Day) &&
+	//		(Hour == Other.Hour) && (Minute == Other.Minute) && (Second == Other.Second);
+	//}
 
+	//bool operator==(const FTimeDate& Other) const
+	//{
+	//	return IsEqual(Other);
+	//}
 
+	//bool operator!=(const FTimeDate& Other) const
+	//{
+	//	return !IsEqual(Other);
+	//}
 
-	// 
-	// 	bool IsEqual(const FTimeDate& other) const
-	// 		{
-	// 		return (Year == other.Year) && (Month == other.Month) && (Day == other.Day) &&
-	// 			(Hour == other.Hour) && (Minute == other.Minute) && (Second == other.Second);
-	// 		}
-	// 
-	// 	bool operator==(const FTimeDate& other) const
-	// 		{
-	// 		return IsEqual(other);
-	// 		}
-	// 
-	// 	bool operator!=(const FTimeDate& other) const
-	// 		{
-	// 		return !IsEqual(other);
-	// 		}
-	// 
-	// 	bool operator>(const FTimeDate& other) const
-	// 		{
-	// 		return (Year > other.Year) || (Month > other.Month) || (Day > other.Day) ||
-	// 			(Hour > other.Hour) || (Minute > other.Minute) || (Second > other.Second);
-	// 		}
-	// 
-	// 	bool operator>=(const FTimeDate& other) const
-	// 		{
-	// 		return IsEqual(other) || (Year > other.Year) || (Month > other.Month) || (Day > other.Day) ||
-	// 			(Hour > other.Hour) || (Minute > other.Minute) || (Second > other.Second);
-	// 		}
-	// 
-	// 	bool operator<(const FTimeDate& other) const
-	// 		{
-	// 		return (Year < other.Year) || (Month < other.Month) || (Day < other.Day) ||
-	// 			(Hour < other.Hour) || (Minute < other.Minute) || (Second < other.Second);
-	// 		}
-	// 
-	// 	bool operator<=(const FTimeDate& other) const
-	// 		{
-	// 		return IsEqual(other) || (Year < other.Year) || (Month < other.Month) || (Day < other.Day) ||
-	// 			(Hour < other.Hour) || (Minute < other.Minute) || (Second < other.Second);
-	// 		}
+	//bool operator>(const FTimeDate& Other) const
+	//{
+	//	return (Year > Other.Year) || (Month > Other.Month) || (Day > Other.Day) ||
+	//		(Hour > Other.Hour) || (Minute > Other.Minute) || (Second > Other.Second);
+	//}
+
+	//bool operator>=(const FTimeDate& Other) const
+	//{
+	//	return IsEqual(Other) || (Year > Other.Year) || (Month > Other.Month) || (Day > Other.Day) ||
+	//		(Hour > Other.Hour) || (Minute > Other.Minute) || (Second > Other.Second);
+	//}
+
+	//bool operator<(const FTimeDate& Other) const
+	//{
+	//	return (Year < Other.Year) || (Month < Other.Month) || (Day < Other.Day) ||
+	//		(Hour < Other.Hour) || (Minute < Other.Minute) || (Second < Other.Second);
+	//}
+
+	//bool operator<=(const FTimeDate& Other) const
+	//{
+	//	return IsEqual(Other) || (Year < Other.Year) || (Month < Other.Month) || (Day < Other.Day) ||
+	//		(Hour < Other.Hour) || (Minute < Other.Minute) || (Second < Other.Second);
+	//}
 };
-
-
