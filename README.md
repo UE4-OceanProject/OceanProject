@@ -1,29 +1,13 @@
-10/17/19:
-SaschaElble:
-For now user the MASTER_FINAL_4.22 branch <-Changes are will be limited to maintance only
-This branch is already compatable with 4.23, you just need to recompile it once it asks you too.
-(Make sure you are putting this into your project plugin folder, not the engine unless you are building the engine by source)
+10/19/2019
+Sascha Elble:
+This is the final version (apart from maintenance and bug fixing) for the old version of the ocean project.
+4.22/4.23 compatible (with compiling on 4.23)
+4.23 special note: A user reported you may/will have to go to plugins and package the ocean project manually or "apex destruction" error will appear, you could also remove apex destruction and turn off "Apex cloth" in the sails of the ships.
 
-6/23/2019:
-SaschaElble: (For a tiny preview of the sun/moon stuff, visit the diftow branch, while there is a very minor bug, its the only thing keeping me from pushing this and continuing my work, I've pinned it under issues, if you want to help)
-In an effort to re-start this project and hopefully get more people interested in it again, and since DotCam has been missing for about a year now, a few things are going to change...
+Moving forward:
+I am starting to re-vamp the project into a new direction called the "Environment" project since this project started heading in that direction. The project will be split up into separate plugins. For now I've started work in the dif-tow branch, this will eventually all be moved to a new GitHub organization. 
 
-As of now (4.22+) this project is going to be stripped down.
-There are a few reasons for this, one of them being large download size, long compile/load times, and feature bloat.
 
-I'd like to split these features into separate plugins: (Features with arrows will require the parent feature above it)
-
-Water shaders
-
-  ^--Buoyancy
-
-  ^--School of fish (not sure if I will keep this)
-
-Time of day
-
-  ^--Weather
-
-  ^--Solar position system (sun and moon)
 
 Also, for hiding the ocean in certain parts so your (below ocean level) beautiful city does not "flood" look at the masking example map. 
 
