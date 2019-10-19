@@ -1,7 +1,9 @@
 10/19/2019
 Sascha Elble:
 This is the final version (apart from maintenance and bug fixing) for the old version of the ocean project.
+
 4.22/4.23 compatible (with compiling on 4.23)
+
 4.23 special note: A user reported you may/will have to go to plugins and package the ocean project manually or "apex destruction" error will appear, you could also remove apex destruction and turn off "Apex cloth" in the sails of the ships.
 
 Moving forward:
