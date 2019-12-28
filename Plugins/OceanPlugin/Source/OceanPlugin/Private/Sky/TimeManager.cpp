@@ -6,8 +6,8 @@
 * Unreal Engine version: 4.18.3
 * Created on: 2015/07/12
 *
-* Last Edited on: 2018/01/30
-* Last Edited by: SaschaElble
+* Last Edited on: 2019/12/27
+* Last Edited by: iliags
 *
 * -------------------------------------------------
 * For parts referencing UE4 code, the following copyright applies:
@@ -22,12 +22,12 @@
 #include "Kismet/KismetMathLibrary.h"
 
 ATimeManager::ATimeManager(const class FObjectInitializer& PCIP) : Super(PCIP)
-    {
+{
 	PrimaryActorTick.bCanEverTick = true;
-    }
+}
 
 void ATimeManager::InitializeCalendar(FTimeDate time)
-    {
+{
 	time = ValidateTimeDate(time);
 
 	InternalTime = ConvertToDateTime(time);
@@ -37,9 +37,9 @@ void ATimeManager::InitializeCalendar(FTimeDate time)
 	int32 leapDays = IsLeapYear(time.Year);
 
 	if (DayOfYear >= (79 + leapDays) && DayOfYear < (265 + leapDays))
-	    {
+	{
 		bDaylightSavingsActive = true;
-	    }
+	}
 
 	OffsetDST = bAllowDaylightSavings && bDaylightSavingsActive ? 1 : 0;
 
@@ -53,150 +53,150 @@ void ATimeManager::InitializeCalendar(FTimeDate time)
 
 	CurrentLocalTime = time;
 	bIsCalendarInitialized = true;
-    }
+}
 
 FTimeDate ATimeManager::ValidateTimeDate(FTimeDate time)
-    {
-	time.Year = FMath::Clamp(time.Year, 1, 9999);
-	time.Month = FMath::Clamp(time.Month, 1, 12);
-	time.Day = FMath::Clamp(time.Day, 1, GetDaysInMonth(time.Year, time.Month));
-	time.Hour = FMath::Clamp(time.Hour, 0, 23);
-	time.Minute = FMath::Clamp(time.Minute, 0, 59);
-	time.Second = FMath::Clamp(time.Second, 0, 59);
-	time.Millisecond = FMath::Clamp(time.Millisecond, 0, 999);
+{
+	time.Year = FMath::Clamp<int32>(time.Year, 1, 9999);
+	time.Month = FMath::Clamp<int32>(time.Month, 1, 12);
+	time.Day = FMath::Clamp<int32>(time.Day, 1, GetDaysInMonth(time.Year, time.Month));
+	time.Hour = FMath::Clamp<int32>(time.Hour, 0, 23);
+	time.Minute = FMath::Clamp<int32>(time.Minute, 0, 59);
+	time.Second = FMath::Clamp<int32>(time.Second, 0, 59);
+	time.Millisecond = FMath::Clamp<int32>(time.Millisecond, 0, 999);
 
 	return time;
-    }
+}
 
 /* --- Utility Functions --- */
 
 // Float versions
 
 float ATimeManager::SinD(float input)
-    {
+{
 	return FMath::Sin((PI / 180.0f) * input);
-    }
+}
 
 float ATimeManager::ASinD(float input)
-    {
+{
 	return (180.0f / PI) * FMath::Asin(input);
-    }
+}
 
 float ATimeManager::CosD(float input)
-    {
+{
 	return FMath::Cos((PI / 180.0f) * input);
-    }
+}
 
 float ATimeManager::ACosD(float input)
-    {
+{
 	return (180.0f / PI) * FMath::Acos(input);
-    }
+}
 
 float ATimeManager::TanD(float input)
-    {
+{
 	return FMath::Tan((PI / 180.0f) * input);
-    }
+}
 
 float ATimeManager::ATanD(float input)
-    {
+{
 	return (180.0f / PI) * FMath::Atan(input);
-    }
+}
 
 float ATimeManager::ATan2D(float A, float B)
-    {
+{
 	return (180.f / PI) * FMath::Atan2(A, B);
-    }
+}
 
 
 // Double versions
 
 double ATimeManager::SinD(double input)
-    {
+{
 	return sin((PI / 180.0) * input);
-    }
+}
 
 double ATimeManager::ASinD(double input)
-    {
+{
 	return (180.0 / PI) * asin(input);
-    }
+}
 
 double ATimeManager::CosD(double input)
-    {
+{
 	return cos((PI / 180.0) * input);
-    }
+}
 
 double ATimeManager::ACosD(double input)
-    {
+{
 	return (180.0 / PI) * acos(input);
-    }
+}
 
 double ATimeManager::TanD(double input)
-    {
+{
 	return tan((PI / 180.0) * input);
-    }
+}
 
 double ATimeManager::ATanD(double input)
-    {
+{
 	return (180.0 / PI) * atan(input);
-    }
+}
 
 double ATimeManager::ATan2D(double A, double B)
-    {
+{
 	return (180.0 / PI) * atan2(A, B);
-    }
+}
 
 
 
 
 FTimeDate ATimeManager::ConvertToTimeDate(FDateTime dt)
-    {
+{
 	return FTimeDate(dt.GetYear(), dt.GetMonth(), dt.GetDay(), dt.GetHour(), dt.GetMinute(), dt.GetSecond(), dt.GetMillisecond());
-    }
+}
 
 FDateTime ATimeManager::ConvertToDateTime(FTimeDate td)
-    {
+{
 	return FDateTime(td.Year, td.Month, td.Day, td.Hour, td.Minute, td.Second, td.Millisecond);
-    }
+}
 
 
 /* --- Time of Day --- */
 
 float ATimeManager::GetElapsedDayInMinutes()
-    {
+{
 	if (!bIsCalendarInitialized)
-	    {
+	{
 		return 0.0f;
-	    }
+	}
 
 	return (float)InternalTime.GetTimeOfDay().GetTotalMinutes();
-    }
+}
 
 
 void ATimeManager::IncrementTime(float deltaTime)
-    {
+{
 	if (!bIsCalendarInitialized)
-	    {
+	{
 		return;
-	    }
+	}
 
 	InternalTime += FTimespan::FromSeconds(deltaTime * TimeScaleMultiplier);
 
 	if (CurrentLocalTime.Day != InternalTime.GetDay())
-	    {
+	{
 		int32 leapDays = IsLeapYear(InternalTime.GetYear());
 		DayOfYear = InternalTime.GetDayOfYear();
 
 		if (DayOfYear >= (79 + leapDays) && DayOfYear < (265 + leapDays))
-		    {
+		{
 			bDaylightSavingsActive = true;
-		    }
-	    }
+		}
+	}
 	CurrentLocalTime = ConvertToTimeDate(InternalTime);
-    }
+}
 
 
 void ATimeManager::SetCurrentLocalTime(float time)
-    {
+{
 	float minute = FMath::Frac(time / 60) * 60;
 	float second = FMath::Frac(minute) * 60;
 	float millisec = FMath::Frac(second) * 1000;
@@ -204,68 +204,68 @@ void ATimeManager::SetCurrentLocalTime(float time)
 		FPlatformMath::FloorToInt(time / 60), minute, second, millisec);
 
 	InitializeCalendar(newTD);
-    }
+}
 
 
 int32 ATimeManager::GetDaysInYear(int32 year)
-    {
+{
 	return FDateTime::DaysInYear(year);
-    }
+}
 
 
 int32 ATimeManager::GetDaysInMonth(int32 year, int32 month)
-    {
+{
 	return FDateTime::DaysInMonth(year, month);
-    }
+}
 
 
 int32 ATimeManager::GetDayOfYear(FTimeDate time)
-    {
+{
 	return ConvertToDateTime(time).GetDayOfYear();
-    }
+}
 
 
 float ATimeManager::GetDayPhase()
-    {
+{
 	if (!bIsCalendarInitialized)
-	    {
+	{
 		return 0.0f;
-	    }
+	}
 
 	return GetElapsedDayInMinutes() / 1440.0;
-    }
+}
 
 
 float ATimeManager::GetYearPhase()
-    {
+{
 	if (!bIsCalendarInitialized)
-	    {
+	{
 		return 0.0f;
-	    }
+	}
 
 	return InternalTime.DaysInYear(InternalTime.GetYear()) / (InternalTime.GetDayOfYear() + (GetElapsedDayInMinutes() / 1440));
-    }
+}
 
 
 bool ATimeManager::IsLeapYear(int32 year)
-    {
+{
 	bool isLeap = false;
 
 	if ((year % 4) == 0)
-	    {
+	{
 		isLeap = (year % 100) == 0 ? (year % 400) == 0 : true;
-	    }
+	}
 	return isLeap;
-    }
+}
 
 
 
 FRotator ATimeManager::CalculateSunAngle()
-    {
+{
 	if (!bIsCalendarInitialized)
-	    {
+	{
 		return FRotator();
-	    }
+	}
 
 	DayOfYear = InternalTime.GetDayOfYear() - 1;
 	LSTM -= bAllowDaylightSavings && bDaylightSavingsActive ? 1 : 0;
@@ -285,9 +285,9 @@ FRotator ATimeManager::CalculateSunAngle()
 	double saz = ACosD(((SinD(decl) * CosD(lat)) - (CosD(decl) * SinD(lat) * CosD(hra))) / CosD(saa));
 
 	if (hra >= 0.0)
-	    {
+	{
 		saz = saz * -1;
-	    }
+	}
 
 	// TEMPORARY - For debug only
 	LocalClockTime = (float)lct;
@@ -300,30 +300,30 @@ FRotator ATimeManager::CalculateSunAngle()
 	SolarAzimuth = (float)saz;
 
 	return FRotator(SolarAltAngle - 180, SolarAzimuth, 0);
-    }
+}
 
 
 
 FRotator ATimeManager::CalculateMoonAngle()
-    {
+{
 	if (!bIsCalendarInitialized)
-	    {
+	{
 		return FRotator();
-	    }
+	}
 
 	double lct = InternalTime.GetTimeOfDay().GetTotalHours();
 	double elapsed = InternalTime.GetJulianDay() - JD2000;
 	double utc;
 
 	if ((lct + SpanUTC.GetHours()) > 24.0)
-	    {
+	{
 		utc = (lct + SpanUTC.GetHours()) - 24.0;
 		elapsed++;
-	    }
+	}
 	else
-	    {
+	{
 		utc = lct + SpanUTC.GetHours();
-	    }
+	}
 
 	elapsed += (utc / 24.0);
 
@@ -374,11 +374,11 @@ FRotator ATimeManager::CalculateMoonAngle()
 
 
 	return FRotator(LunarAltAngle, LunarAzimuth, 0);
-    }
+}
 
 
 float ATimeManager::CalculateMoonPhase()
-    {
+{
 	// Last time Lunar year start = solar year start:
 	double elapsed = InternalTime.GetJulianDay() - JD1900;
 
@@ -386,7 +386,7 @@ float ATimeManager::CalculateMoonPhase()
 	int32 count = FPlatformMath::FloorToInt(cycles);
 	cycles -= count;
 	return cycles;
-    }
+}
 
 
 

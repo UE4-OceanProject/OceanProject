@@ -58,7 +58,7 @@ struct FTimeDate
 	int32 Year;
 
 	// Fully initialized constructor
-	FTimeDate(int32 InYear = 0, int32 InMonth = 0, int32 InDay = 0, int32 InHour = 0, int32 InMinute = 0, int32 InSecond = 0, int32 InMillisecond = 0)
+	FTimeDate(int32 InYear = 1900, int32 InMonth = 1, int32 InDay = 1, int32 InHour = 0, int32 InMinute = 0, int32 InSecond = 0, int32 InMillisecond = 0)
 	{
 		Year = InYear;
 		Month = InMonth;
