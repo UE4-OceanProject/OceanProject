@@ -27,7 +27,7 @@
 USTRUCT(BlueprintType)
 struct FTimeDate
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
 	// The millisecond value for this time and date.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Time")
