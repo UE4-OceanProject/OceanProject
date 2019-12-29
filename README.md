@@ -1,3 +1,6 @@
+Visit the #faq channel in discord for fixes with known issues:
+https://discord.gg/Xzrbpup
+
 10/19/2019
 Sascha Elble:
 This is the final version (apart from maintenance and bug fixing) for the old version of the ocean project.
