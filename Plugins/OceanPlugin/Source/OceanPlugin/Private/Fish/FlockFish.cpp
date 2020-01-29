@@ -42,6 +42,7 @@ AFlockFish::AFlockFish(const FObjectInitializer& ObjectInitializer) : Super(Obje
 	FishInteractionSphere->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 	FishInteractionSphere->OnComponentBeginOverlap.AddDynamic(this, &AFlockFish::OnBeginOverlap);
 	FishInteractionSphere->OnComponentEndOverlap.AddDynamic(this, &AFlockFish::OnEndOverlap);
+	FishInteractionSphere->RegisterComponent();
 
 	if (isLeader == true)
 	{
