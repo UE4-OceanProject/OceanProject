@@ -325,6 +325,7 @@ void UBuoyancyForceComponent::ApplyUprightConstraint(UPrimitiveComponent* BasePr
 			//Attach
 			ConstraintComp->AttachToComponent(BasePrimComp, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 			ConstraintComp->SetConstrainedComponents(BasePrimComp, NAME_None, NULL, NAME_None);
+			ConstraintComp->RegisterComponent();
 		}
 	}
 }
