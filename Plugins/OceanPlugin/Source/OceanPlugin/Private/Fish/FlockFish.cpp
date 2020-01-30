@@ -31,7 +31,7 @@
 
 #define COLLISION_TRACE ECC_GameTraceChannel4
 
-AFlockFish::AFlockFish(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+AFlockFish::AFlockFish(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 	base = ObjectInitializer.CreateDefaultSubobject<UStaticMeshComponent>(this, TEXT("FishMesh"));
 	RootComponent = base;
@@ -42,7 +42,6 @@ AFlockFish::AFlockFish(const FObjectInitializer& ObjectInitializer) : Super(Obje
 	FishInteractionSphere->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 	FishInteractionSphere->OnComponentBeginOverlap.AddDynamic(this, &AFlockFish::OnBeginOverlap);
 	FishInteractionSphere->OnComponentEndOverlap.AddDynamic(this, &AFlockFish::OnEndOverlap);
-	FishInteractionSphere->RegisterComponent();
 
 	if (isLeader == true)
 	{

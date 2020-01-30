@@ -30,9 +30,9 @@
  * 
  */
 UCLASS()
-class AFlockFish : public APawn
+class OCEANPLUGIN_API AFlockFish : public APawn
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 
 	// Current state of the Fish
 	class FishState* currentState;
@@ -213,9 +213,6 @@ public:
 	float minX;
 	float minY;
 	float minZ;
-
-	/** Constructor */
-	AFlockFish(const FObjectInitializer& ObjectInitializer);
 
 	// Getters and Setters
 	FVector getSeekTarget()
