@@ -127,6 +127,7 @@ void UInfiniteSystemComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 	if (World->WorldType == EWorldType::Game || World->WorldType == EWorldType::PIE)
 	{
 		if (!UGameplayStatics::GetPlayerController(World, 0)) return;
+		if (!UGameplayStatics::GetPlayerController(World, 0)->PlayerCameraManager) return;
 		UGameplayStatics::GetPlayerController(World, 0)->PlayerCameraManager->GetCameraViewPoint(CamLoc, CamRot);
 
 		if (UGameplayStatics::GetPlayerPawn(World, 0)) //null check
