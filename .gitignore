@@ -59,3 +59,7 @@ Saved/**
 *.target
 *.lib
 Content/Maps/IslandMap.umap
+/Binaries/Win64/UE4Editor-OceanProject-Win64-DebugGame.dll
+/Binaries/Win64/UE4Editor-Win64-DebugGame.modules
+/Plugins/OceanPlugin/Binaries/Win64/UE4Editor-OceanPlugin-Win64-DebugGame.dll
+/Plugins/OceanPlugin/Binaries/Win64/UE4Editor-Win64-DebugGame.modules
