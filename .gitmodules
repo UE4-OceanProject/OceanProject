@@ -1,3 +1,9 @@
 [submodule "Plugins/ComputeShaderDev"]
 	path = Plugins/ComputeShaderDev
 	url = https://github.com/UE4-OceanProject/ComputeShaderDev
+[submodule "Plugins/SkyPlugin"]
+	path = Plugins/SkyPlugin
+	url = S:\\GDrive\\Production\\Game\\Unreal Projects\\ENV_DEV\\DEV\\Plugins\\SkyPluginDev
+[submodule "Plugins/TimePlugin"]
+	path = Plugins/TimePlugin
+	url = S:\\GDrive\\Production\\Game\\Unreal Projects\\ENV_DEV\\DEV\\Plugins\\TimePluginDev
