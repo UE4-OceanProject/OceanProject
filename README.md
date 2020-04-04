@@ -1,4 +1,4 @@
-Visit the #faq channel in discord for fixes with known issues:
+Visit the #faq channel in discord for fixes with known issues: (or how to do things correctly so it works)
 https://discord.gg/Xzrbpup
 
 10/19/2019
@@ -12,22 +12,12 @@ This is the final version (apart from maintenance and bug fixing) for the old ve
 Moving forward:
 I am starting to re-vamp the project into a new direction called the "Environment" project since this project started heading in that direction. The project will be split up into separate plugins. For now I've started work in the dif-tow branch, this will eventually all be moved to a new GitHub organization. 
 
-
-
-Also, for hiding the ocean in certain parts so your (below ocean level) beautiful city does not "flood" look at the masking example map. 
-
-
 # OceanProject
 An Ocean Simulation project for Unreal Engine 4.
 
 ---------------------
 
-**MASTER Branch - This is the development branch. Please use this branch for all Pull Requests.**
-**MASTER_FULL Branch - This is the "final" version of this project as of 4.22, before it was stripped down
-
-**PLEASE NOTE**
-
-**This branch is NOT guaranteed to properly compile or be stable at all times. This branch will be updated between major UE4 releases with the latest changes, and periodically will be compiled out to a new branch for each new UE4 release, and when major changes occur.**
+**MASTER_LEGACY Branch - This is the "final" version of this project as of 4.22, before it was stripped down
 
 **Please use the branch associatd with your UE4 engine version for the best compatability.**
 
@@ -98,11 +88,4 @@ Added in 4.7:
 Discord channel:
 https://discord.gg/ewadNBG
 
-(DotCam is MIA, no access, don't use)
-Vote for upcoming features on our [Trello](https://trello.com/b/7dzOdkvw/ue4-ocean-weather-project)
-
-(This was re-routed, please see last post on this thread)
-UE4 Forums thread with more info: [[Community Project] WIP Weather & Ocean Water Shader](https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader)
-
-(Again, DotCam is MIA, contact one of the other project admins)
-If you would like to contribute to this project, please PM me on the UE4 forums with your GitHub user name and contact info.
+If you would like to contribute to this project, please PM me on the discord linked above with your GitHub user name and contact info. Or submit a pull request
