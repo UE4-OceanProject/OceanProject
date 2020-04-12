@@ -7,3 +7,6 @@
 [submodule "Plugins/TimePlugin"]
 	path = Plugins/TimePlugin
 	url = S:\\GDrive\\Production\\Game\\Unreal Projects\\ENV_DEV\\DEV\\Plugins\\TimePluginDev
+[submodule "Plugins/OceanShaderPlugin"]
+	path = Plugins/OceanShaderPlugin
+	url = https://github.com/UE4-OceanProject/OceanShaderPlugin.git
