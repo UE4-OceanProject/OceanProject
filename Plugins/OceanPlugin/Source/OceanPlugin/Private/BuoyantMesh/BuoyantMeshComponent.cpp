@@ -19,7 +19,7 @@
 * =================================================*/
 
 #include "BuoyantMesh/BuoyantMeshComponent.h"
-#include "OceanManager.h"
+#include "OceanShaderPlugin/Private/OceanShaderManager.h"
 #include "PhysicsEngine/BodySetup.h"
 #include "BuoyantMesh/BuoyantMeshTriangle.h"
 #include "BuoyantMesh/BuoyantMeshSubtriangle.h"
@@ -72,9 +72,9 @@ UPrimitiveComponent* UBuoyantMeshComponent::GetParentPrimitive() const
 	return nullptr;
 }
 
-AOceanManager* UBuoyantMeshComponent::FindOceanManager() const
+AOceanShaderManager* UBuoyantMeshComponent::FindOceanManager() const
 {
-	for (auto Actor : TActorRange<AOceanManager>(GetWorld()))
+	for (auto Actor : TActorRange<AOceanShaderManager>(GetWorld()))
 	{
 		return Actor;
 	}

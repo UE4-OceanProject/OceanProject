@@ -23,7 +23,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/MovementComponent.h"
 #include "PhysicsEngine/PhysicsConstraintComponent.h"
-#include "OceanManager.h"
+#include "OceanShaderPlugin/Private/OceanShaderManager.h"
 #include "BuoyancyComponent.generated.h"
 
 
@@ -38,7 +38,7 @@ class OCEANPLUGIN_API UBuoyancyComponent : public UMovementComponent
 
 	/* OceanManager used by the component, if unassigned component will auto-detect */
 	UPROPERTY(EditAnywhere, AdvancedDisplay, BlueprintReadWrite, Category = "Buoyancy Settings")
-	AOceanManager* OceanManager;
+	AOceanShaderManager* OceanManager;
 	
 	/* Density of mesh. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buoyancy Settings")

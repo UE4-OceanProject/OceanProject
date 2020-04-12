@@ -29,7 +29,7 @@
 struct BuoyantMeshVertex;
 struct FBuoyantMeshTriangle;
 struct FBuoyantMeshSubtriangle;
-class AOceanManager;
+class AOceanShaderManager;
 class UWaterHeightmapComponent;
 
 struct FTriangleMesh
@@ -86,7 +86,7 @@ class OCEANPLUGIN_API UBuoyantMeshComponent : public UStaticMeshComponent
 
 	// OceanManager used by the component, if unassigned component will auto-detect.
 	UPROPERTY(EditAnywhere, AdvancedDisplay, BlueprintReadWrite, Category = "Buoyancy Settings")
-	AOceanManager* OceanManager = nullptr;
+	AOceanShaderManager* OceanManager = nullptr;
 
 	// Draw arrows representing the buoyancy forces pushing on the mesh?
 	// The length is proportional to the force magnitude.
@@ -157,7 +157,7 @@ class OCEANPLUGIN_API UBuoyantMeshComponent : public UStaticMeshComponent
 	UWorld* World = nullptr;
 	float GravityMagnitude = 0.f;
 
-	AOceanManager* FindOceanManager() const;
+	AOceanShaderManager* FindOceanManager() const;
 	UWaterHeightmapComponent* FindWaterHeightmap() const;
 
 	FForce GetSubmergedTriangleForce(const FBuoyantMeshSubtriangle& Subtriangle, const FVector& TriangleNormal) const;
