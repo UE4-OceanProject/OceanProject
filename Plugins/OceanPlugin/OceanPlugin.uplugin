@@ -20,10 +20,18 @@
 			"LoadingPhase": "PreDefault"
 		}
 	],
-	"Plugins": [
-		{
-			"Name": "ApexDestruction",
-			"Enabled": true
-		}
-	]
+  "Plugins": [
+    {
+      "Name": "ApexDestruction",
+      "Enabled": true
+    },
+    {
+      "Name": "OceanShaderPlugin",
+      "Enabled": true
+    },
+    {
+      "Name": "TimePlugin",
+      "Enabled": true
+    }
+  ]
 }

@@ -47,7 +47,17 @@ public class OceanPlugin : ModuleRules
         //Our PrivatePCH that we want to globally #include
         PrivatePCHHeaderFile = "Classes/OceanPluginPrivatePCH.h";
         
-        PublicDependencyModuleNames.AddRange(new string[] { "Engine", "Core", "CoreUObject", "InputCore", "PhysX", "APEX", "ApexDestruction", "Landscape", "RHI", "RenderCore", "OceanShaderPlugin" });
+        PublicDependencyModuleNames.AddRange(new string[] {
+			"Engine",
+			"Core",
+			"CoreUObject",
+			"InputCore",
+			"PhysX",
+			"APEX",
+			"ApexDestruction",
+			"Landscape",
+			"RHI",
+			"RenderCore" });
 
 		PrivateDependencyModuleNames.AddRange(
 	new string[]
