@@ -3,10 +3,10 @@
 	url = https://github.com/UE4-OceanProject/ComputeShaderDev
 [submodule "Plugins/SkyPlugin"]
 	path = Plugins/SkyPlugin
-	url = S:\\GDrive\\Production\\Game\\Unreal Projects\\ENV_DEV\\DEV\\Plugins\\SkyPluginDev
+	url = https://github.com/UE4-OceanProject/SkyPluginDev.git
 [submodule "Plugins/TimePlugin"]
 	path = Plugins/TimePlugin
-	url = S:\\GDrive\\Production\\Game\\Unreal Projects\\ENV_DEV\\DEV\\Plugins\\TimePluginDev
+	url = https://github.com/UE4-OceanProject/TimePluginDev.git
 [submodule "Plugins/OceanShaderPlugin"]
 	path = Plugins/OceanShaderPlugin
 	url = https://github.com/UE4-OceanProject/OceanShaderPlugin.git
