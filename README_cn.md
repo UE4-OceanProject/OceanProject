@@ -1,6 +1,6 @@
-Visit the #faq channel in discord for fixes with known issues:
+访问#faq频道以获取已知问题的修复程序:
 https://discord.gg/Xzrbpup
-[(CN中文支持)](https://github.com/kaisaier/OceanProject/blob/UE4_4.24.3-SourcesBuild/README_cn.md)
+
 04/29/2020
 Kaisaier:
 Compiling on 4.24.3
@@ -8,33 +8,33 @@ Compiling on 4.24.3
 
 10/19/2019
 Sascha Elble:
-This is the final version (apart from maintenance and bug fixing) for the old version of the ocean project.
+这是海洋项目旧版本的最终版本（除了维护和错误修复）。
 
-4.22/4.23 compatible (with compiling on 4.23)
+兼容4.22 / 4.23（在4.23上编译）
 
-4.23 special note: A user reported you may/will have to go to plugins and package the ocean project manually or "apex destruction" error will appear, you could also remove apex destruction and turn off "Apex cloth" in the sails of the ships.
+4.23特别说明：用户报告您可能/将不得不删去插件并手动打包海洋项目，否则将出现“顶点破坏”错误，您还可以移除顶点破坏并关闭船帆中的“顶点布” 。
 
-Moving forward:
-I am starting to re-vamp the project into a new direction called the "Environment" project since this project started heading in that direction. The project will be split up into separate plugins. For now I've started work in the dif-tow branch, this will eventually all be moved to a new GitHub organization. 
-
-
-
-Also, for hiding the ocean in certain parts so your (below ocean level) beautiful city does not "flood" look at the masking example map. 
+未来发展：
+我开始将项目重新调整为一个新的方向，称为“环境”项目，因为该项目开始朝这个方向发展。该项目将拆分为单独的插件。现在，我已经开始在dif-wow分支中工作，最终将所有这些移至新的GitHub组织中。
 
 
-# OceanProject
-An Ocean Simulation project for Unreal Engine 4.
+
+另外，为了将海洋隐藏在某些部分中，以便您（在海平面以下）美丽的城市不会“淹没”在遮罩示例地图上。
+
+
+# 海洋项目(OceanProject)
+虚幻引擎4的海洋仿真项目.
 
 ---------------------
 
-**MASTER Branch - This is the development branch. Please use this branch for all Pull Requests.**
-**MASTER_FULL Branch - This is the "final" version of this project as of 4.22, before it was stripped down
+** MASTER分支-这是开发分支。请对所有请求请求使用此分支。**
+** MASTER_FULL分支-这是该项目从4.22开始的“最终”版本，之前已被剥离
 
-**PLEASE NOTE**
+**请注意**
 
-**This branch is NOT guaranteed to properly compile or be stable at all times. This branch will be updated between major UE4 releases with the latest changes, and periodically will be compiled out to a new branch for each new UE4 release, and when major changes occur.**
+**不保证此分支始终正确编译或稳定。该分支将在UE4的主要发行版之间进行更新，并具有最新更改，并会在出现重大更改时针对每个新的UE4发行版定期编译成新的分支。**
 
-**Please use the branch associatd with your UE4 engine version for the best compatability.**
+**请使用与您的UE4引擎版本关联的分支以获得最佳兼容性。**
 
 ---------------------
 
@@ -100,14 +100,15 @@ Added in 4.7:
 
 ===================================================================
 
-Discord channel:
+Discord 频道:
 https://discord.gg/ewadNBG
 
 (DotCam is MIA, no access, don't use)
 Vote for upcoming features on our [Trello](https://trello.com/b/7dzOdkvw/ue4-ocean-weather-project)
 
-(This was re-routed, please see last post on this thread)
-UE4 Forums thread with more info: [[Community Project] WIP Weather & Ocean Water Shader](https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-Shader)
+（这已被重新路由，请参阅此线程上的最新帖子）
+UE4论坛中包含更多信息的主题：[[社区项目] WIP天气和海洋水着色器]（https://forums.unrealengine.com/showthread.php?42092-Community-Project-WIP-Weather-amp-Ocean-Water-着色器）
+**请使用与您的UE4引擎版本关联的分支以获得最佳兼容性。
 
-(Again, DotCam is MIA, contact one of the other project admins)
-If you would like to contribute to this project, please PM me on the UE4 forums with your GitHub user name and contact info.
+（同样，DotCam是MIA，请联系其他项目管理员之一）
+如果您想为这个项目做贡献，请在UE4论坛上用我的GitHub用户名和联系信息来与我互动。
