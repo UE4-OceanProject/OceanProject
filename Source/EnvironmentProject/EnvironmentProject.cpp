@@ -1,4 +1,4 @@
-// 2015 - Community based open project
+// 2020 - Community based open project
 
 #include "EnvironmentProject.h"
 #include "Modules/ModuleManager.h"
