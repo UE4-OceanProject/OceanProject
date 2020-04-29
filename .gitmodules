@@ -7,9 +7,9 @@
 [submodule "Plugins/TimePlugin"]
 	path = Plugins/TimePlugin
 	url = https://github.com/UE4-OceanProject/TimePluginDev.git
-[submodule "Plugins/OceanShaderPlugin"]
-	path = Plugins/OceanShaderPlugin
-	url = https://github.com/UE4-OceanProject/OceanShaderPlugin.git
 [submodule "Plugins/BuoyancyPlugin"]
 	path = Plugins/BuoyancyPlugin
 	url = https://github.com/UE4-OceanProject/BuoyancyPlugin.git
+[submodule "Plugins/FishPlugin"]
+	path = Plugins/FishPlugin
+	url = ../FishPlugin.git
