@@ -13,3 +13,6 @@
 [submodule "Plugins/FishPlugin"]
 	path = Plugins/FishPlugin
 	url = ../FishPlugin.git
+[submodule "Plugins/OceanPlugin"]
+	path = Plugins/OceanPlugin
+	url = ../OceanPlugin.git
