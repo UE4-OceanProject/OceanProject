@@ -5,7 +5,7 @@
 	"Description": "",
 	"Modules": [
 		{
-			"Name": "OceanProject",
+			"Name": "EnvironmentProject",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		}
