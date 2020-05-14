@@ -58,4 +58,3 @@ Saved/**
 #Ignore visual studio build files
 *.target
 *.lib
-Content/Maps/IslandMap.umap
