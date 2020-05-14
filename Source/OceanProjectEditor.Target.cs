@@ -8,6 +8,8 @@ public class OceanProjectEditorTarget : TargetRules
 	public OceanProjectEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
+		//Uncomment for 4.24
+		//DefaultBuildSettings = BuildSettingsVersion.V2;
 		ExtraModuleNames.AddRange( new string[] { "OceanProject" } );
 	}
 }

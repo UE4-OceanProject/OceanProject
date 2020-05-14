@@ -71,7 +71,7 @@ void ACustomVehicleController::EnterVehicle(APawn* Vehicle)
 {
 	if (!Vehicle->IsValidLowLevel() || !GetPawn()->IsValidLowLevel()) return;
 
-	if (!Vehicle->IsControlled() && !GetIsDriving())
+	if (!Vehicle->IsPlayerControlled() && !GetIsDriving())
 	{
 		PlayerPawn = GetPawn();
 		Possess(Vehicle);

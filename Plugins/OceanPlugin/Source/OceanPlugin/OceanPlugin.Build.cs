@@ -35,7 +35,9 @@ public class OceanPlugin : ModuleRules
 
     public OceanPlugin(ReadOnlyTargetRules Target) : base(Target)
     {
-        PrivateIncludePaths.AddRange(new string[] { Path.Combine(ModuleDirectory, "Private") });
+		bLegacyPublicIncludePaths = false;
+
+		PrivateIncludePaths.AddRange(new string[] { Path.Combine(ModuleDirectory, "Private") });
         // PublicIncludePaths.AddRange(new string[] { "OceanPlugin/Public" });
 
         // Make sure UBT reminds us of how to keep the project IWYU compliant
@@ -45,7 +47,7 @@ public class OceanPlugin : ModuleRules
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
         //Our PrivatePCH that we want to globally #include
-        PrivatePCHHeaderFile = "Classes/OceanPluginPrivatePCH.h";
+        PrivatePCHHeaderFile = "Public/OceanPluginPrivatePCH.h";
         
         PublicDependencyModuleNames.AddRange(new string[] { "Engine", "Core", "CoreUObject", "InputCore", "PhysX", "APEX", "ApexDestruction", "Landscape", "RHI", "RenderCore" });
     }
