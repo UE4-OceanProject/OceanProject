@@ -1,16 +1,16 @@
 Visit the #faq channel in discord for fixes with known issues: (or how to do things correctly so it works)
 https://discord.gg/Xzrbpup
 
-10/19/2019
 Sascha Elble:
 This is the final version (apart from maintenance and bug fixing) for the old version of the ocean project.
 
-4.22/4.23 compatible (with compiling on 4.23)
-
-4.23 special note: A user reported you may/will have to go to plugins and package the ocean project manually or "apex destruction" error will appear, you could also remove apex destruction and turn off "Apex cloth" in the sails of the ships.
+Compatible with 4.22/23/24/25 
+With one exception 4.24+:
+Open OceanProject.Target.cs and OceanProjectEditor.Target.cs and uncomment the line:
+“//DefaultBuildSettings = BuildSettingsVersion.V2;”
 
 Moving forward:
-I am starting to re-vamp the project into a new direction called the "Environment" project since this project started heading in that direction. The project will be split up into separate plugins. For now I've started work in the dif-tow branch, this will eventually all be moved to a new GitHub organization. 
+I am starting to re-vamp the project into a new direction called the "Environment" project since this project started heading in that direction. The project will be split up into separate plugins. For now I've started work in the dif-tow branch, this will eventually all be moved to a new repo.
 
 # OceanProject
 An Ocean Simulation project for Unreal Engine 4.
@@ -27,7 +27,7 @@ An Ocean Simulation project for Unreal Engine 4.
 
 **Changelog:**
 Changes in 4.22:
-Apart from all the other commits, this was future proofed (I hope) to 4.23 (i.e all warning were fixed).
+Apart from all the other commits, this was future proofed (I hope) to 4.25 (i.e all warning were fixed).
 
 Changes in 4.18:
 * Minor fixes
