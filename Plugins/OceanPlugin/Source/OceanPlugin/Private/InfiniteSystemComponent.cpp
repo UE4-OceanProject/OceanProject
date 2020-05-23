@@ -56,7 +56,7 @@ void UInfiniteSystemComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// If disabled or we are not attached to a parent component, return.
-	if (!bIsActive || !GetAttachParent() || !World) return;
+	if (!IsActive() || !GetAttachParent() || !World) return;
 
 	FVector CamLoc;
 	FRotator CamRot;
