@@ -62,3 +62,5 @@ Saved/**
 /Binaries/Win64/UE4Editor-OceanProject-Win64-DebugGame.dll
 /Binaries/Win64/UE4Editor-Win64-DebugGame.modules
 Binaries/Win64/UE4Editor-EnvironmentProject.dll
+Binaries/Win64/UE4Editor-EnvironmentProject-Win64-DebugGame.dll
+Binaries/Win64/UE4Editor.modules
