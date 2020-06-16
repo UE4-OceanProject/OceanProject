@@ -12,7 +12,7 @@
 	url = https://github.com/UE4-OceanProject/BuoyancyPlugin.git
 [submodule "Plugins/FishPlugin"]
 	path = Plugins/FishPlugin
-	url = ../FishPlugin.git
+	url = https://github.com/UE4-OceanProject/FishPlugin.git
 [submodule "Plugins/OceanPlugin"]
 	path = Plugins/OceanPlugin
-	url = ../OceanPlugin.git
+	url = https://github.com/UE4-OceanProject/OceanPlugin.git
