@@ -66,7 +66,7 @@ BlueEagle :
 - Tons of code/project cleanup, conversion of ocean to cpp
 
 Przemek2122 :
--  Tons of customization settings, conversion of ocean to cpp
+-  Refactored Buoyancy Component
 
 Beskar_Mando :
 - New buoyancy system (In progress)

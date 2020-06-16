@@ -1,3 +1,5 @@
+del /q/s *".sln"
+
 rmdir /q/s ".vs"
 rmdir /q/s "Build"
 rmdir /q/s "Binaries"
