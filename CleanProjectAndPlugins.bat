@@ -4,6 +4,7 @@ rmdir /q/s ".vs"
 rmdir /q/s "Build"
 rmdir /q/s "Binaries"
 rmdir /q/s "Intermediate"
+rmdir /q/s "Saved"
 
 rmdir /q/s "Plugins/TimePlugin/Binaries"
 rmdir /q/s "Plugins/TimePlugin/Intermediate"
