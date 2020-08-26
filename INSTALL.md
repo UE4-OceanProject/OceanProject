@@ -1,23 +1,28 @@
 ## Install Instructions
 
-### 4.20
+* Download the entire project from github via git (Do NOT download as zip, you won't get the plugins because they are sub modules or "sub repos")
 
+*Right click the .uproject file, and click "Generate Project Files"
 
+*Now you can open the project. Click yes to rebuild when asked.
 
-* Download the entire project from github via git or zip download.
-* If there is a `ComputeShaderDev` folder in `Plugins` folder, remove it (otherwise it will most likely not work)
-* Open `OceanProject.uproject` with **UE 4.20** (It's only tested on **4.20.3**).
+## If adding just the plugins to your own project modify DefaultEngine.ini to include:
+[/Script/Engine.RendererSettings]
+r.MobileHDR=True
+r.GenerateMeshDistanceFields=True
+r.SeparateTranslucency=True
+r.CustomDepth=3
+r.AllowGlobalClipPlane=True
+r.CustomDepthTemporalAAJitter=True
+r.DefaultFeature.AntiAliasing=2
+r.TemporalAA.Upsampling=True
 
-* The project should load just fine.
-
-* Follow [this guide from the wiki](https://github.com/UE4-OceanProject/OceanProject/wiki/How-to-add-to-your-project) to install into your own project.
-
+[/Script/Engine.Engine]
+NearClipPlane=10.000000
 
 #### How to package (and include OceanPlugin in the build)
 
 * Close your project and UE4
-
-* Move the `OceanPlugin` folder (which is on `Plugins` folder) to `Program Files/Epic Games/UE_4.20/Engine/Plugins/Runtime`
 
 * Edit your `.uproject` and add this:
 
@@ -50,7 +55,3 @@
   	]
   }
   ```
-
-
-* Open `OceanProject.uproject` with UE 4.20 again.
-* Now it should work as before, and also the plugin will be included in the packaged build, so your built game will not crash on startup.

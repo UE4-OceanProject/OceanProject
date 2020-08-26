@@ -2,10 +2,11 @@
 An Environment Simulation project for Unreal Engine 4.
 
 Includes everything from the Ocean Project (LEGACY and <= 4.20 versions) but split up into muliple plugins now:
-Buoyancy System
-Ocean Shader
-Sky System
-Time System
+Buoyancy
+Ocean
+Fish
+Sky
+Time
 
 
 Visit the #faq channel in discord for fixes with known issues:
