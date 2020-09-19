@@ -1,3 +1,9 @@
+@echo off
+setlocal
+:PROMPT
+set /p var=Are you sure you want to clean the project and all plugins?[Y/N]: 
+if /I not %var%== Y exit
+
 del /q/s *".sln"
 
 rmdir /q/s ".vs"
@@ -20,3 +26,5 @@ rmdir /q/s "Plugins/FishPlugin/Intermediate"
 
 rmdir /q/s "Plugins/BuoyancyPlugin/Binaries"
 rmdir /q/s "Plugins/BuoyancyPlugin/Intermediate"
+
+endlocal
