@@ -1,5 +1,5 @@
 This version is now depreciated. The new version:
-https://github.com/UE4-OceanProject/OceanProject/tree/Master-Environment-Project
+https://github.com/UE4-OceanProject/Environment-Project
 has mostly the same stuff, minus the bloat, and is better organised, and has many fixes, and will continue to be updated by the community (Hopefully)
 
 Visit the #faq channel in discord for fixes with known issues: (or how to do things correctly so it works)
