@@ -1,0 +1,3 @@
+If you're updating your OceanProject or your project which uses the OceanPlugin, it might not compile.
+Deleting BuoyancyComponent.h and BuoyancyComponent.cpp will solve the compilation issue. (The new Water in 4.26 has these files already.)
+I hope it helps someone!
